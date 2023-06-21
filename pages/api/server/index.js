@@ -1986,7 +1986,7 @@ const development = process.env.NODE_ENV !== "production";
 
 const getStaticProps = async () => {
 	console.log("the running the port",development,"context")
-  if (!development) {
+  if (development) {
     return { props: {} };
   } else {
     const data = await loadAllData();

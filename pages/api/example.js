@@ -1800,7 +1800,7 @@ const ContentProviderBase = ({ data, standaloneServer }) => {
 };
 const ContentProvider = ({ data }) => /* @__PURE__ */ React__default["default"].createElement(ContentProviderBase, {
   data,
-  standaloneServer: true,
+  standaloneServer: false,
 });
 
 

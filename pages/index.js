@@ -1,5 +1,5 @@
 
-export { getStaticProps } from "@/pages/api/example"
-export { ContentProvider as default } from "@/pages/api/example"
+export { getStaticProps } from "./api/server/index"
+export { ContentProvider as default } from "./api/example"
 
 

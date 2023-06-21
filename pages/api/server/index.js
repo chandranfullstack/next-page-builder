@@ -15,7 +15,6 @@ var require$$12 = require('os');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
-console.log(_interopDefaultLegacy,"interpDefault",path$1)
 
 var fs__default = /*#__PURE__*/_interopDefaultLegacy(fs$2);
 var path__default = /*#__PURE__*/_interopDefaultLegacy(path$1);
@@ -808,18 +807,14 @@ const getJson = (req) => new Promise((resolve) => {
 });
 const exists = (s) => fs__default["default"].promises.access(s).then(() => true).catch(() => false);
 const readdirRecursive = (folder, files = []) => {
-	console.log(folder,"folder ")
   fs__default["default"].readdirSync(folder).forEach((file) => {
     const pathAbsolute = path__default["default"].join(folder, file);
     if (fs__default["default"].statSync(pathAbsolute).isDirectory()) {
       readdirRecursive(pathAbsolute, files);
-	  console.log(pathAbsolute,"pathAbsolute")
     } else {
       files.push(pathAbsolute);
-	  console.log(pathAbsolute,"pathAbsolute from data")
     }
   });
-  console.log(files,"files")
   return files;
 };
 path__default["default"].parse(process.argv[1]).base === "next";
@@ -1908,7 +1903,6 @@ const uploadFiles = async (req) => {
   const form = new lib.IncomingForm({ uploadDir: uploadFolder, keepExtensions: true });
   const uploadPath = path__default["default"].join("public", uploadFolder);
   const uploadFolderExists = await exists(uploadPath);
-  console.log(form,uploadPath,uploadFolderExists)
   if (!uploadFolderExists) {
     await fs__default["default"].promises.mkdir(uploadPath);
   }
@@ -1920,9 +1914,9 @@ const uploadFiles = async (req) => {
   });
   return urls;
 };
-const getFileNameFromRoute = (route) => route === "/" ? "default.json" : `${route}.json`;
+const getFileNameFromRoute = (route) => route === "/" ? "home.json" : `${route}.json`;
 //const getFileNameFromRoute = (route) => route === "/" ? "default.json" : `${route}.json`;
-const getRouteFromFilename = (filename) => filename === "/default.json" ? "/" : `${filename.slice(0, -5)}`;
+const getRouteFromFilename = (filename) => filename === "/home.json" ? "/" : `${filename.slice(0, -5)}`;
 const loadData = async (route) => {
   const fileName = getFileNameFromRoute(route);
   const dataPath = path__default["default"].join(rootPath, dataFolder, fileName);
@@ -1938,7 +1932,6 @@ const loadAllData = async () => {
   const basePath = path__default["default"].join(rootPath, dataFolder);
   const files = readdirRecursive(basePath);
   const data = await Promise.all(files.map((f) => fs__default["default"].promises.readFile(f, "utf8").then((c) => ({ name: getRouteFromFilename(f.replace(basePath, "")), content: c }))));
-  console.log(data,"data all loadAllData",basePath,"basePath:",rootPath,"rootPath",dataFolder)
   return data
 };
 const updateData = async (route, data) => {
@@ -1966,12 +1959,12 @@ const handleData = async (req, res) => {
 };
 const handleAsset = async (req, res) => {
   if (req.method === "GET") {
-    const assetPath = path__default["default"].join(require.resolve("package.json"), "..", req.query.path);
-	console.log(req.query.path,"request path query ",assetPath)
+    const assetPath = path__default["default"].join("\Users\ravic\Desktop\Flugid",req.query.path);
+	console.log(assetPath,"assetpath",path__default["default"].resolve())
     const data = await fs__default["default"].promises.readFile(assetPath);
     const options = { "Content-Type": "image/png", "Content-Length": data.length };
     res.writeHead(200, options);
-    res.end(data, "binary");
+    res.end(data, "binary");  
   } else {
     return res.status(401).json({ error: "Not allowed" });
   }
@@ -1990,7 +1983,6 @@ const handleEditor = async (req, res) => {
 const config = { api: { bodyParser: false } };
 
 const development = process.env.NODE_ENV !== "production";
-const production = process.env.NODE_ENV == "production";
 
 const getStaticProps = async () => {
 	console.log("the running the port",development,"context")
@@ -2002,18 +1994,13 @@ const getStaticProps = async () => {
   }
 };
 
-const getStaticProps1 = async () => {
-	console.log("the running the port",production,"context")
-  if (production) {
-    return { props: {} };
-  }
-};
+
 
 
 exports.config = config;
 exports.getStaticProps = getStaticProps;
-exports.getStaticProps1=getStaticProps1;
 exports.handleEditor = handleEditor;
 exports.loadData = loadData;
 exports.updateData = updateData;
 exports.uploadFiles = uploadFiles;
+exports.loadAllData=loadAllData

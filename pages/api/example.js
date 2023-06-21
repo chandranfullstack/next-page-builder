@@ -10,6 +10,8 @@ var PencilSquareIcon = require('@heroicons/react/24/outline/PencilSquareIcon');
 var ArrowUturnLeftIcon = require('@heroicons/react/24/outline/ArrowUturnLeftIcon');
 var ArrowUturnRightIcon = require('@heroicons/react/24/outline/ArrowUturnRightIcon');
 var ChevronDownIcon = require('@heroicons/react/24/outline/ChevronDownIcon');
+var Plus =require("@heroicons/react/24/solid/PlusCircleIcon.js")
+var CloseIcon=require("@heroicons/react/24/solid/XCircleIcon.js")
 var SelectPrimitive = require('@radix-ui/react-select');
 var cx = require('classnames');
 var Squares2X2Icon = require('@heroicons/react/24/outline/Squares2X2Icon');
@@ -24,6 +26,8 @@ var PhotoIcon = require('@heroicons/react/24/outline/PhotoIcon');
 var LinkIcon = require('@heroicons/react/24/outline/LinkIcon');
 var CircleStackIcon = require('@heroicons/react/24/outline/CircleStackIcon');
 var ArrowsPointingOutIcon = require('@heroicons/react/24/outline/ArrowsPointingOutIcon');
+var pathModule=require("path")
+// var fsModule=require("fs")
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -65,6 +69,10 @@ var PhotoIcon__default = /*#__PURE__*/_interopDefaultLegacy(PhotoIcon);
 var LinkIcon__default = /*#__PURE__*/_interopDefaultLegacy(LinkIcon);
 var CircleStackIcon__default = /*#__PURE__*/_interopDefaultLegacy(CircleStackIcon);
 var ArrowsPointingOutIcon__default = /*#__PURE__*/_interopDefaultLegacy(ArrowsPointingOutIcon);
+var PlusOutIcon__default = /*#__PURE__*/_interopDefaultLegacy(Plus);
+var CloseIcon__default = /*#__PURE__*/_interopDefaultLegacy(CloseIcon);
+
+
 
 const SimpleTooltip = ({ text, children, side, offset }) => /* @__PURE__ */ React__default["default"].createElement(Tooltip__namespace.Provider, null, /* @__PURE__ */ React__default["default"].createElement(Tooltip__namespace.Root, {
   delayDuration: 0
@@ -1067,6 +1075,16 @@ const loadTemplate = async (standaloneServer) => {
   console.log(baseUrl,standaloneServer,"base url",location.pathname)
   return data == null ? void 0 : data.content;
 };
+const loadDynamicTemplate = async (standaloneServer,file) => {
+  const baseUrl = getBaseUrl(standaloneServer);
+  const data = await fetchJSON({
+    method: "get",
+    url: `${baseUrl}/api/builder/handle?type=data&path=${file}`
+  });
+  console.log(baseUrl,standaloneServer,"base url",location.pathname)
+  return data == null ? void 0 : data.content;
+};
+
 const saveTemplate = async (state, standaloneServer) => {
   const baseUrl = getBaseUrl(standaloneServer);
   const body = { data: JSON.parse(state.serialize()) };
@@ -1098,7 +1116,7 @@ const Item = ({ connectors, c }) => {
   }, /* @__PURE__ */ React__default["default"].createElement("a", {
     className: "cursor-move m-2 pb-2 cursor-pointer block"
   }, /* @__PURE__ */ React__default["default"].createElement("img", {
-    src: getImageUrl(standalone, `/src/themes/${c.themeFolder}/${c.blockFolder}/preview.png`),
+    src: getImageUrl(standalone, `/themes/${c.themeFolder}/${c.blockFolder}/preview.png`),
     width: "600px",
     height: "300px"
   }))));
@@ -1131,6 +1149,75 @@ const Sidebar = () => {
   }))))));
 };
 
+
+const Pages=()=>{
+
+  var paths=require("../../data/home.json")
+  //fsModule.readdir(filepaths,(err,files)=>{
+  //  files.forEach((file)=>console.log(file,"filename"))
+  //})
+  var name=pathModule.parse("../../data/home.json").name
+  console.log(paths,"datafile",name)
+  return /*@__PURE__*/React__default["default"].createElement("div",{
+
+  },"home")
+}
+
+const MainSideBar= () => {
+  const [isView,setView]=React.useState(false)
+  const [fileName,setFileName]=React.useState("")
+ 
+  const handleNew=()=>{
+    // loadDynamicTemplate()
+    setView(!isView)
+  }
+
+  const handleFileName=(e)=>{
+    setFileName(e.target.value)
+  }
+  
+  return /* @__PURE__ */ React__default["default"].createElement("div", {
+    className: `toolbox h-full flex flex-col bg-white w-48" `,
+    style: { transition: "0.4s cubic-bezier(0.19, 1, 0.22, 1)" }
+  },
+  /* @__PURE__ */ React__default["default"].createElement("div", {
+    className: `h-full flex flex-col bg-white w-48`,
+  },
+  /* @__PURE__ */ React__default["default"].createElement("div", 
+  {
+    className: ` bg-white flex justify-around w-48 cursor-pointer items-center m-4`,
+    style: { transition: "0.4s cubic-bezier(0.19, 1, 0.22, 1)" },
+    onClick:handleNew
+  }
+  ,"Pages",
+  /* @__PURE__ */ React__default["default"].createElement(ArrowSmallUpIcon__default["default"],
+  {className:"w-4 h-4",
+  style: { transform: `rotate(${isView ? 180 : 0}deg)` }},
+  )
+  ), 
+  /* @__PURE__ */ React__default["default"].createElement("div", 
+  {
+    className: ` bg-white w-48 cursor-pointer items-center m-4`,
+    style: { transition: "0.4s cubic-bezier(0.19, 1, 0.22, 1)" },
+  },
+  isView?
+/* @__PURE__ */ React__default["default"].createElement(Pages, 
+{
+  style:{display:isView?"flex":"none"},
+}):null,
+fileName.length!==0?
+React__default["default"].createElement("button",{
+
+},"Add"):null
+  ),
+  /* @__PURE__ */ React__default["default"].createElement("p", {
+    className: `flex  bg-white w-48 cursor-pointer items-center`,
+    style: { transition: "0.4s cubic-bezier(0.19, 1, 0.22, 1)" },
+  },"All Pages"
+  )));
+};
+
+
 const Viewport = ({ children }) => {
   const { connectors, actions } = core.useEditor((state) => ({ enabled: state.options.enabled }));
   React.useEffect(() => {
@@ -1140,9 +1227,14 @@ const Viewport = ({ children }) => {
   }, [actions.setOptions]);
   return /* @__PURE__ */ React__default["default"].createElement("div", {
     className: "viewport"
-  }, /* @__PURE__ */ React__default["default"].createElement("div", {
+  },
+   /* @__PURE__ */ React__default["default"].createElement("div", {
     className: "flex h-full overflow-hidden flex-row w-full fixed"
-  }, /* @__PURE__ */ React__default["default"].createElement(Sidebar, null), /* @__PURE__ */ React__default["default"].createElement("div", {
+  },
+  /* @__PURE__ */ React__default["default"].createElement("div", {
+    className: "flex h-full overflow-hidden flex-row w-full fixed"
+  }, /* @__PURE__ */ React__default["default"].createElement(MainSideBar, null), 
+   /* @__PURE__ */ React__default["default"].createElement(Sidebar, null), /* @__PURE__ */ React__default["default"].createElement("div", {
     className: "page-container flex flex-1 h-full flex-col"
   }, /* @__PURE__ */ React__default["default"].createElement(Header, null), /* @__PURE__ */ React__default["default"].createElement("div", {
     className: "craftjs-renderer flex-1 h-full w-full transition pb-8 overflow-auto",
@@ -1160,7 +1252,7 @@ const Viewport = ({ children }) => {
     className: "mx-1",
     target: "_blank",
     href: "https://tailwindui.com/"
-  }, "Tailwind CSS"))))));
+  }, "Tailwind CSS")))))));
 };
 
 const Dialog$4 = ({ open, setOpen, node, actions }) => {
@@ -1514,7 +1606,6 @@ const EditorElement = ({ render }) => {
   const isRootChild = data.parent === "ROOT";
   const showFocus = id !== "ROOT" && displayName !== "App";
   const currentRef = React.useRef();
-  console.log(data,"data",dom,"dom",displayName,"displayname",isRootChild,"isRootChild",showFocus,"ShowFocus",currentRef,"currentRef")
   React.useEffect(() => {
     if (dom) {
       if (isActive || node.events.hovered)
@@ -1650,7 +1741,8 @@ const FrameEditor = ({ data, standaloneServer }) => {
   const { actions } = core.useEditor();
   const loadData = async () => {
     if (data) {
-      const templateData = data.find(( name ) =>name.name === "\\solutions" || name.name === "\\default" );
+      const templateData = data.find(( name ) =>name.name === "\\home" );
+      console.log(templateData,"templateData for loadData")
       if(templateData.content!==''){
       const content = JSON.parse(templateData.content);
       actions.deserialize(content);
@@ -1665,6 +1757,7 @@ const FrameEditor = ({ data, standaloneServer }) => {
       actions.deserialize(content);
     }
   };
+  console.log("load all data work in framer editor",data)
   React.useEffect(() => {
     loadData();
   }, []);
@@ -1677,43 +1770,13 @@ const FrameEditor = ({ data, standaloneServer }) => {
     className: "page-container"
   }, /* @__PURE__ */ React__default["default"].createElement(core.Frame, null));
 };
-const FrameEditor1 = ({ data, standaloneServer }) => {
-  const { actions } = core.useEditor();
-  const loadData = async () => {
-    if (data) {
-      const templateData = data.find(( name ) =>name.name === "\\solutions" || name.name === "\\default" );
-      if(templateData.content!==''){
-      const content = JSON.parse(templateData.content);
-      actions.deserialize(content);
-    }else{
-      const result = await loadTemplate(standaloneServer);
-      const content = JSON.parse(result);
-      actions.deserialize(content);
-    }
-    } else {
-      const result = await loadTemplate(standaloneServer);
-      const content = JSON.parse(result);
-      actions.deserialize(content);
-    }
-  };
-  React.useEffect(() => {
-    loadData();
-  }, []);
-  return  /* @__PURE__ */ React__default["default"].createElement(Viewport, null, /* @__PURE__ */ React__default["default"].createElement(core.Frame, null, /* @__PURE__ */ React__default["default"].createElement(core.Element, {
-    canvas: true,
-    is: Container,
-    children: [],
-    custom: { displayName: "App" },
-    className: "page-container"
-  })))
-};
 
 const Editor = ({ data, standaloneServer }) => {
   const { resolver, setStandalone } = React.useContext(ThemeContext);
   React.useEffect(() => setStandalone(standaloneServer), []);
   const onStateChange = (e) => {
     saveTemplateDebounce(e, standaloneServer);
-  };
+  }; console.log(data,"data from editor")
   return /* @__PURE__ */ React__default["default"].createElement(core.Editor, {
     resolver,
     enabled: !data,
@@ -1725,22 +1788,6 @@ const Editor = ({ data, standaloneServer }) => {
   }));
 };
 
-const Editor1 = ({ data, standaloneServer }) => {
-  const { resolver, setStandalone } = React.useContext(ThemeContext);
-  React.useEffect(() => setStandalone(standaloneServer), []);
-  const onStateChange = (e) => {
-    saveTemplateDebounce(e, standaloneServer);
-  };
-  return /* @__PURE__ */ React__default["default"].createElement(core.Editor, {
-    resolver,
-    enabled: data,
-    onRender: EditorElement,
-    onNodesChange: onStateChange
-  }, /* @__PURE__ */ React__default["default"].createElement(FrameEditor1, {
-    data,
-    standaloneServer
-  }));
-};
 
 
 const ContentProviderBase = ({ data, standaloneServer }) => {
@@ -1751,27 +1798,10 @@ const ContentProviderBase = ({ data, standaloneServer }) => {
     standaloneServer
   })));
 };
-const ContentProviderBase1 = ({ data, standaloneServer }) => {
-  return /* @__PURE__ */ React__default["default"].createElement(ThemeProvider, null, /* @__PURE__ */ React__default["default"].createElement("div", {
-    className: "h-full h-screen"
-  }, /* @__PURE__ */ React__default["default"].createElement(Editor1, {
-    data,
-    standaloneServer
-  })));
-};
-const ContentProvider1 = ({ data }) => /* @__PURE__ */ React__default["default"].createElement(ContentProviderBase1, {
-  data,
-  standaloneServer: true,
-});
 const ContentProvider = ({ data }) => /* @__PURE__ */ React__default["default"].createElement(ContentProviderBase, {
   data,
   standaloneServer: true,
 });
-const ContentProviderReact = () => /* @__PURE__ */ React__default["default"].createElement(ContentProviderBase, {
-  data: null,
-  standaloneServer: true
-});
+
 
 exports.ContentProvider = ContentProvider;
-exports.ContentProviderReact = ContentProviderReact;
-exports.ContentProvider1=ContentProvider1

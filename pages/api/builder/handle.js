@@ -1,1 +1,1 @@
-export { handleEditor as default, config } from "@/pages/api/server/index"
+export { handleEditor as default, config } from "../server/index"

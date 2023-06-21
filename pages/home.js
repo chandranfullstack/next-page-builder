@@ -1,4 +1,4 @@
-import {ContentProvider} from "./api/example"
+import {ContentProvider} from "./api/builder"
 import { loadAllData} from "./api/server/index"
 
 const Home=({data})=>{

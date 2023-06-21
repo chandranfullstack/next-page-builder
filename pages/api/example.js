@@ -1068,20 +1068,12 @@ const uploadFile = async (file, standaloneServer) => {
 };
 const loadTemplate = async (standaloneServer) => {
   const baseUrl = getBaseUrl(standaloneServer);
+  console.log(baseUrl,"baseUrl",process.cwd())
   const data = await fetchJSON({
     method: "get",
     url: `${baseUrl}/api/builder/handle?type=data&path=${location.pathname}`
   });
-  console.log(baseUrl,standaloneServer,"base url",location.pathname)
-  return data == null ? void 0 : data.content;
-};
-const loadDynamicTemplate = async (standaloneServer,file) => {
-  const baseUrl = getBaseUrl(standaloneServer);
-  const data = await fetchJSON({
-    method: "get",
-    url: `${baseUrl}/api/builder/handle?type=data&path=${file}`
-  });
-  console.log(baseUrl,standaloneServer,"base url",location.pathname)
+  console.log(baseUrl,standaloneServer,"base url",location.pathname,data)
   return data == null ? void 0 : data.content;
 };
 

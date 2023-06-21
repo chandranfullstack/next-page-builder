@@ -1899,6 +1899,7 @@ const development$1 = process.env.NODE_ENV !== "production";
 const rootPath = process.cwd();
 const dataFolder = "data";
 const uploadFolder = "uploaded";
+console.log(rootPath,"root path")
 const uploadFiles = async (req) => {
   const form = new lib.IncomingForm({ uploadDir: uploadFolder, keepExtensions: true });
   const uploadPath = path__default["default"].join("public", uploadFolder);
@@ -1930,6 +1931,7 @@ const loadData = async (route) => {
 };
 const loadAllData = async () => {
   const basePath = path__default["default"].join(rootPath, dataFolder);
+  console.log(basePath,"basePath")
   const files = readdirRecursive(basePath);
   const data = await Promise.all(files.map((f) => fs__default["default"].promises.readFile(f, "utf8").then((c) => ({ name: getRouteFromFilename(f.replace(basePath, "")), content: c }))));
   return data

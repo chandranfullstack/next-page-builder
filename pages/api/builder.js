@@ -1742,14 +1742,12 @@ const FrameEditor = ({ data, standaloneServer ,pages}) => {
   const {pageList,setPageList}=React.useContext(ThemeContext)
   if(pages){
     setPageList(pages)
-    console.log(pageList,Pages)
   }
-  console.log(pages,"pages in frameEditor",pageList)
 
   const loadData = async () => {
     if (data) {
-      const templateData = data.find(( name ) =>name.name === "\\home" );
-      if(templateData.content!==''){
+      const templateData = data.find(( name ) =>name.name === "\\home"|| "\\solutions" );
+      if(templateData.content!==undefined){
       const content = JSON.parse(templateData.content);
       actions.deserialize(content);
     }else{
@@ -1782,7 +1780,6 @@ const Editor = ({ data, standaloneServer,pages }) => {
   const onStateChange = (e) => {
     saveTemplateDebounce(e, standaloneServer);
   }; 
-  console.log(pages,"pages in editor page")
   return /* @__PURE__ */ React__default["default"].createElement(core.Editor, {
     resolver,
     enabled: !data,
@@ -1798,7 +1795,6 @@ const Editor = ({ data, standaloneServer,pages }) => {
 
 
 const ContentProviderBase = ({ data, standaloneServer,pages }) => {
-  console.log(pages,"pages in contentprovider base")
   return /* @__PURE__ */ React__default["default"].createElement(ThemeProvider, null, /* @__PURE__ */ React__default["default"].createElement("div", {
     className: "h-full h-screen"
   }, /* @__PURE__ */ React__default["default"].createElement(Editor, {

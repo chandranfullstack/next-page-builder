@@ -12,6 +12,7 @@ var ArrowUturnRightIcon = require('@heroicons/react/24/outline/ArrowUturnRightIc
 var ChevronDownIcon = require('@heroicons/react/24/outline/ChevronDownIcon');
 var Plus =require("@heroicons/react/24/solid/PlusCircleIcon.js")
 var CloseIcon=require("@heroicons/react/24/solid/XCircleIcon.js")
+var ListIcon=require("@heroicons/react/24/outline/ListBulletIcon.js")
 var SelectPrimitive = require('@radix-ui/react-select');
 var cx = require('classnames');
 var Squares2X2Icon = require('@heroicons/react/24/outline/Squares2X2Icon');
@@ -27,7 +28,6 @@ var LinkIcon = require('@heroicons/react/24/outline/LinkIcon');
 var CircleStackIcon = require('@heroicons/react/24/outline/CircleStackIcon');
 var ArrowsPointingOutIcon = require('@heroicons/react/24/outline/ArrowsPointingOutIcon');
 var pathModule=require("path")
-// var fsModule=require("fs")
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -71,6 +71,7 @@ var CircleStackIcon__default = /*#__PURE__*/_interopDefaultLegacy(CircleStackIco
 var ArrowsPointingOutIcon__default = /*#__PURE__*/_interopDefaultLegacy(ArrowsPointingOutIcon);
 var PlusOutIcon__default = /*#__PURE__*/_interopDefaultLegacy(Plus);
 var CloseIcon__default = /*#__PURE__*/_interopDefaultLegacy(CloseIcon);
+var ListIcon__default=/*#__PURE__*/_interopDefaultLegacy(ListIcon)
 
 
 
@@ -882,6 +883,7 @@ const ThemeProvider = ({ children }) => {
   const [categories, setCategories] = React.useState(defaultValue.categories);
   const [standalone, setStandalone] = React.useState(defaultValue.standalone);
   const [resolver, _setResolver] = React.useState(defaultValue.resolver);
+  const [pageList,setPageList]=React.useState([])
   const themeNames = themes.map((t) => t.name);
   React.useEffect(() => {
     updateIndex(0);
@@ -904,7 +906,9 @@ const ThemeProvider = ({ children }) => {
     themeIndex,
     updateIndex,
     standalone,
-    setStandalone
+    setStandalone,
+    pageList,
+    setPageList
   };
   return /* @__PURE__ */ React__default["default"].createElement(ThemeContext.Provider, {
     value
@@ -1141,18 +1145,24 @@ const Sidebar = () => {
   }))))));
 };
 
+const handleDynamicPages=(e)=>{
+  console.log(e.target.textContent,"handle dynamic pages")
+}
+
 
 const Pages=()=>{
+  const {pageList}=React.useContext(ThemeContext)
 
-  var paths=require("../../data/home.json")
-  //fsModule.readdir(filepaths,(err,files)=>{
-  //  files.forEach((file)=>console.log(file,"filename"))
-  //})
-  var name=pathModule.parse("../../data/home.json").name
-  console.log(paths,"datafile",name)
+
   return /*@__PURE__*/React__default["default"].createElement("div",{
 
-  },"home")
+  },pageList.map((i)=>
+     /*@__PURE__*/React__default["default"].createElement("p",
+     {onClick:(e)=>handleDynamicPages(e)},
+     i,
+     )
+  )
+  )
 }
 
 const MainSideBar= () => {
@@ -1180,7 +1190,10 @@ const MainSideBar= () => {
     className: ` bg-white flex justify-around w-48 cursor-pointer items-center m-4`,
     style: { transition: "0.4s cubic-bezier(0.19, 1, 0.22, 1)" },
     onClick:handleNew
-  }
+  },
+  /* @__PURE__ */ React__default["default"].createElement(ListIcon__default["default"],
+  {className:"w-4 h-4",}
+  )
   ,"Pages",
   /* @__PURE__ */ React__default["default"].createElement(ArrowSmallUpIcon__default["default"],
   {className:"w-4 h-4",
@@ -1201,12 +1214,7 @@ fileName.length!==0?
 React__default["default"].createElement("button",{
 
 },"Add"):null
-  ),
-  /* @__PURE__ */ React__default["default"].createElement("p", {
-    className: `flex  bg-white w-48 cursor-pointer items-center`,
-    style: { transition: "0.4s cubic-bezier(0.19, 1, 0.22, 1)" },
-  },"All Pages"
-  )));
+  ),));
 };
 
 
@@ -1729,12 +1737,18 @@ const EditorElement = ({ render }) => {
   })), document.querySelector(".page-container")) : null, render);
 };
 
-const FrameEditor = ({ data, standaloneServer }) => {
+const FrameEditor = ({ data, standaloneServer ,pages}) => {
   const { actions } = core.useEditor();
+  const {pageList,setPageList}=React.useContext(ThemeContext)
+  if(pages){
+    setPageList(pages)
+    console.log(pageList,Pages)
+  }
+  console.log(pages,"pages in frameEditor",pageList)
+
   const loadData = async () => {
     if (data) {
       const templateData = data.find(( name ) =>name.name === "\\home" );
-      console.log(templateData,"templateData for loadData")
       if(templateData.content!==''){
       const content = JSON.parse(templateData.content);
       actions.deserialize(content);
@@ -1749,7 +1763,6 @@ const FrameEditor = ({ data, standaloneServer }) => {
       actions.deserialize(content);
     }
   };
-  console.log("load all data work in framer editor",data)
   React.useEffect(() => {
     loadData();
   }, []);
@@ -1763,12 +1776,13 @@ const FrameEditor = ({ data, standaloneServer }) => {
   }, /* @__PURE__ */ React__default["default"].createElement(core.Frame, null));
 };
 
-const Editor = ({ data, standaloneServer }) => {
+const Editor = ({ data, standaloneServer,pages }) => {
   const { resolver, setStandalone } = React.useContext(ThemeContext);
   React.useEffect(() => setStandalone(standaloneServer), []);
   const onStateChange = (e) => {
     saveTemplateDebounce(e, standaloneServer);
-  }; console.log(data,"data from editor")
+  }; 
+  console.log(pages,"pages in editor page")
   return /* @__PURE__ */ React__default["default"].createElement(core.Editor, {
     resolver,
     enabled: !data,
@@ -1776,23 +1790,27 @@ const Editor = ({ data, standaloneServer }) => {
     onNodesChange: onStateChange
   }, /* @__PURE__ */ React__default["default"].createElement(FrameEditor, {
     data,
-    standaloneServer
+    standaloneServer,
+    pages
   }));
 };
 
 
 
-const ContentProviderBase = ({ data, standaloneServer }) => {
+const ContentProviderBase = ({ data, standaloneServer,pages }) => {
+  console.log(pages,"pages in contentprovider base")
   return /* @__PURE__ */ React__default["default"].createElement(ThemeProvider, null, /* @__PURE__ */ React__default["default"].createElement("div", {
     className: "h-full h-screen"
   }, /* @__PURE__ */ React__default["default"].createElement(Editor, {
     data,
-    standaloneServer
+    standaloneServer,
+    pages
   })));
 };
-const ContentProvider = ({ data }) => /* @__PURE__ */ React__default["default"].createElement(ContentProviderBase, {
+const ContentProvider = ({ data,pages }) => /* @__PURE__ */ React__default["default"].createElement(ContentProviderBase, {
   data,
   standaloneServer: false,
+  pages,
 });
 
 

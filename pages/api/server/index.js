@@ -1896,10 +1896,47 @@ const DEFAULT_TEMPLATE = {
   }
 };
 const development$1 = process.env.NODE_ENV !== "production";
+console.log(development$1,"api request development")
 const rootPath = process.cwd();
 const dataFolder = "data";
 const uploadFolder = "uploaded";
 console.log(rootPath,"root path")
+
+
+var _getAllFilesFromFolder = function(dir) {
+
+    var filesystem = require("fs");
+    var results = [];
+
+    filesystem.readdirSync(dir).forEach(function(file) {
+
+        file = dir+'/'+file;
+        var stat = filesystem.statSync(file);
+
+        if (stat && stat.isDirectory()) {
+            results = results.concat(_getAllFilesFromFolder(file))
+        } else results.push(file);
+
+    });
+
+    return results;
+
+};
+
+const getPages=async()=>{
+    const listsPath=path__default["default"].join(rootPath,dataFolder)
+	const files=_getAllFilesFromFolder(listsPath)
+	console.log(listsPath,"lists",files)
+	const fileNames=[]
+		files.map(async(i)=>{
+			const folderName=await path__default["default"].parse(i).name
+			console.log(folderName,"folderName")
+			fileNames.push(folderName)
+			return fileNames
+		})
+		return fileNames
+}
+
 const uploadFiles = async (req) => {
   const form = new lib.IncomingForm({ uploadDir: uploadFolder, keepExtensions: true });
   const uploadPath = path__default["default"].join("public", uploadFolder);
@@ -1916,12 +1953,12 @@ const uploadFiles = async (req) => {
   return urls;
 };
 const getFileNameFromRoute = (route) => route === "/" ? "home.json" : `${route}.json`;
-//const getFileNameFromRoute = (route) => route === "/" ? "default.json" : `${route}.json`;
 const getRouteFromFilename = (filename) => filename === "/home.json" ? "/" : `${filename.slice(0, -5)}`;
 const loadData = async (route) => {
   const fileName = getFileNameFromRoute(route);
   const dataPath = path__default["default"].join(rootPath, dataFolder, fileName);
-  const dataExists = await exists(dataPath); 
+  const dataExists = await exists(dataPath);
+  console.log(fileName,dataExists,dataPath,"fileName,dataExists,dataPath") 
   if (!dataExists) {
     return { content: JSON.stringify(DEFAULT_TEMPLATE) };
   } else {
@@ -1989,10 +2026,13 @@ const development = process.env.NODE_ENV !== "production";
 const getStaticProps = async () => {
 	console.log("the running the port",development,"context")
   if (!development) {
-    return { props: {} };
+	const pages=await getPages()
+	console.log(pages,"pages return from getStaticProps")
+    return { props: {pages:pages===undefined?null:pages} };
   } else {
     const data = await loadAllData();
-    return { props: { data } };
+	const pages=await getPages()
+    return { props: { data:data,pages:pages } };
   }
 };
 
@@ -2006,3 +2046,4 @@ exports.loadData = loadData;
 exports.updateData = updateData;
 exports.uploadFiles = uploadFiles;
 exports.loadAllData=loadAllData
+exports.getPages=getPages

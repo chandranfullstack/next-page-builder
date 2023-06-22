@@ -1948,15 +1948,42 @@ const uploadFiles = async (req) => {
   });
   return urls;
 };
-const getFileNameFromRoute = (route) => route === "/" ? "home.json" : `${route}.json`;
+const allPageList= getPages()
+console.log(allPageList.then((l)=>console.log(l,)),"all page list")
+// const getFileNameFromRoute = (route) => route === "/" ? "home.json" : `${route}.json`;
+const getFileNameFromRoute = async(route) => {
+	console.log(route,"route ")
+	 if(route==="/" || route==="home"){
+		return "home.json"
+	 }else{
+		console.log(allPageList,"allPageList", allPageList.length)
+	 if(allPageList.length!==0){
+       const pageName= allPageList.then((i)=>{
+			console.log(i,"i")
+			const data= i.reduce(function(n,k){
+			 console.log("maped", route,k)
+             return k===route?k+".json":route+".json"
+			})
+            return data
+	 })
+	 console.log(pageName,"pageName")
+	 return pageName
+	 }
+	}
+}
 const getRouteFromFilename = (filename) => filename === "/home.json" ? "/" : `${filename.slice(0, -5)}`;
 const loadData = async (route) => {
-  const fileName = getFileNameFromRoute(route);
-  const dataPath = path__default["default"].join(rootPath, dataFolder, fileName);
+  console.log(route,"route name")
+  const fileName =await getFileNameFromRoute(route);
+  console.log(fileName,"file Name loaddata")
+  const dataPath =await path__default["default"].join(rootPath, dataFolder, fileName);
+  console.log(dataPath,"dataPath")
   const dataExists = await exists(dataPath);
   if (!dataExists) {
+	console.log("running data not exist")
     return { content: JSON.stringify(DEFAULT_TEMPLATE) };
   } else {
+	console.log("running in data exit")
     const content = await fs__default["default"].readFileSync(dataPath, "utf8");
     return { content };
   }
@@ -1968,7 +1995,8 @@ const loadAllData = async () => {
   return data
 };
 const updateData = async (route, data) => {
-  const fileName = getFileNameFromRoute(route);
+  const fileName =await getFileNameFromRoute(route);
+  console.log(fileName,"update data file Name",route)
   await fs__default["default"].promises.writeFile(path__default["default"].join(rootPath, dataFolder, fileName), JSON.stringify(data));
 };
 const handleData = async (req, res) => {
@@ -1979,7 +2007,9 @@ const handleData = async (req, res) => {
     const contentType = req.headers["content-type"];
     const isMultiPart = contentType.startsWith("multipart/form-data");
     if (!isMultiPart) {
+	  console.log(isMultiPart,"multipart")
       const body = await getJson(req);
+	  console.log(body,"body",body.data,req.query.path)
       await updateData(req.query.path, body.data);
       return res.status(200).json({});
     } else {
@@ -1990,6 +2020,45 @@ const handleData = async (req, res) => {
     return res.status(401).json({ error: "Not allowed" });
   }
 };
+
+const handleDynamicData = async (req, res) => {
+	if (req.method === "GET") {
+	  const data = await loadData(req.query.path);
+	  return res.status(200).json(data);
+	} else if (req.method === "POST") {
+	  const contentType = req.headers["content-type"];
+	  const isMultiPart = contentType.startsWith("multipart/form-data");
+	  if (!isMultiPart) {
+		const body = await getJson(req);
+		await updateData(req.query.path, body.data);
+		return res.status(200).json({});
+	  } else {
+		const urls = await uploadFiles(req);
+		return res.status(200).json(urls);
+	  }
+	} else {
+	  return res.status(401).json({ error: "Not allowed" });
+	}
+  };
+  
+
+const handleFile=async(fileName)=>{
+	var filesystem=require("fs")
+	const basePath = path__default["default"].join(rootPath, dataFolder);
+	var NewFileName=fileName+".json"
+	const pathName=`${basePath}/${NewFileName}`
+	const jsonString =JSON.stringify(DEFAULT_TEMPLATE);
+	filesystem.writeFile(pathName, jsonString, 'utf8', (err) => {
+		if (err) {
+		  console.error('Error creating JSON file:', err);
+		  return false
+		} else {
+		  console.log('JSON file created successfully!');
+		  return true
+		}
+	  });
+
+}
 const handleAsset = async (req, res) => {
   if (req.method === "GET") {
     const assetPath = path__default["default"].join("\Users\ravic\Desktop\Flugid",req.query.path);
@@ -2008,7 +2077,10 @@ const handleEditor = async (req, res) => {
     return handleData(req, res);
   } else if (req.query.type === "asset") {
     return handleAsset(req, res);
-  } else {
+  } else if(req.query.type==="new"){
+	console.log(req.query.path)
+    return handleFile(req.query.path)
+  }else {
     return res.status(400).json({ error: "Invalid type" });
   }
 };

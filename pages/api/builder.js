@@ -885,6 +885,11 @@ const ThemeProvider = ({ children }) => {
   const [resolver, _setResolver] = React.useState(defaultValue.resolver);
   const [pageList,setPageList]=React.useState([])
   const [currentPage,setCurrentPage]=React.useState("home")
+  const [isOpen ,setIsOpen]=React.useState(false)
+  const [fileName,setFileName]=React.useState("")
+  const [isView,setView]=React.useState(false)
+
+
   const themeNames = themes.map((t) => t.name);
   React.useEffect(() => {
     updateIndex(0);
@@ -912,7 +917,13 @@ const ThemeProvider = ({ children }) => {
     pageList,
     setPageList,
     currentPage,
-    setCurrentPage
+    setCurrentPage,
+    isOpen,
+    setIsOpen,
+    fileName,
+    setFileName,
+    isView,
+    setView
   };
   return /* @__PURE__ */ React__default["default"].createElement(ThemeContext.Provider, {
     value
@@ -1145,14 +1156,36 @@ const Sidebar = () => {
   }))))));
 };
 
-const handleDynamicPages=(e)=>{
-  localStorage.setItem("currentPage",e.target.textContent)
+const handleDynamicPages=async(e)=>{
+  const baseUrl = getBaseUrl(false);
+  const data = await fetchJSON({
+    method: "get",
+    url: `${baseUrl}/api/builder/handle?type=data&path=${e.target.textContent}`
+  });
+  console.log(data,"handledynamic",baseUrl,"baseUrl")
+  return data == null ? void 0 : data.content;
 }
 
 
 const Pages=()=>{
-  const {pageList}=React.useContext(ThemeContext)
+  const {pageList,setIsOpen,isOpen,fileName,setFileName,isView,setView}=React.useContext(ThemeContext)
+  
+  const handleInputBox=()=>{
+        setIsOpen(!isOpen)  
+  }
 
+  
+
+  const createNewFile=async(standaloneServer)=>{
+    setView(!isView)
+    console.log(fileName)
+    const baseUrl = getBaseUrl(standaloneServer);
+  const data = await fetchJSON({
+    method: "get",
+    url: `${baseUrl}/api/builder/handle?type=new&path=${fileName}`
+  });
+  window.location.reload(data)
+  }
 
   return /*@__PURE__*/React__default["default"].createElement("div",{
 
@@ -1161,22 +1194,33 @@ const Pages=()=>{
      {onClick:(e)=>handleDynamicPages(e)},
      i,
      )
-  )
-  )
+  ),
+  /* @__PURE__ */ React__default["default"].createElement("div",
+  {className:"flex justify-center"},
+  /* @__PURE__ */ React__default["default"].createElement(PlusOutIcon__default["default"],
+  {className:"w-4 h-4",onClick:handleInputBox},
+  )),
+  isOpen?
+   /* @__PURE__ */ React__default["default"].createElement("div",
+   {className:"flex justifiy-between"},
+    /* @__PURE__ */ React__default["default"].createElement("input",{style:{border:"1px solid gray"},onInput:(e)=>setFileName(e.target.value)})
+   ):null,
+   fileName.length!==0?
+   React__default["default"].createElement("button",{
+   onClick:()=>createNewFile(false)
+   },"Add"):null   
+   )
 }
 
 const MainSideBar= () => {
-  const [isView,setView]=React.useState(false)
-  const [fileName,setFileName]=React.useState("")
+  const {setView,isView}=React.useContext(ThemeContext)
  
   const handleNew=()=>{
     // loadDynamicTemplate()
     setView(!isView)
   }
 
-  const handleFileName=(e)=>{
-    setFileName(e.target.value)
-  }
+  
   
   return /* @__PURE__ */ React__default["default"].createElement("div", {
     className: `toolbox h-full flex flex-col bg-white w-48" `,
@@ -1210,10 +1254,6 @@ const MainSideBar= () => {
 {
   style:{display:isView?"flex":"none"},
 }):null,
-fileName.length!==0?
-React__default["default"].createElement("button",{
-
-},"Add"):null
   ),));
 };
 

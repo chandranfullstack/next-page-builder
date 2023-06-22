@@ -884,9 +884,11 @@ const ThemeProvider = ({ children }) => {
   const [standalone, setStandalone] = React.useState(defaultValue.standalone);
   const [resolver, _setResolver] = React.useState(defaultValue.resolver);
   const [pageList,setPageList]=React.useState([])
+  const [currentPage,setCurrentPage]=React.useState("home")
   const themeNames = themes.map((t) => t.name);
   React.useEffect(() => {
     updateIndex(0);
+    localStorage.setItem("currentPage","home")
   }, []);
   const updateIndex = async (index) => {
     setThemeIndex(index);
@@ -908,7 +910,9 @@ const ThemeProvider = ({ children }) => {
     standalone,
     setStandalone,
     pageList,
-    setPageList
+    setPageList,
+    currentPage,
+    setCurrentPage
   };
   return /* @__PURE__ */ React__default["default"].createElement(ThemeContext.Provider, {
     value
@@ -936,7 +940,7 @@ const Select = ({ defaultValue, values, open, setOpen, onChange }) => {
 
 const Header = () => {
   const { state, query, actions } = core.useEditor((state2, query2) => ({ state: state2, query: query2 }));
-  const { updateIndex, themeNames, themeIndex } = React.useContext(ThemeContext);
+  const { updateIndex, themeNames, themeIndex ,currentPage} = React.useContext(ThemeContext);
   const [selectOpen, setSelectOpen] = React.useState(false);
   const enabled = state.options.enabled;
   const onChange = (name) => {
@@ -1043,13 +1047,11 @@ const getImageUrl = (standaloneServer, imageSrc) => {
   return `${baseUrl}/api/builder/handle?type=asset&path=${imageSrc}`;
 };
 const fetchJSON = async ({ method, url, data }) => {
-  console.log(method,url,data,"fetch failed")
   const res = await fetch(url, {
     method,
     headers: { "Content-Type": "application/json" },
     body: data ? JSON.stringify(data) : void 0
   });
-  console.log(method,url,data,"method url data")
   return await res.json();
 };
 function debounce(callback, timeout = 1e3) {
@@ -1072,12 +1074,10 @@ const uploadFile = async (file, standaloneServer) => {
 };
 const loadTemplate = async (standaloneServer) => {
   const baseUrl = getBaseUrl(standaloneServer);
-  console.log(baseUrl,"baseUrl",process.cwd())
   const data = await fetchJSON({
     method: "get",
     url: `${baseUrl}/api/builder/handle?type=data&path=${location.pathname}`
   });
-  console.log(baseUrl,standaloneServer,"base url",location.pathname,data)
   return data == null ? void 0 : data.content;
 };
 
@@ -1146,7 +1146,7 @@ const Sidebar = () => {
 };
 
 const handleDynamicPages=(e)=>{
-  console.log(e.target.textContent,"handle dynamic pages")
+  localStorage.setItem("currentPage",e.target.textContent)
 }
 
 

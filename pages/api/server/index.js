@@ -1896,11 +1896,9 @@ const DEFAULT_TEMPLATE = {
   }
 };
 const development$1 = process.env.NODE_ENV !== "production";
-console.log(development$1,"api request development")
 const rootPath = process.cwd();
 const dataFolder = "data";
 const uploadFolder = "uploaded";
-console.log(rootPath,"root path")
 
 
 var _getAllFilesFromFolder = function(dir) {
@@ -1926,11 +1924,9 @@ var _getAllFilesFromFolder = function(dir) {
 const getPages=async()=>{
     const listsPath=path__default["default"].join(rootPath,dataFolder)
 	const files=_getAllFilesFromFolder(listsPath)
-	console.log(listsPath,"lists",files)
 	const fileNames=[]
 		files.map(async(i)=>{
 			const folderName=await path__default["default"].parse(i).name
-			console.log(folderName,"folderName")
 			fileNames.push(folderName)
 			return fileNames
 		})
@@ -1958,7 +1954,6 @@ const loadData = async (route) => {
   const fileName = getFileNameFromRoute(route);
   const dataPath = path__default["default"].join(rootPath, dataFolder, fileName);
   const dataExists = await exists(dataPath);
-  console.log(fileName,dataExists,dataPath,"fileName,dataExists,dataPath") 
   if (!dataExists) {
     return { content: JSON.stringify(DEFAULT_TEMPLATE) };
   } else {
@@ -1968,7 +1963,6 @@ const loadData = async (route) => {
 };
 const loadAllData = async () => {
   const basePath = path__default["default"].join(rootPath, dataFolder);
-  console.log(basePath,"basePath")
   const files = readdirRecursive(basePath);
   const data = await Promise.all(files.map((f) => fs__default["default"].promises.readFile(f, "utf8").then((c) => ({ name: getRouteFromFilename(f.replace(basePath, "")), content: c }))));
   return data
@@ -1999,7 +1993,6 @@ const handleData = async (req, res) => {
 const handleAsset = async (req, res) => {
   if (req.method === "GET") {
     const assetPath = path__default["default"].join("\Users\ravic\Desktop\Flugid",req.query.path);
-	console.log(assetPath,"assetpath",path__default["default"].resolve())
     const data = await fs__default["default"].promises.readFile(assetPath);
     const options = { "Content-Type": "image/png", "Content-Length": data.length };
     res.writeHead(200, options);
@@ -2024,10 +2017,8 @@ const config = { api: { bodyParser: false } };
 const development = process.env.NODE_ENV !== "production";
 
 const getStaticProps = async () => {
-	console.log("the running the port",development,"context")
   if (!development) {
 	const pages=await getPages()
-	console.log(pages,"pages return from getStaticProps")
     return { props: {pages:pages===undefined?null:pages} };
   } else {
     const data = await loadAllData();

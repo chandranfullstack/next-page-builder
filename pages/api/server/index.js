@@ -1896,7 +1896,7 @@ const DEFAULT_TEMPLATE = {
   }
 };
 const development$1 = process.env.NODE_ENV !== "production";
-const rootPath =development$1? process.cwd():"/";
+const rootPath =process.cwd()
 const dataFolder = "data";
 const uploadFolder = "uploaded";
 

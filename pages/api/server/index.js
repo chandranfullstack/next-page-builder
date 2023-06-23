@@ -2079,7 +2079,7 @@ const config = { api: { bodyParser: false } };
 const development = process.env.NODE_ENV !== "production";
 
 const getStaticProps = async () => {
-  if (development) {
+  if (!development) {
 	const pages=await getPages()
     return { props: {pages:pages===undefined?null:pages} };
   } else {

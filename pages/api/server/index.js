@@ -1896,7 +1896,7 @@ const DEFAULT_TEMPLATE = {
   }
 };
 const development$1 = process.env.NODE_ENV !== "production";
-const rootPath =!development$1? process.cwd():"/data"
+const rootPath =development$1? process.cwd():"/";
 const dataFolder = "data";
 const uploadFolder = "uploaded";
 
@@ -2077,7 +2077,7 @@ const handleEditor = async (req, res) => {
 const config = { api: { bodyParser: false } };
 
 const development = process.env.NODE_ENV !== "production";
-
+console.log(!development$1,"developement or not ",process.env.NODE_ENV)
 const getStaticProps = async () => {
   if (!development) {
 	const pages=await getPages()

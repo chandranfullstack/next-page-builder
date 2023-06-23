@@ -1900,8 +1900,8 @@ const rootPath = process.cwd();
 const dataFolder = "data";
 const uploadFolder = "uploaded";
 
-
 var _getAllFilesFromFolder = function(dir) {
+	console.log(process,"process form get all files folder ",__dirname,"dirname")
     console.log(dir,"directory in getallfiles from folder")
     var filesystem = require("fs");
     var results = [];

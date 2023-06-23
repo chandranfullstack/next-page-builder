@@ -1906,10 +1906,10 @@ var _getAllFilesFromFolder = function(dir) {
     var filesystem = require("fs");
     var results = [];
 
-    filesystem.readdirSync(dir).forEach(function(file) {
+    fs__default["default"].readdirSync(dir).forEach(function(file) {
 
         file = dir+'/'+file;
-        var stat = filesystem.statSync(file);
+        var stat = fs__default["default"].statSync(file);
 
         if (stat && stat.isDirectory()) {
             results = results.concat(_getAllFilesFromFolder(file))

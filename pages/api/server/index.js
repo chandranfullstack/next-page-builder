@@ -1902,7 +1902,7 @@ const uploadFolder = "uploaded";
 
 
 var _getAllFilesFromFolder = function(dir) {
-
+    console.log(dir,"directory in getallfiles from folder")
     var filesystem = require("fs");
     var results = [];
 
@@ -1923,7 +1923,9 @@ var _getAllFilesFromFolder = function(dir) {
 
 const getPages=async()=>{
     const listsPath=path__default["default"].join(rootPath,dataFolder)
+	console.log(listsPath,"list path in getpages",rootPath,"rootpath","datFolder",dataFolder)
 	const files=_getAllFilesFromFolder(listsPath)
+	console.log(files,"files in get pages")
 	const fileNames=[]
 		files.map(async(i)=>{
 			const folderName=await path__default["default"].parse(i).name
@@ -1949,14 +1951,12 @@ const uploadFiles = async (req) => {
   return urls;
 };
 const allPageList= getPages()
-console.log(allPageList.then((l)=>console.log(l,)),"all page list")
 // const getFileNameFromRoute = (route) => route === "/" ? "home.json" : `${route}.json`;
 const getFileNameFromRoute = async(route) => {
 	console.log(route,"route ")
 	 if(route==="/" || route==="home"){
 		return "home.json"
 	 }else{
-		console.log(allPageList,"allPageList", allPageList.length)
 	 if(allPageList.length!==0){
        const pageName= allPageList.then((i)=>{
 			console.log(i,"i")

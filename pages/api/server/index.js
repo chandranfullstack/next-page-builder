@@ -1971,29 +1971,39 @@ const getFileNameFromRoute = async(route) => {
 	 }
 	}
 }
+//const getRouteFromFilename = (filename) => filename === "/home.json" ? "/" : `${filename.slice(0, -5)}`;
 const getRouteFromFilename = (filename) => filename === "/home.json" ? "/" : `${filename.slice(0, -5)}`;
+
 const loadData = async (route) => {
-  console.log(route,"route name")
   const fileName =await getFileNameFromRoute(route);
-  console.log(fileName,"file Name loaddata")
   const dataPath =await path__default["default"].join(rootPath, dataFolder, fileName);
-  console.log(dataPath,"dataPath")
   const dataExists = await exists(dataPath);
   if (!dataExists) {
-	console.log("running data not exist")
     return { content: JSON.stringify(DEFAULT_TEMPLATE) };
   } else {
-	console.log("running in data exit")
     const content = await fs__default["default"].readFileSync(dataPath, "utf8");
     return { content };
   }
 };
-const loadAllData = async () => {
+const loadAllData = async (req) => {
   const basePath = path__default["default"].join(rootPath, dataFolder);
   const files = readdirRecursive(basePath);
   const data = await Promise.all(files.map((f) => fs__default["default"].promises.readFile(f, "utf8").then((c) => ({ name: getRouteFromFilename(f.replace(basePath, "")), content: c }))));
   return data
 };
+
+const loadDynamicData = async (params) => {
+	console.log(params,"params from server",params.dynamic,"//"+params.dynamic)
+	const basePath = path__default["default"].join(rootPath, dataFolder);
+	const files = readdirRecursive(basePath);
+	console.log(basePath,files,"base path and files")
+	const data = await Promise.all(files.map((f) => fs__default["default"].promises.readFile(f, "utf8").then((c) => ({ name: getRouteFromFilename(f.replace(basePath, "")), content: c }))));
+	const data1 = await Promise.all(files.map((f) => fs__default["default"].promises.readFile(f, "utf8",console.log(f,"read file")).then((c)=>({name:f.replace(basePath,""),content:c}))))
+	const finalData=await data1.find((i)=>i.name==="\\"+params.dynamic+".json",console.log( "\\"+ params.dynamic +".json" ,"find fileName"))
+	console.log("data1",finalData)
+	return finalData
+  };
+  
 const updateData = async (route, data) => {
   const fileName =await getFileNameFromRoute(route);
   console.log(fileName,"update data file Name",route)
@@ -2021,27 +2031,7 @@ const handleData = async (req, res) => {
   }
 };
 
-const handleDynamicData = async (req, res) => {
-	if (req.method === "GET") {
-	  const data = await loadData(req.query.path);
-	  return res.status(200).json(data);
-	} else if (req.method === "POST") {
-	  const contentType = req.headers["content-type"];
-	  const isMultiPart = contentType.startsWith("multipart/form-data");
-	  if (!isMultiPart) {
-		const body = await getJson(req);
-		await updateData(req.query.path, body.data);
-		return res.status(200).json({});
-	  } else {
-		const urls = await uploadFiles(req);
-		return res.status(200).json(urls);
-	  }
-	} else {
-	  return res.status(401).json({ error: "Not allowed" });
-	}
-  };
   
-
 const handleFile=async(fileName)=>{
 	var filesystem=require("fs")
 	const basePath = path__default["default"].join(rootPath, dataFolder);
@@ -2110,3 +2100,4 @@ exports.updateData = updateData;
 exports.uploadFiles = uploadFiles;
 exports.loadAllData=loadAllData
 exports.getPages=getPages
+exports.loadDynamicData=loadDynamicData

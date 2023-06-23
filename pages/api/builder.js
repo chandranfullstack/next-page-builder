@@ -888,6 +888,7 @@ const ThemeProvider = ({ children }) => {
   const [isOpen ,setIsOpen]=React.useState(false)
   const [fileName,setFileName]=React.useState("")
   const [isView,setView]=React.useState(false)
+  const [pageChange,setPageChange]=React.useState(false)
 
 
   const themeNames = themes.map((t) => t.name);
@@ -923,7 +924,9 @@ const ThemeProvider = ({ children }) => {
     fileName,
     setFileName,
     isView,
-    setView
+    setView,
+    pageChange,
+    setPageChange
   };
   return /* @__PURE__ */ React__default["default"].createElement(ThemeContext.Provider, {
     value
@@ -1083,31 +1086,32 @@ const uploadFile = async (file, standaloneServer) => {
   });
   return await res.json();
 };
-const loadTemplate = async (standaloneServer) => {
+const loadTemplate = async (standaloneServer,page) => {
   const baseUrl = getBaseUrl(standaloneServer);
   const data = await fetchJSON({
     method: "get",
-    url: `${baseUrl}/api/builder/handle?type=data&path=${location.pathname}`
+    url: `${baseUrl}/api/builder/handle?type=data&path=${page}`
   });
   return data == null ? void 0 : data.content;
 };
 
-const saveTemplate = async (state, standaloneServer) => {
+const saveTemplate = async (state, standaloneServer,page) => {
   const baseUrl = getBaseUrl(standaloneServer);
   const body = { data: JSON.parse(state.serialize()) };
   await fetchJSON({
     method: "post",
-    url: `${baseUrl}/api/builder/handle?type=data&path=${location.pathname}`,
+    url: `${baseUrl}/api/builder/handle?type=data&path=${page}`,
     data: body
   });
 };
 let stateChanged = false;
-const saveTemplateDebounce = debounce((e, standaloneServer) => {
+const saveTemplateDebounce = debounce((e, standaloneServer,page) => {
   if (stateChanged) {
-    saveTemplate(e, standaloneServer);
+    saveTemplate(e, standaloneServer,page);
   }
   stateChanged = true;
 });
+
 
 const Category = SidebarItem;
 const Item = ({ connectors, c }) => {
@@ -1156,25 +1160,53 @@ const Sidebar = () => {
   }))))));
 };
 
-const handleDynamicPages=async(e)=>{
-  const baseUrl = getBaseUrl(false);
-  const data = await fetchJSON({
-    method: "get",
-    url: `${baseUrl}/api/builder/handle?type=data&path=${e.target.textContent}`
-  });
-  console.log(data,"handledynamic",baseUrl,"baseUrl")
-  return data == null ? void 0 : data.content;
-}
 
 
 const Pages=()=>{
-  const {pageList,setIsOpen,isOpen,fileName,setFileName,isView,setView}=React.useContext(ThemeContext)
+  const {actions}=core.useEditor()
+  const {pageList,setIsOpen,isOpen,fileName,setFileName,isView,setView,currentPage,setCurrentPage}=React.useContext(ThemeContext)
   
   const handleInputBox=()=>{
         setIsOpen(!isOpen)  
   }
 
+  const loadData1 = async (data,standaloneServer=false) => {
+    console.log("is running in load data",currentPage,data,data.content)
+      if(data.content!==undefined){
+      const content = JSON.parse(data.content);
+      actions.deserialize(content);
+    }else{
+      const result = await loadTemplate(standaloneServer,localStorage.getItem("currentPage"));
+      const content = JSON.parse(result);
+      actions.deserialize(content);
+    }}
   
+
+  const handleDynamicPages=async(e)=>{
+    console.log(currentPage,"current page before set")
+    setCurrentPage(e.target.textContent)
+    console.log(currentPage,"current page",e.target.textContent)
+    const baseUrl = getBaseUrl(false);
+    const data = await fetchJSON({
+      method: "get",
+      url: `${baseUrl}/api/builder/handle?type=data&path=${localStorage.getItem("currentPage")}`
+    });
+    console.log(data,"handledynamic",baseUrl,"baseUrl")
+    return data == null ? void 0 : loadData1(data);
+  }
+  
+  const handleActions=async(e)=>{
+        console.log(e.target.textContent,"handleActions")
+        localStorage.setItem("currentPage",e.target.textContent)
+        await setCurrentPage(...e.target.textContent)
+        await setCurrentPage(...e.target.textContent)
+        console.log(currentPage,"current page handle Actions",localStorage.getItem("currentPage"))
+        handleDynamicPages(e)
+  }
+  
+  const handleMouseOver=(e)=>{
+    console.log(e.target.textContent,"event and target and textcontent")
+  }
 
   const createNewFile=async(standaloneServer)=>{
     setView(!isView)
@@ -1191,7 +1223,7 @@ const Pages=()=>{
 
   },pageList.map((i)=>
      /*@__PURE__*/React__default["default"].createElement("p",
-     {onClick:(e)=>handleDynamicPages(e)},
+     {onClick:(e)=>handleActions(e),onMouseenter:(e)=>handleMouseOver(e),style:{backgroundColor:currentPage===i?"red":"",color:currentPage===i?"white":"black"}},
      i,
      )
   ),
@@ -1779,24 +1811,27 @@ const EditorElement = ({ render }) => {
 
 const FrameEditor = ({ data, standaloneServer ,pages}) => {
   const { actions } = core.useEditor();
-  const {pageList,setPageList}=React.useContext(ThemeContext)
+  const {pageList,setPageList,currentPage}=React.useContext(ThemeContext)
   if(pages){
     setPageList(pages)
   }
-
+  console.log(pageList,"page list in load data")
   const loadData = async () => {
+    console.log("is running in load data",data,currentPage)
     if (data) {
-      const templateData = data.find(( name ) =>name.name === "\\home"|| "\\solutions" );
+      console.log(data,"data in load data")
+      const templateData = data.find(( name ) =>name.name === "\\"+localStorage.getItem("currentPage") );
+      console.log(templateData,"templateData")
       if(templateData.content!==undefined){
       const content = JSON.parse(templateData.content);
       actions.deserialize(content);
     }else{
-      const result = await loadTemplate(standaloneServer);
+      const result = await loadTemplate(standaloneServer,localStorage.getItem("currentPage"));
       const content = JSON.parse(result);
       actions.deserialize(content);
     }
     } else {
-      const result = await loadTemplate(standaloneServer);
+      const result = await loadTemplate(standaloneServer,localStorage.getItem("currentPage"));
       const content = JSON.parse(result);
       actions.deserialize(content);
     }
@@ -1815,10 +1850,10 @@ const FrameEditor = ({ data, standaloneServer ,pages}) => {
 };
 
 const Editor = ({ data, standaloneServer,pages }) => {
-  const { resolver, setStandalone } = React.useContext(ThemeContext);
+  const { resolver, setStandalone,currentPage } = React.useContext(ThemeContext);
   React.useEffect(() => setStandalone(standaloneServer), []);
   const onStateChange = (e) => {
-    saveTemplateDebounce(e, standaloneServer);
+    saveTemplateDebounce(e, standaloneServer,localStorage.getItem("currentPage"));
   }; 
   return /* @__PURE__ */ React__default["default"].createElement(core.Editor, {
     resolver,
@@ -1849,5 +1884,82 @@ const ContentProvider = ({ data,pages }) => /* @__PURE__ */ React__default["defa
   pages,
 });
 
+const FrameEditor1 = ({ data1, standaloneServer ,pages}) => {
+  const { actions } = core.useEditor();
+  const {pageList,setPageList}=React.useContext(ThemeContext)
+  if(pages){
+    setPageList(pages)
+  }
+
+  const loadData = async () => {
+    console.log(data1,"data1 from framer editor builder.js")
+     if(data1){
+      if(data1.content!==undefined){
+      const content =await JSON.parse(data1.content);
+      actions.deserialize(content);
+    }else{
+      //const result = await loadTemplate(standaloneServer);
+      //const content = JSON.parse(result);
+      //actions.deserialize(content);
+      const content =await JSON.parse(data1.content);
+      actions.deserialize(content)
+
+    }}}
+    
+  React.useEffect(() => {
+    loadData();
+  }, []);
+
+
+  if(data1!==undefined){
+     loadData()
+  }
+
+  return !data1 ? /* @__PURE__ */ React__default["default"].createElement(Viewport, null, /* @__PURE__ */ React__default["default"].createElement(core.Frame, null, /* @__PURE__ */ React__default["default"].createElement(core.Element, {
+    canvas: true,
+    is: Container,
+    children: [],
+    custom: { displayName: "App" }
+  },"loading....")
+  )) : /* @__PURE__ */ React__default["default"].createElement("div", {
+    className: "page-container"
+  }, /* @__PURE__ */ React__default["default"].createElement(core.Frame, null));
+};
+
+const Editor1 = ({ data1, standaloneServer,pages }) => {
+  const { resolver, setStandalone } = React.useContext(ThemeContext);
+  React.useEffect(() => setStandalone(standaloneServer), []);
+  const onStateChange = (e) => {
+    saveTemplateDebounce(e, standaloneServer);
+  }; 
+  return /* @__PURE__ */ React__default["default"].createElement(core.Editor, {
+    resolver,
+    enabled: !data1,
+    onRender: EditorElement,
+    onNodesChange: onStateChange
+  }, /* @__PURE__ */ React__default["default"].createElement(FrameEditor1, {
+    data1,
+    standaloneServer,
+    pages
+  }));
+};
+
+
+
+const ContentProviderBase1 = ({ data1, standaloneServer,pages }) => {
+  return /* @__PURE__ */ React__default["default"].createElement(ThemeProvider, null, /* @__PURE__ */ React__default["default"].createElement("div", {
+    className: "h-full h-screen"
+  }, /* @__PURE__ */ React__default["default"].createElement(Editor1, {
+    data1,
+    standaloneServer,
+    pages
+  })));
+};
+const ContentProvider1 = ({ data1,pages }) => /* @__PURE__ */ React__default["default"].createElement(ContentProviderBase1, {
+  data1,
+  standaloneServer: false,
+  pages,
+});
 
 exports.ContentProvider = ContentProvider;
+exports.ContentProvider1=ContentProvider1

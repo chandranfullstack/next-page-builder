@@ -2051,7 +2051,7 @@ const handleFile=async(fileName)=>{
 }
 const handleAsset = async (req, res) => {
   if (req.method === "GET") {
-    const assetPath = path__default["default"].join("\Users\ravic\Desktop\Flugid",req.query.path);
+    const assetPath = path__default["default"].join(req.query.path);
     const data = await fs__default["default"].promises.readFile(assetPath);
     const options = { "Content-Type": "image/png", "Content-Length": data.length };
     res.writeHead(200, options);
@@ -2079,7 +2079,7 @@ const config = { api: { bodyParser: false } };
 const development = process.env.NODE_ENV !== "production";
 
 const getStaticProps = async () => {
-  if (!development) {
+  if (development) {
 	const pages=await getPages()
     return { props: {pages:pages===undefined?null:pages} };
   } else {

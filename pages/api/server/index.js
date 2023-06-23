@@ -1896,12 +1896,12 @@ const DEFAULT_TEMPLATE = {
   }
 };
 const development$1 = process.env.NODE_ENV !== "production";
-const rootPath = process.cwd();
+const rootPath =!development$1? process.cwd():"/data"
 const dataFolder = "data";
 const uploadFolder = "uploaded";
 
 var _getAllFilesFromFolder = function(dir) {
-	console.log(process,"process form get all files folder ",__dirname,"dirname")
+	console.log("process form get all files folder ",__dirname,"dirname")
     console.log(dir,"directory in getallfiles from folder")
     var filesystem = require("fs");
     var results = [];

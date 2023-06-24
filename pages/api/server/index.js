@@ -793,13 +793,18 @@ const formParse = (form, req) => new Promise((resolve, reject) => {
   });
 });
 const getJson = (req) => new Promise((resolve) => {
+	console.log(req.body,"req.body")
   if (!req.body) {
+	console.log(req.on,"req.on")
     let buffer = "";
     req.on("data", (chunk) => {
+	  console.log(chunk,"chunck")
       buffer += chunk;
     });
     req.on("end", () => {
+	  
       const str = Buffer.from(buffer).toString();
+	  console.log(str,"string")
       if (str && str.indexOf("{") > -1)
         resolve(JSON.parse(str));
     });
@@ -937,6 +942,7 @@ var multipart_parser = {};
 	    Z = 122,
 
 	    lower = function(c) {
+			console.log(c,"c")
 	      return c | 0x20;
 	    };
 
@@ -1697,6 +1703,7 @@ IncomingForm$1.prototype._initMultipart = function(boundary) {
       part.mime = headerValue;
     } else if (headerField == 'content-transfer-encoding') {
       part.transferEncoding = headerValue.toLowerCase();
+	  console.log(headerValue,"headerValue")
     }
 
     headerField = '';
@@ -1923,8 +1930,11 @@ var _getAllFilesFromFolder = function(dir) {
 };
 
 const getPages=async()=>{
-    const listsPath=path__default["default"].join(rootPath,dataFolder)
-	console.log(listsPath,"list path in getpages",rootPath,"rootpath","datFolder",dataFolder)
+     const listsPath=path__default["default"].join(rootPath,dataFolder)
+// 	const listsPath = process.env.NODE_ENV==="production"
+//   ? path__default["default"].join("/var/task", dataFolder) // Netlify deployment
+//   : path__default["default"].join(__dirname, dataFolder);
+	console.log(listsPath,"list path in getpages",rootPath,"rootpath","datFolder",dataFolder,process.env.NETLIFY,process.env)
 	const files=_getAllFilesFromFolder(listsPath)
 	console.log(files,"files in get pages")
 	const fileNames=[]
@@ -2007,8 +2017,8 @@ const loadDynamicData = async (params) => {
   
 const updateData = async (route, data) => {
   const fileName =await getFileNameFromRoute(route);
-  console.log(fileName,"update data file Name",route)
-  await fs__default["default"].promises.writeFile(path__default["default"].join(rootPath, dataFolder, fileName), JSON.stringify(data));
+  console.log(fileName,"update data file Name",route,data,"update")
+  await fs__default["default"].promises.writeFile(path__default["default"].join(rootPath, dataFolder, fileName), JSON.stringify(data,null));
 };
 const handleData = async (req, res) => {
   if (req.method === "GET") {
@@ -2018,7 +2028,7 @@ const handleData = async (req, res) => {
     const contentType = req.headers["content-type"];
     const isMultiPart = contentType.startsWith("multipart/form-data");
     if (!isMultiPart) {
-	  console.log(isMultiPart,"multipart")
+	  console.log(isMultiPart,"multipart",req.body)
       const body = await getJson(req);
 	  console.log(body,"body",body.data,req.query.path)
       await updateData(req.query.path, body.data);
@@ -2062,7 +2072,7 @@ const handleAsset = async (req, res) => {
   }
 };
 const handleEditor = async (req, res) => {
-  if (development$1)
+  if (!development$1)
     return res.status(401).json({ error: "Not allowed" });
   if (req.query.type === "data") {
     return handleData(req, res);
@@ -2080,7 +2090,7 @@ const config = { api: { bodyParser: false } };
 const development = process.env.NODE_ENV !== "production";
 console.log(!development$1,"developement or not ",process.env.NODE_ENV)
 const getStaticProps = async () => {
-  if (!development) {
+  if (development) {
 	const pages=await getPages()
     return { props: {pages:pages===undefined?null:pages} };
   } else {

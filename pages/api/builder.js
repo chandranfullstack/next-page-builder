@@ -27,7 +27,10 @@ var PhotoIcon = require('@heroicons/react/24/outline/PhotoIcon');
 var LinkIcon = require('@heroicons/react/24/outline/LinkIcon');
 var CircleStackIcon = require('@heroicons/react/24/outline/CircleStackIcon');
 var ArrowsPointingOutIcon = require('@heroicons/react/24/outline/ArrowsPointingOutIcon');
-var pathModule=require("path")
+import { chakra } from '@chakra-ui/react';
+import AppBox from "../api/components/client-components/AppBox/AppBox"
+import { Box } from '@chakra-ui/react';
+import { CSSObject } from '@emotion/react';
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -103,7 +106,7 @@ var __spreadValues$5 = (a, b) => {
     }
   return a;
 };
-const Text = (props) => {
+var Text = (props) => {
   var _a, _b;
   const { node, connectors, actions } = core.useNode((node2) => ({ node: node2 }));
   const { enabled } = core.useEditor((state) => ({ enabled: state.options.enabled }));
@@ -419,7 +422,26 @@ var __objRest = (source, exclude) => {
     }
   return target;
 };
+
+
+
+function convertChakraUIToJSON(chakraUIObject){
+  const jsonObject = {};
+
+  // Iterate over the keys of the Chakra UI object
+  Object.keys(chakraUIObject).forEach((key) => {
+    const value = chakraUIObject[key];
+
+    // Store the property with the original key name in the JSON object
+    jsonObject[key] = value;
+  });
+  console.log(jsonObject,"jsonobject")
+  // Convert the JSON object to a string
+  return JSON.stringify(jsonObject);
+}
+
 const Child = ({ root, d = [0] }) => {
+  console.log("called with root",root)
   if (!root || (root == null ? void 0 : root.childNodes.length) === 0)
     return null;
   return /* @__PURE__ */ React__default["default"].createElement(React__default["default"].Fragment, null, Array.from(root == null ? void 0 : root.childNodes).map((r, i) => {
@@ -776,7 +798,24 @@ const Child = ({ root, d = [0] }) => {
           root: r,
           d: d.concat(i)
         }));
-      } else {
+      }else if (r.tagName === "BOX"){
+        console.log(r,r.attrs.textstyle,"div",console.log(r.attrs.customstyle))
+      return /* @__PURE__ */ React__default["default"].createElement(AppBox, {
+        sx:r.attrs,
+        props:r.attrs,
+        key
+      }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+        root: r,
+        d: d.concat(i)
+      },console.log(r,d,"div")))}else if (r.tagName === "TEXT"){
+        return /* @__PURE__ */ React__default["default"].createElement(chakra.p, {
+          className: r.classNames,
+          textstyle:"fs10",
+          key
+        }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+          root: r,
+          d: d.concat(i)
+        }))}else {
         return /* @__PURE__ */ React__default["default"].createElement("p", {
           key
         }, "Unknown container");
@@ -801,6 +840,8 @@ const Child = ({ root, d = [0] }) => {
     }
   }));
 };
+
+
 const Component = ({ root }) => {
   const { connectors, node } = core.useNode((node2) => ({ node: node2 }));
   return /* @__PURE__ */ React__default["default"].createElement("div", {
@@ -850,7 +891,8 @@ var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
 const themes = [
   { name: "Hyper UI", folder: "hyperui", load: () => Promise.resolve().then(function () { return require('./components/index-2f393cd0.js'); }) },
   { name: "Tailblocks", folder: "tailblocks", load: () => Promise.resolve().then(function () { return require('./components/index-66e9643f.js'); }) },
-  { name: "Meraki UI", folder: "meraki-light", load: () => Promise.resolve().then(function () { return require('./components/index-8fbd5618.js'); }) }
+  { name: "Meraki UI", folder: "meraki-light", load: () => Promise.resolve().then(function () { return require('./components/index-8fbd5618.js'); }) },
+  {name:"Chakra UI",folder:"chakra",load:()=>Promise.resolve().then(function(){return require("./components/index-chakra.js")})}
 ];
 const getCategories = (components) => [...new Set(components == null ? void 0 : components.map((c) => c.category))];
 const _resolver = {
@@ -1915,13 +1957,8 @@ const FrameEditor1 = ({ data1, standaloneServer ,pages}) => {
      loadData()
   }
 
-  return !data1 ? /* @__PURE__ */ React__default["default"].createElement(Viewport, null, /* @__PURE__ */ React__default["default"].createElement(core.Frame, null, /* @__PURE__ */ React__default["default"].createElement(core.Element, {
-    canvas: true,
-    is: Container,
-    children: [],
-    custom: { displayName: "App" }
-  },"loading....")
-  )) : /* @__PURE__ */ React__default["default"].createElement("div", {
+  return !data1 ? /* @__PURE__ */ React__default["default"].createElement("div", /* @__PURE__ */ React__default["default"].createElement("p", {},"loading....")
+  ) : /* @__PURE__ */ React__default["default"].createElement("div", {
     className: "page-container"
   }, /* @__PURE__ */ React__default["default"].createElement(core.Frame, null));
 };

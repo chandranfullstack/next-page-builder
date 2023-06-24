@@ -1,0 +1,261 @@
+export const textStyle = {
+  fs11px: {
+    lineHeight: "16px",
+    fontSize: "16px",
+    fontWeight: 400,
+  },
+  fs1: {
+    lineHeight: "22px",
+    fontSize: "14px",
+    fontWeight: "400",
+  },
+  fs2: {
+    lineHeight: "22px",
+    fontSize: "16px",
+    fontWeight: "400",
+  },
+  fs3: {
+    lineHeight: "29px",
+    fontSize: "18px",
+    fontWeight: "400",
+  },
+  fs4: {
+    lineHeight: "33px",
+    fontSize: "20px",
+    fontWeight: "400",
+  },
+  fs5: {
+    lineHeight: "35px",
+    fontSize: "24px",
+    fontWeight: "400",
+    letterSpacing: "0.50px",
+  },
+  fs7: {
+    lineHeight: "45px",
+    fontSize: "30px",
+    fontWeight: "400",
+  },
+  fs9: {
+    lineHeight: "45px",
+    fontSize: "35px",
+    fontWeight: "600",
+    letterSpacing: "-0.16px",
+  },
+  fs10: {
+    lineHeight: "50px",
+    fontSize: "40px",
+    fontWeight: "500",
+    letterSpacing: "-0.16px",
+  },
+  fs11: {
+    lineHeight: "50px",
+    fontSize: "40px",
+    fontWeight: "600",
+    letterSpacing: "-0.24px",
+  },
+  fs12: {
+    lineHeight: "24px",
+    fontSize: "16px",
+    fontWeight: "600",
+    letterSpacing: "-0.36px",
+  },
+  fs13: {
+    lineHeight: "45px",
+    fontSize: "35px",
+    fontWeight: "600",
+    letterSpacing: "-1.5px",
+  },
+  fs14: {
+    lineHeight: "33px",
+    fontSize: "20px",
+    fontWeight: "500",
+  },
+  fs15:{
+    lineHeight:"29px",
+    fontSize:"22px",
+    fontWeight:"600"
+  },
+  fs16:{
+    fontSize: "40px",
+    fontWeight: "500",
+    lineHeight: "50px",
+  },
+  fs17:{
+    fontSize: "35px",
+    fontWeight: "500",
+    lineHeight: "50px",
+  },
+  italic3: {
+    lineHeight: "29px",
+    fontSize: "18px",
+    fontWeight: "400",
+    fontStyle: "italic",
+  },
+  hero_italic: {
+    lineHeight: "30px",
+    fontSize: "20px",
+    fontWeight: "600",
+    letterSpacing: "-0.16px",
+    fontStyle: "italic",
+  },
+  heroHead: {
+    lineHeight: "72px",
+    fontSize: "55px",
+    fontWeight: "600",
+    letterSpacing: "-0.16px",
+  },
+  heroHeadMd: {
+    lineHeight: "40px",
+    fontSize: "30px",
+    fontWeight: "600",
+    letterSpacing: "-0.16px",
+  },
+  heroSubHead: {
+    lineHeight: "72px",
+    fontSize: "55px",
+    fontWeight: "400",
+    letterSpacing: "-0.16px",
+  },
+  h1: {
+    lineHeight: "22px",
+    fontSize: "14px",
+    fontWeight: "500",
+  },
+  h3: {
+    lineHeight: "29px",
+    fontSize: "18px",
+    fontWeight: "700",
+  },
+  h5: {
+    lineHeight: "35px",
+    fontSize: "24px",
+    fontWeight: "600",
+    letterSpacing: "0.50px",
+  },
+  h9: {
+    lineHeight: "45px",
+    fontSize: "35px",
+    fontWeight: "700",
+  },
+  h10: {
+    lineHeight: "50px",
+    fontSize: "40px",
+    fontWeight: "700",
+    letterSpacing: "-0.16px",
+  },
+  gradientText: {
+    background:
+      "-webkit-linear-gradient(180deg,#0023B5,#0641B6DE,#C54267 ,#FF0000)",
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
+    lineHeight: "45px",
+    fontSize: "35px",
+    fontWeight: "600",
+    letterSpacing: "-0.20px",
+  },
+  gradientText24: {
+    background:
+      "-webkit-linear-gradient(180deg,#0023B5,#0641B6DE,#C54267 ,#FF0000)",
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
+    lineHeight: "30px",
+    fontSize: "24px",
+    fontWeight: "600",
+    letterSpacing: "-0.20px",
+  },
+  gradientText25: {
+    background:
+      "linear-gradient(90.8deg, #0023B5 -1.05%, rgba(6, 65, 182, 0.87) 23.66%, #C54267 63.4%, #FF0000 111.18%)",
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
+    lineHeight: "30px",
+    fontSize: "21px",
+    fontWeight: "600",
+    letterSpacing: "-0.20px",
+  },
+  gradientText1: {
+    background:
+      "linear-gradient(90.8deg, #0023B5 -1.05%, rgba(6, 65, 182, 0.87) 23.66%, #C54267 63.4%, #FF0000 111.18%)",
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
+    lineHeight: "45px",
+    fontSize: "35px",
+    fontWeight: "600",
+    letterSpacing: "-0.20px",
+    linearGradient: "0deg, #000000, #000000",
+  },
+  gradientText2: {
+    background:
+      "linear-gradient(90.88deg, #0023B5 -1.04%, rgba(6, 65, 182, 0.87) 12.53%, #C54267 34.35%, #FF0000 60.58%)",
+    webkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
+    backgroundClip: "text",
+    textFillColor: "transparent",
+    lineHeight: "45px",
+    fontSize: "35px",
+    fontWeight: "600",
+    letterSpacing: "-0.20px",
+    linearGradient: "0deg, #000000, #000000",
+  },
+  gradientText3: {
+    background:
+      "linear-gradient(90.8deg, #0023B5 -1.05%, rgba(6, 65, 182, 0.87) 23.66%, #C54267 63.4%, #FF0000 111.18%)",
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
+    lineHeight: "50px",
+    fontSize: "40px",
+    fontWeight: "600",
+    letterSpacing: "-0.20px",
+    linearGradient: "0deg, #000000, #000000",
+  },
+  responsiveText1: {
+    fontSize: "15px",
+  },
+  responsiveText2: {
+    fontSize: "15px",
+    lineHeight: "45px",
+    fontWeight: "600",
+  },
+  responsiveText3: {
+    lineHeight: "30px",
+    fontSize: "21px",
+    fontWeight: "600",
+    letterSpacing: "-0.20px",
+  },
+  responsiveheroText: {
+    fontSize: "30px",
+    fontWeight: "400",
+    lineHeight: "40px",
+  },
+  responsiveParaText: {
+    fontSize: "15px",
+    fontWeight: "300",
+  },
+  countText: {
+    lineHeight: "60px",
+    fontSize: "57px",
+    fontWeight: "500",
+    letterSpacing: "-2.4px",
+  },
+  countTextMd: {
+    lineHeight: "45px",
+    fontSize: "37px",
+    fontWeight: "600",
+    letterSpacing: "-0.76px",
+  },
+  header1: {
+    lineHeight: "45px",
+    fontSize: "30px",
+    fontWeight: "500",
+  },
+  header1_20: {
+    lineHeight: "30px",
+    fontSize: "20px",
+    fontWeight: "500",
+  },
+  cmsHeader: {
+    lineHeight: "40px",
+    fontSize: "30px",
+    fontWeight: "600",
+  },
+};

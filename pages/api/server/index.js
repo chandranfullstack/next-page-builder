@@ -26,6 +26,7 @@ var require$$0__default$2 = /*#__PURE__*/_interopDefaultLegacy(require$$0$2);
 var require$$9__default = /*#__PURE__*/_interopDefaultLegacy(require$$9);
 var require$$11__default = /*#__PURE__*/_interopDefaultLegacy(require$$11);
 var require$$12__default = /*#__PURE__*/_interopDefaultLegacy(require$$12);
+var pathModule=require("path")
 
 var runtime = {exports: {}};
 
@@ -1922,7 +1923,8 @@ var _getAllFilesFromFolder = function(dir) {
 };
 
 const getPages=async()=>{
-     const listsPath=path__default["default"].join(rootPath,dataFolder)
+    // const listsPath=path__default["default"].join(rootPath,dataFolder)
+	const listsPath=pathModule.join(rootPath,dataFolder)
 // 	const listsPath = process.env.NODE_ENV==="production"
 //   ? path__default["default"].join("/var/task", dataFolder) // Netlify deployment
 //   : path__default["default"].join(__dirname, dataFolder);
@@ -2055,7 +2057,7 @@ const handleAsset = async (req, res) => {
   }
 };
 const handleEditor = async (req, res) => {
-  if (development$1)
+  if (!development$1)
     return res.status(401).json({ error: "Not allowed" });
   if (req.query.type === "data") {
     return handleData(req, res);
@@ -2073,7 +2075,7 @@ const config = { api: { bodyParser: false } };
 const development = process.env.NODE_ENV !== "production";
 console.log(!development$1,"developement or not ",process.env.NODE_ENV)
 const getStaticProps = async () => {
-  if (!development) {
+  if (development) {
 	const pages=await getPages()
     return { props: {pages:pages===undefined?null:pages} };
   } else {

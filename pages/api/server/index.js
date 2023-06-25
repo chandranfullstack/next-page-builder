@@ -1997,6 +1997,7 @@ const loadDynamicData = async (params) => {
 	const data = await Promise.all(files.map((f) => fs__default["default"].promises.readFile(f, "utf8").then((c) => ({ name: getRouteFromFilename(f.replace(basePath, "")), content: c }))));
 	const data1 = await Promise.all(files.map((f) => fs__default["default"].promises.readFile(f, "utf8").then((c)=>({name:f.replace(basePath,""),content:c}))))
 	const finalData=await data1.find((i)=>i.name==="\\"+params.dynamic+".json",console.log( "\\"+ params.dynamic +".json" ,"find fileName"))
+	console.log(finalData,"finalData")
 	return finalData
   };
   

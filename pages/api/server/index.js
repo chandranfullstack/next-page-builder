@@ -1993,6 +1993,7 @@ const loadAllData = async (req) => {
 
 const loadDynamicData = async (params) => {
 	const basePath = path__default["default"].join(rootPath, dataFolder);
+	console.log(params,"params",basePath,"basePath")
 	const files = readdirRecursive(basePath);
 	const data = await Promise.all(files.map((f) => fs__default["default"].promises.readFile(f, "utf8").then((c) => ({ name: getRouteFromFilename(f.replace(basePath, "")), content: c }))));
 	const data1 = await Promise.all(files.map((f) => fs__default["default"].promises.readFile(f, "utf8").then((c)=>({name:f.replace(basePath,""),content:c}))))

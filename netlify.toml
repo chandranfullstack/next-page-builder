@@ -1,3 +1,7 @@
+[build]
+functions=functions
+
+
 [[redirects]]
-from = "/data/*"
+from = "/*"
 to = "/data/:splat"

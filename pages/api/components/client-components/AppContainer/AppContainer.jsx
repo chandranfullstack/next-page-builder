@@ -1,5 +1,5 @@
 "use client";
-import { defaultContainerWidth } from "@/theme/utils";
+import { defaultContainerWidth } from "../../../../../themes/utils";
 import { Container } from "@chakra-ui/react";
 import React from "react";
 

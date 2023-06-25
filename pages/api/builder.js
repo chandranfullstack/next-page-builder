@@ -29,8 +29,10 @@ var CircleStackIcon = require('@heroicons/react/24/outline/CircleStackIcon');
 var ArrowsPointingOutIcon = require('@heroicons/react/24/outline/ArrowsPointingOutIcon');
 import { chakra } from '@chakra-ui/react';
 import AppBox from "../api/components/client-components/AppBox/AppBox"
-import { Box } from '@chakra-ui/react';
-import { CSSObject } from '@emotion/react';
+import AppFlex from './components/client-components/AppFlex/AppFlex';
+import AppLink from "./components/client-components/AppLink/AppLink"
+import AppGrid from './components/client-components/AppGrid/AppGrid';
+import AppContainer from "./components/client-components/AppContainer/AppContainer"
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -441,7 +443,6 @@ function convertChakraUIToJSON(chakraUIObject){
 }
 
 const Child = ({ root, d = [0] }) => {
-  console.log("called with root",root)
   if (!root || (root == null ? void 0 : root.childNodes.length) === 0)
     return null;
   return /* @__PURE__ */ React__default["default"].createElement(React__default["default"].Fragment, null, Array.from(root == null ? void 0 : root.childNodes).map((r, i) => {
@@ -798,8 +799,7 @@ const Child = ({ root, d = [0] }) => {
           root: r,
           d: d.concat(i)
         }));
-      }else if (r.tagName === "BOX"){
-        console.log(r,r.attrs.textstyle,"div",console.log(r.attrs.customstyle))
+      }else if (r.tagName === "APPBOX"){
       return /* @__PURE__ */ React__default["default"].createElement(AppBox, {
         sx:r.attrs,
         props:r.attrs,
@@ -807,7 +807,34 @@ const Child = ({ root, d = [0] }) => {
       }, /* @__PURE__ */ React__default["default"].createElement(Child, {
         root: r,
         d: d.concat(i)
-      },console.log(r,d,"div")))}else if (r.tagName === "TEXT"){
+      }))}else if (r.tagName === "GRID"){
+        return /* @__PURE__ */ React__default["default"].createElement(AppGrid, {
+          sx:r.attrs,
+          props:r.attrs,
+          key
+        }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+          root: r,
+          d: d.concat(i)
+        }))}else if (r.tagName === "CONTAINER"){
+          return /* @__PURE__ */ React__default["default"].createElement(AppContainer, {
+            sx:r.attrs,
+            props:r.attrs,
+            key
+          }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+            root: r,
+            d: d.concat(i)
+          }))}else if (r.tagName === "APPFLEX"){
+            return /* @__PURE__ */ React__default["default"].createElement(AppFlex, {
+              sx:r.attrs,
+              direction:r.attrs.direction,
+              gap:r.attrs.gap,
+              color:r.attrs.color,
+              children:r.attrs.childNodes,
+              key
+            },console.log(r,"r in flex"), /* @__PURE__ */ React__default["default"].createElement(Child, {
+              root: r,
+              d: d.concat(i)
+            }))}else if (r.tagName === "APPTEXT"){
         return /* @__PURE__ */ React__default["default"].createElement(chakra.p, {
           className: r.classNames,
           textstyle:"fs10",

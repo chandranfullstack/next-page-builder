@@ -3,5 +3,5 @@ functions=functions
 
 
 [[redirects]]
-from = "/*"
+from = "/data/*"
 to = "/data/:splat"

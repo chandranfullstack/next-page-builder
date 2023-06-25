@@ -4,7 +4,7 @@ import AppCard from "../client-components/AppCard/AppCard";
 import AppContainer from "../client-components/AppContainer/AppContainer";
 import AppFlex from "../client-components/AppFlex/AppFlex";
 import AppText from "../client-components/AppText/AppText";
-import appColors from "../../themes/appColors";
+import appColors from "../themes/appColors";
 import React from "react";
 
 const ActionBannerWithCount = ({ bgimg = "/home/actionbanner.svg" }) => {

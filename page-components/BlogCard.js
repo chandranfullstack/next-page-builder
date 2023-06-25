@@ -6,7 +6,7 @@ import Image from "next/image";
 import AppFlex from "../client-components/AppFlex/AppFlex";
 import AppText from "../client-components/AppText/AppText";
 import AppDivider from "../client-components/AppDivider/AppDivider";
-import appColors from "../../themes/appColors";
+import appColors from "../themes/appColors";
 import moment from "moment/moment";
 import { useRouter } from "next/navigation";
 import AppLink from "../client-components/AppLink/AppLink";

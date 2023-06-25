@@ -11,7 +11,7 @@ import { navDropDown } from "./data";
 import AppButton from "../AppButton/AppButton";
 import AppText from "../AppText/AppText";
 import AppNavItem from "./AppNavItem";
-import appColors from "../../../themes/appColors";
+import appColors from "../../themes/appColors";
 import AppNavCard from "./AppNavCard";
 import {
   Container,

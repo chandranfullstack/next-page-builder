@@ -1,6 +1,6 @@
 import React from "react";
 import AppFlex from "../client-components/AppFlex/AppFlex";
-import appColors from "../../themes/appColors"
+import appColors from "../themes/appColors"
 
 const RedirectStripe = ({
   children,

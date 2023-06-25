@@ -3,7 +3,7 @@ import AppBox from "../client-components/AppBox/AppBox";
 import AppFlex from "../client-components/AppFlex/AppFlex";
 import Image from "next/image";
 import AppCard from "../client-components/AppCard/AppCard";
-import appColors from "../../themes/appColors";
+import appColors from "../themes/appColors";
 
 const NewsCard = () => {
   return (

@@ -4,7 +4,7 @@ import AppBox from "../client-components/AppBox/AppBox";
 import AppFlex from "../client-components/AppFlex/AppFlex";
 import AppBadge from "../client-components/AppBadge/AppBadge";
 import AppContainer from "../client-components/AppContainer/AppContainer";
-import appColors from "../../themes/appColors";
+import appColors from "../themes/appColors";
 
 const VerticalTabSwitch = ({ list }) => {
   const [tab, setTab] = useState(list[0].name);

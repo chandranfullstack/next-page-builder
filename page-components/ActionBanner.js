@@ -3,7 +3,7 @@ import AppButton from "../client-components/AppButton/AppButton";
 import AppCard from "../client-components/AppCard/AppCard";
 import AppContainer from "../client-components/AppContainer/AppContainer";
 import AppFlex from "../client-components/AppFlex/AppFlex";
-import appColors from "../../themes/appColors";
+import appColors from "../themes/appColors";
 import React from "react";
 
 const ActionBanner = ({ bgimg = "/home/actionbanner.svg", component }) => {

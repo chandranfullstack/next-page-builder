@@ -28,30 +28,30 @@ var LinkIcon = require('@heroicons/react/24/outline/LinkIcon');
 var CircleStackIcon = require('@heroicons/react/24/outline/CircleStackIcon');
 var ArrowsPointingOutIcon = require('@heroicons/react/24/outline/ArrowsPointingOutIcon');
 import { chakra } from '@chakra-ui/react';
-import AppBox from "../client-components/AppBox/AppBox"
-import AppFlex from '../client-components/AppFlex/AppFlex';
-import AppLink from "../client-components/AppLink/AppLink"
-import AppGrid from '../client-components/AppGrid/AppGrid';
-import AppContainer from "../client-components/AppContainer/AppContainer"
-import AppText from "../client-components/AppText/AppText"
-import AppAvatar from '../client-components/AppAvatar/AppAvatar';
-import AppBadge from '../client-components/AppBadge/AppBadge';
-import AppButton from '../client-components/AppButton/AppButton';
-import AppCard from '../client-components/AppCard/AppCard';
-import AppCarousel from '../client-components/AppCarousel/AppCarousel';
-import AppDivider from '../client-components/AppDivider/AppDivider';
-import AppDrawer from '../client-components/AppDrawer';
-import AppFooter from '../client-components/AppFooter/AppFooter';
-import AppGridItem from '../client-components/AppGrid/AppGridItem';
-import AppList from '../client-components/AppList/AppList';4
-import AppUnOrList from "../client-components/AppList/AppUnOrList"
-import AppListItem from '../client-components/AppListItem/AppListItem';
-import AppSearch from '../client-components/AppSearch/AppSearch';
-import AppProgress from '../client-components/AppProgress/AppProgress';
-import AppImage from '../client-components/AppImage/AppImage';
-import RedirectStripe from '../page-components/RedirectStripe';
-import AppIcon from '../client-components/AppIcons/AppIcon';
-import AppNav from '../client-components/AppNav/AppNav';
+import AppBox from "../../client-components/AppBox/AppBox"
+import AppFlex from '../../client-components/AppFlex/AppFlex';
+import AppLink from "../../client-components/AppLink/AppLink"
+import AppGrid from '../../client-components/AppGrid/AppGrid';
+import AppContainer from "../../client-components/AppContainer/AppContainer"
+import AppText from "../../client-components/AppText/AppText"
+import AppAvatar from '../../client-components/AppAvatar/AppAvatar';
+import AppBadge from '../../client-components/AppBadge/AppBadge';
+import AppButton from '../../client-components/AppButton/AppButton';
+import AppCard from '../../client-components/AppCard/AppCard';
+import AppCarousel from '../../client-components/AppCarousel/AppCarousel';
+import AppDivider from '../../client-components/AppDivider/AppDivider';
+import AppDrawer from '../../client-components/AppDrawer';
+import AppFooter from '../../client-components/AppFooter/AppFooter';
+import AppGridItem from '../../client-components/AppGrid/AppGridItem';
+import AppList from '../../client-components/AppList/AppList';4
+import AppUnOrList from "../../client-components/AppList/AppUnOrList"
+import AppListItem from '../../client-components/AppListItem/AppListItem';
+import AppSearch from '../../client-components/AppSearch/AppSearch';
+import AppProgress from '../../client-components/AppProgress/AppProgress';
+import AppImage from '../../client-components/AppImage/AppImage';
+import RedirectStripe from '../../page-components/RedirectStripe';
+import AppIcon from '../../client-components/AppIcons/AppIcon';
+import AppNav from '../../client-components/AppNav/AppNav';
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 

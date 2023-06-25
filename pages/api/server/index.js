@@ -793,18 +793,14 @@ const formParse = (form, req) => new Promise((resolve, reject) => {
   });
 });
 const getJson = (req) => new Promise((resolve) => {
-	console.log(req.body,"req.body")
   if (!req.body) {
-	console.log(req.on,"req.on")
     let buffer = "";
     req.on("data", (chunk) => {
-	  console.log(chunk,"chunck")
       buffer += chunk;
     });
     req.on("end", () => {
 	  
       const str = Buffer.from(buffer).toString();
-	  console.log(str,"string")
       if (str && str.indexOf("{") > -1)
         resolve(JSON.parse(str));
     });
@@ -942,7 +938,6 @@ var multipart_parser = {};
 	    Z = 122,
 
 	    lower = function(c) {
-			console.log(c,"c")
 	      return c | 0x20;
 	    };
 
@@ -1703,7 +1698,6 @@ IncomingForm$1.prototype._initMultipart = function(boundary) {
       part.mime = headerValue;
     } else if (headerField == 'content-transfer-encoding') {
       part.transferEncoding = headerValue.toLowerCase();
-	  console.log(headerValue,"headerValue")
     }
 
     headerField = '';
@@ -1909,8 +1903,6 @@ const dataFolder = "/public/data";
 const uploadFolder = "uploaded";
 
 var _getAllFilesFromFolder = function(dir) {
-	console.log("process form get all files folder ",__dirname,"dirname")
-    console.log(dir,"directory in getallfiles from folder")
     var filesystem = require("fs");
     var results = [];
 
@@ -1934,9 +1926,7 @@ const getPages=async()=>{
 // 	const listsPath = process.env.NODE_ENV==="production"
 //   ? path__default["default"].join("/var/task", dataFolder) // Netlify deployment
 //   : path__default["default"].join(__dirname, dataFolder);
-	console.log(listsPath,"list path in getpages",rootPath,"rootpath","datFolder",dataFolder,process.env.NETLIFY,process.env)
 	const files=_getAllFilesFromFolder(listsPath)
-	console.log(files,"files in get pages")
 	const fileNames=[]
 		files.map(async(i)=>{
 			const folderName=await path__default["default"].parse(i).name
@@ -1964,20 +1954,16 @@ const uploadFiles = async (req) => {
 const allPageList= getPages()
 // const getFileNameFromRoute = (route) => route === "/" ? "home.json" : `${route}.json`;
 const getFileNameFromRoute = async(route) => {
-	console.log(route,"route ")
 	 if(route==="/" || route==="home"){
 		return "home.json"
 	 }else{
 	 if(allPageList.length!==0){
        const pageName= allPageList.then((i)=>{
-			console.log(i,"i")
 			const data= i.reduce(function(n,k){
-			 console.log("maped", route,k)
              return k===route?k+".json":route+".json"
 			})
             return data
 	 })
-	 console.log(pageName,"pageName")
 	 return pageName
 	 }
 	}
@@ -2004,14 +1990,11 @@ const loadAllData = async (req) => {
 };
 
 const loadDynamicData = async (params) => {
-	console.log(params,"params from server",params.dynamic,"//"+params.dynamic)
 	const basePath = path__default["default"].join(rootPath, dataFolder);
 	const files = readdirRecursive(basePath);
-	console.log(basePath,files,"base path and files")
 	const data = await Promise.all(files.map((f) => fs__default["default"].promises.readFile(f, "utf8").then((c) => ({ name: getRouteFromFilename(f.replace(basePath, "")), content: c }))));
-	const data1 = await Promise.all(files.map((f) => fs__default["default"].promises.readFile(f, "utf8",console.log(f,"read file")).then((c)=>({name:f.replace(basePath,""),content:c}))))
+	const data1 = await Promise.all(files.map((f) => fs__default["default"].promises.readFile(f, "utf8").then((c)=>({name:f.replace(basePath,""),content:c}))))
 	const finalData=await data1.find((i)=>i.name==="\\"+params.dynamic+".json",console.log( "\\"+ params.dynamic +".json" ,"find fileName"))
-	console.log("data1",finalData)
 	return finalData
   };
   

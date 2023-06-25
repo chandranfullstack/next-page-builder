@@ -1,3 +1,6 @@
+[functions]
+directory="/pages/api/server"
+
 [[redirects]]
 from = "/data/*"
 to = "/data/:splat"

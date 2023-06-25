@@ -2062,7 +2062,7 @@ const FrameEditor = ({ data, standaloneServer ,pages}) => {
       console.log(data,"data in load data")
       const templateData = data.find(( name ) =>name.name === "\\"+localStorage.getItem("currentPage") );
       console.log(templateData,"templateData")
-      if(templateData.content!==undefined){
+      if(templateData!==undefined&&templateData.content!==undefined){
       const content = JSON.parse(templateData.content);
       actions.deserialize(content);
     }else{

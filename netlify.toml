@@ -1,8 +1,9 @@
-[functions]
+[functions."api*]
 directory="/pages/api/server"
+included_files = ["data/*.json"]
+
 
 [[redirects]]
 from = "/data/*"
 to = "/data/:splat"
 
-included_files = ["data/*.json"]

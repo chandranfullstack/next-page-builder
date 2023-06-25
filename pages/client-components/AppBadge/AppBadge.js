@@ -1,5 +1,5 @@
 "use client";
-import appColors from "../../../../../themes/appColors"
+import appColors from "../../../themes/appColors"
 import { Badge } from "@chakra-ui/react";
 import React from "react";
 

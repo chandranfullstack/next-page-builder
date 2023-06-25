@@ -28,11 +28,30 @@ var LinkIcon = require('@heroicons/react/24/outline/LinkIcon');
 var CircleStackIcon = require('@heroicons/react/24/outline/CircleStackIcon');
 var ArrowsPointingOutIcon = require('@heroicons/react/24/outline/ArrowsPointingOutIcon');
 import { chakra } from '@chakra-ui/react';
-import AppBox from "../api/components/client-components/AppBox/AppBox"
-import AppFlex from './components/client-components/AppFlex/AppFlex';
-import AppLink from "./components/client-components/AppLink/AppLink"
-import AppGrid from './components/client-components/AppGrid/AppGrid';
-import AppContainer from "./components/client-components/AppContainer/AppContainer"
+import AppBox from "../client-components/AppBox/AppBox"
+import AppFlex from '../client-components/AppFlex/AppFlex';
+import AppLink from "../client-components/AppLink/AppLink"
+import AppGrid from '../client-components/AppGrid/AppGrid';
+import AppContainer from "../client-components/AppContainer/AppContainer"
+import AppText from "../client-components/AppText/AppText"
+import AppAvatar from '../client-components/AppAvatar/AppAvatar';
+import AppBadge from '../client-components/AppBadge/AppBadge';
+import AppButton from '../client-components/AppButton/AppButton';
+import AppCard from '../client-components/AppCard/AppCard';
+import AppCarousel from '../client-components/AppCarousel/AppCarousel';
+import AppDivider from '../client-components/AppDivider/AppDivider';
+import AppDrawer from '../client-components/AppDrawer';
+import AppFooter from '../client-components/AppFooter/AppFooter';
+import AppGridItem from '../client-components/AppGrid/AppGridItem';
+import AppList from '../client-components/AppList/AppList';4
+import AppUnOrList from "../client-components/AppList/AppUnOrList"
+import AppListItem from '../client-components/AppListItem/AppListItem';
+import AppSearch from '../client-components/AppSearch/AppSearch';
+import AppProgress from '../client-components/AppProgress/AppProgress';
+import AppImage from '../client-components/AppImage/AppImage';
+import RedirectStripe from '../page-components/RedirectStripe';
+import AppIcon from '../client-components/AppIcons/AppIcon';
+import AppNav from '../client-components/AppNav/AppNav';
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -804,21 +823,14 @@ const Child = ({ root, d = [0] }) => {
         sx:r.attrs,
         props:r.attrs,
         key
-      }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+      },console.log(r,"r in box"), /* @__PURE__ */ React__default["default"].createElement(Child, {
         root: r,
         d: d.concat(i)
-      }))}else if (r.tagName === "GRID"){
-        return /* @__PURE__ */ React__default["default"].createElement(AppGrid, {
-          sx:r.attrs,
-          props:r.attrs,
-          key
-        }, /* @__PURE__ */ React__default["default"].createElement(Child, {
-          root: r,
-          d: d.concat(i)
-        }))}else if (r.tagName === "CONTAINER"){
+      }))}else if (r.tagName === "APPCONTAINER"){
           return /* @__PURE__ */ React__default["default"].createElement(AppContainer, {
             sx:r.attrs,
             props:r.attrs,
+            maxW:r.attrs.maxw,
             key
           }, /* @__PURE__ */ React__default["default"].createElement(Child, {
             root: r,
@@ -835,14 +847,173 @@ const Child = ({ root, d = [0] }) => {
               root: r,
               d: d.concat(i)
             }))}else if (r.tagName === "APPTEXT"){
-        return /* @__PURE__ */ React__default["default"].createElement(chakra.p, {
+        return /* @__PURE__ */ React__default["default"].createElement(AppText, {
           className: r.classNames,
-          textstyle:"fs10",
+          text:r.attrs.text,
+          textStyle:r.attrs.textstyle,
           key
         }, /* @__PURE__ */ React__default["default"].createElement(Child, {
           root: r,
           d: d.concat(i)
-        }))}else {
+        }))}else if (r.tagName === "APPAVATAR"){
+          return /* @__PURE__ */ React__default["default"].createElement(AppAvatar, {
+            name:r.attrs.name,
+            link:r.attrs.link,
+            key
+          }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+            root: r,
+            d: d.concat(i)
+          }))}else if (r.tagName === "APPBADGE"){
+            return /* @__PURE__ */ React__default["default"].createElement(AppBadge, {
+              key
+            }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+              root: r,
+              d: d.concat(i)
+            }))}else if (r.tagName === "APPBUTTON"){
+              return /* @__PURE__ */ React__default["default"].createElement(AppButton, {
+                variant:r.attrs.variant,
+                key
+              }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+                root: r,
+                d: d.concat(i)
+              }))}else if (r.tagName === "APPCARD"){
+                return /* @__PURE__ */ React__default["default"].createElement(AppCard, {
+                  key
+                }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+                  root: r,
+                  d: d.concat(i)
+                }))}else if (r.tagName === "CARDBODY"){
+                  return /* @__PURE__ */ React__default["default"].createElement(AppCard, {
+                    key
+                  }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+                    root: r,
+                    d: d.concat(i)
+                  }))}else if (r.tagName === "APPCAROUSEL"){
+                    return /* @__PURE__ */ React__default["default"].createElement(AppCarousel, {
+                      key
+                    }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+                      root: r,
+                      d: d.concat(i)
+                    }))}else if (r.tagName === "APPDIVIDER"){
+                      return /* @__PURE__ */ React__default["default"].createElement(AppDivider, {
+                        sx:r.attrs.customstyle,
+                        key
+                      }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+                        root: r,
+                        d: d.concat(i)
+                      }))}else if (r.tagName === "APPDRAWER"){
+                  return /* @__PURE__ */ React__default["default"].createElement(AppDrawer, {
+                    isOpen:r.attrs.isopen,
+                    isClose:r.attrs.isclose,
+                    color:r.attrs.color,
+                    key
+                  }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+                    root: r,
+                    d: d.concat(i)
+                  }))}else if (r.tagName === "APPFOOTER"){
+                  return /* @__PURE__ */ React__default["default"].createElement(AppFooter, {
+                    key
+                  }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+                    root: r,
+                    d: d.concat(i)
+                  }))}else if (r.tagName === "APPGRID"){
+                  return /* @__PURE__ */ React__default["default"].createElement(AppGrid, {
+                    gap:r.attrs.gap,
+                    templateRows:r.attrs.templaterows,
+                    templateColumns:r.attrs.templatecolumns,
+                    customstyle:r.attrs.customstyle,
+                    key
+                  }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+                    root: r,
+                    d: d.concat(i)
+                  }))}else if (r.tagName === "APPGRIDITEM"){
+                  return /* @__PURE__ */ React__default["default"].createElement(AppGridItem, {
+                    key,
+                    colspan:r.attrs.colspan,
+                    rowspan:r.attrs.rowspan,
+                    bg:r.attrs.bg,
+                    customstyle:r.attrs.customstyle,
+                    rowStart:r.attr.rowstart,
+                    h:r.attrs.h,
+                    border:r.attrs.border
+                  }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+                    root: r,
+                    d: d.concat(i)
+                  }))}else if (r.tagName === "APPLINK"){
+                  return /* @__PURE__ */ React__default["default"].createElement(AppLink, {
+                    key,
+                    href:r.attrs.href,
+                    customStyle:r.attrs.customstyle
+                  }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+                    root: r,
+                    d: d.concat(i)
+                  }))}else if (r.tagName === "APPLIST"){
+                    return /* @__PURE__ */ React__default["default"].createElement(AppList, {
+                      key,
+                      list:r.attrs.list
+                    }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+                      root: r,
+                      d: d.concat(i)
+                    }))}else if (r.tagName === "APPUNORLIST"){
+                      return /* @__PURE__ */ React__default["default"].createElement(AppUnOrList, {
+                        key,
+                        list:r.attrs.list
+                      }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+                        root: r,
+                        d: d.concat(i)
+                      }))}else if (r.tagName === "APPLISTItEM"){
+                      return /* @__PURE__ */ React__default["default"].createElement(AppListItem,{
+                        key,
+                      }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+                        root: r,
+                        d: d.concat(i)
+                      }))}else if (r.tagName === "APPSEARCH"){
+                        return /* @__PURE__ */ React__default["default"].createElement(AppSearch, {
+                          bordercolor:r.attrs.bordercolor,
+                          key
+                        }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+                          root: r,
+                          d: d.concat(i)
+                  }))}else if (r.tagName === "APPPROGRESS"){
+                  return /* @__PURE__ */ React__default["default"].createElement(AppProgress, {
+                    key
+                  }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+                    root: r,
+                    d: d.concat(i)
+                  }))}else if (r.tagName === "APPIMAGE"){
+                  return /* @__PURE__ */ React__default["default"].createElement(AppImage, {
+                    key,
+                    src:r.attrs.src,
+                    width:r.attrs.width,
+                    height:r.attrs.width
+                  }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+                    root: r,
+                    d: d.concat(i)
+                  }))}else if (r.tagName === "REDIRECTSTRIPE"){
+                    return /* @__PURE__ */ React__default["default"].createElement(RedirectStripe, {
+                      key,
+                      src:r.attrs.src,
+                      width:r.attrs.width,
+                      height:r.attrs.width
+                    }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+                      root: r,
+                      d: d.concat(i)
+                    }))}else if (r.tagName === "APPICON"){
+                      return /* @__PURE__ */ React__default["default"].createElement(AppIcon, {
+                        key,
+                        index:r.attrs.index,
+                        size:r.attrs.size
+                      }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+                        root: r,
+                        d: d.concat(i)
+                      }))}else if (r.tagName === "APPNAV"){
+                        return /* @__PURE__ */ React__default["default"].createElement(AppNav, {
+                          key
+                        }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+                          root: r,
+                          d: d.concat(i)
+                        }))}
+                  else {
         return /* @__PURE__ */ React__default["default"].createElement("p", {
           key
         }, "Unknown container");

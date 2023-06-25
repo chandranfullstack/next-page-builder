@@ -1,4 +1,4 @@
-[functions."api*]
+[functions]
 directory="/pages/api/server"
 included_files = ["data/*.json"]
 

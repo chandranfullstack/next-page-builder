@@ -1,3 +1,5 @@
 [[redirects]]
 from = "/data/*"
 to = "/data/:splat"
+
+included_files = ["data/*.json"]

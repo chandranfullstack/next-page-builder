@@ -2,7 +2,7 @@ import React from "react";
 import AppFlex from "../AppFlex/AppFlex";
 import Image from "next/image";
 import AppText from "../AppText/AppText";
-import appColors from "@/theme/appColors";
+import appColors from "../../../../../themes/appColors";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { keyframes } from "@emotion/react";

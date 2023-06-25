@@ -1,5 +1,4 @@
 "use client";
-import appColors from "@/theme/appColors";
 import {
   Input,
   InputGroup,

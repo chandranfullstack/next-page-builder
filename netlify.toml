@@ -1,6 +1,6 @@
-[functions]
-directory="/data"
-included_files=["data/* .json"]
+[functions.___netlify-api-handler.js]
+directory="/pages/api/server/index"
+included_files=["data/* home.json,ld.json,learn-analytics.json,hackathons.json"]
 
 [[redirects]]
 from = "/data/*"

@@ -2008,6 +2008,7 @@ const updateData = async (route, data) => {
   await fs__default["default"].promises.writeFile(pathModule.join(rootPath, dataFolder, fileName), JSON.stringify(data,null));
 };
 const handleData = async (req, res) => {
+	console.log(req.method,"req emthod")
   if (req.method === "GET") {
     const data = await loadData(req.query.path);
     return res.status(200).json(data);

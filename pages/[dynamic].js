@@ -16,11 +16,11 @@ export default Dynamic
        paths: [
          {
            params: {
-             dynamic: 'solutions'
+             dynamic: 'dynamic'
            },
          }, 
        ],
-       fallback:true, 
+       fallback:false, 
      }
    }
 
@@ -32,7 +32,7 @@ export const getStaticProps=async(context)=>{
     const data1=await loadDynamicData(params)
     console.log(data1,"data1 from dynamci js getstatic props")
     if(data1===undefined){
-    return {props:{data:[]}}
+    return {props:{data:[]},revalidate:10}
     }else{
     return {props:{data1},revalidate:10}
     }

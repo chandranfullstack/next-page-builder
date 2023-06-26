@@ -1,4 +1,4 @@
-[functions.loadDynamicData]
+[functions/server/api/index]
 directory="/pages/api/server"
 included_files=["data/* .json"]
 

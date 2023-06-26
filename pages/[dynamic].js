@@ -25,7 +25,7 @@ export default Dynamic
 
 export const getStaticProps=async(context)=>{
     const {params}=context
-    console.log(params)
+    console.log(params,"params")
     const data =await loadAllData()
     const data1=await loadDynamicData(params)
     if(data1===undefined){

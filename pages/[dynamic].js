@@ -14,11 +14,11 @@ export default Dynamic
        paths: [
          {
            params: {
-             dynamic: 'solutions',
+             dynamic: 'solutions'
            },
          }, 
        ],
-       fallback: "blocking", 
+       fallback:true, 
      }
    }
 

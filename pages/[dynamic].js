@@ -14,7 +14,7 @@ export default Dynamic
        paths: [
          {
            params: {
-             dynamic: 'dynamic',
+             dynamic: 'solutions',
            },
          }, 
        ],

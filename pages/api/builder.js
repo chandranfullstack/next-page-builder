@@ -1463,7 +1463,7 @@ const Pages=()=>{
 
   },pageList.map((i)=>
      /*@__PURE__*/React__default["default"].createElement("p",
-     {className:"h-12 flex text-xl items-center",onClick:(e)=>handleActions(e),onMouseenter:(e)=>handleMouseOver(e),style:{backgroundColor:currentPage===i?"#D1D5DB":"",color:currentPage===i?"#1A202C":"#1A202C"}},
+     {className:"h-12 flex text-xl items-center",onClick:(e)=>handleActions(e),onMouseenter:(e)=>handleMouseOver(e),style:{backgroundColor:currentPage===i?"#78818D":"",color:currentPage===i?"white":"#1A202C"}},
      i,
      )
   ),
@@ -1503,8 +1503,8 @@ const MainSideBar= () => {
   },
   /* @__PURE__ */ React__default["default"].createElement("div", 
   {
-    className: ` bg-white flex justify-between w-48 cursor-pointer items-center m-4 p-2 h-12 shadow-2xl`,
-    style: { transition: "0.4s cubic-bezier(0.19, 1, 0.22, 1)" },
+    className: ` bg-[#D1D5DB] flex justify-between w-48 cursor-pointer items-center m-4 p-2 h-12 shadow-2xl`,
+    style: { transition: "0.4s cubic-bezier(0.19, 1, 0.22, 1)",background:"#D1D5DB" },
     onClick:handleNew
   },
   /* @__PURE__ */ React__default["default"].createElement(ListIcon__default["default"],
@@ -1518,7 +1518,7 @@ const MainSideBar= () => {
   ), 
   /* @__PURE__ */ React__default["default"].createElement("div", 
   {
-    className: ` bg-white w-48 cursor-pointer items-center m-4 p-2`,
+    className: ` bg-white w-48 cursor-pointer items-center m-4`,
     style: { transition: "0.4s cubic-bezier(0.19, 1, 0.22, 1)" },
   },
   isView?

@@ -2154,7 +2154,7 @@ const FrameEditor1 = ({ data1, standaloneServer ,pages}) => {
   if(data1!==undefined){
      loadData()
   }
-
+  console.log(data1,"data1 from Framer Editor1")
   return !data1 ? /* @__PURE__ */ React__default["default"].createElement("div", /* @__PURE__ */ React__default["default"].createElement("p", {},"loading....")
   ) : /* @__PURE__ */ React__default["default"].createElement("div", {
     className: "page-container"
@@ -2167,6 +2167,7 @@ const Editor1 = ({ data1, standaloneServer,pages }) => {
   const onStateChange = (e) => {
     saveTemplateDebounce(e, standaloneServer);
   }; 
+  console.log(data1,"Editor1")
   return /* @__PURE__ */ React__default["default"].createElement(core.Editor, {
     resolver,
     enabled: !data1,
@@ -2194,7 +2195,7 @@ const ContentProvider1 = ({ data1,pages }) => /* @__PURE__ */ React__default["de
   data1,
   standaloneServer: false,
   pages,
-});
+},console.log(data1,"contentProvider1",pages));
 
 exports.ContentProvider = ContentProvider;
 exports.ContentProvider1=ContentProvider1

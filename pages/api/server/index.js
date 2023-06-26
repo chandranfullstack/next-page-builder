@@ -2073,7 +2073,6 @@ const handleEditor = async (req, res) => {
 const config = { api: { bodyParser: false } };
 
 const development = process.env.NODE_ENV !== "production";
-console.log(!development$1,"developement or not ",process.env.NODE_ENV)
 const getStaticProps = async () => {
   if (!development) {
 	const pages=await getPages()

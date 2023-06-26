@@ -1055,7 +1055,7 @@ const Container = ({ children }) => {
   return /* @__PURE__ */ React__default["default"].createElement("div", {
     ref: (ref) => connectors.connect(ref),
     style: { width: "100%", minHeight: "800px" },
-    className: "bg-white"
+    className: "bg-wheate shadow-2xl"
   }, children);
 };
 Container.craft = {
@@ -1463,7 +1463,7 @@ const Pages=()=>{
 
   },pageList.map((i)=>
      /*@__PURE__*/React__default["default"].createElement("p",
-     {onClick:(e)=>handleActions(e),onMouseenter:(e)=>handleMouseOver(e),style:{backgroundColor:currentPage===i?"red":"",color:currentPage===i?"white":"black"}},
+     {className:"h-12 flex text-xl items-center",onClick:(e)=>handleActions(e),onMouseenter:(e)=>handleMouseOver(e),style:{backgroundColor:currentPage===i?"#D1D5DB":"",color:currentPage===i?"#1A202C":"#1A202C"}},
      i,
      )
   ),
@@ -1503,7 +1503,7 @@ const MainSideBar= () => {
   },
   /* @__PURE__ */ React__default["default"].createElement("div", 
   {
-    className: ` bg-white flex justify-around w-48 cursor-pointer items-center m-4`,
+    className: ` bg-white flex justify-between w-48 cursor-pointer items-center m-4 p-2 h-12 shadow-2xl`,
     style: { transition: "0.4s cubic-bezier(0.19, 1, 0.22, 1)" },
     onClick:handleNew
   },
@@ -1518,7 +1518,7 @@ const MainSideBar= () => {
   ), 
   /* @__PURE__ */ React__default["default"].createElement("div", 
   {
-    className: ` bg-white w-48 cursor-pointer items-center m-4`,
+    className: ` bg-white w-48 cursor-pointer items-center m-4 p-2`,
     style: { transition: "0.4s cubic-bezier(0.19, 1, 0.22, 1)" },
   },
   isView?

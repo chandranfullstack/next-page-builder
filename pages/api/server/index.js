@@ -810,7 +810,8 @@ const getJson = (req) => new Promise((resolve) => {
 const exists = (s) => fs__default["default"].promises.access(s).then(() => true).catch(() => false);
 const readdirRecursive = (folder, files = []) => {
   fs__default["default"].readdirSync(folder).forEach((file) => {
-    const pathAbsolute = path__default["default"].join(folder, file);
+    //const pathAbsolute = path__default["default"].join(folder, file);
+	const pathAbsolute = pathModule.join(folder, file);
     if (fs__default["default"].statSync(pathAbsolute).isDirectory()) {
       readdirRecursive(pathAbsolute, files);
     } else {

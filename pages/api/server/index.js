@@ -810,7 +810,7 @@ const getJson = (req) => new Promise((resolve) => {
 const exists = (s) => fs__default["default"].promises.access(s).then(() => true).catch(() => false);
 const readdirRecursive = (folder, files = []) => {
   fs__default["default"].readdirSync(folder).forEach((file) => {
-    const pathAbsolute = pathModule.join(folder, file);
+    const pathAbsolute = path__default["default"].join(folder, file);
     if (fs__default["default"].statSync(pathAbsolute).isDirectory()) {
       readdirRecursive(pathAbsolute, files);
     } else {
@@ -819,7 +819,7 @@ const readdirRecursive = (folder, files = []) => {
   });
   return files;
 };
-pathModule.parse(process.argv[1]).base === "next";
+path__default["default"].parse(process.argv[1]).base === "next";
 
 var incoming_form = {};
 
@@ -1324,7 +1324,7 @@ JSONParser$1.prototype.end = function() {
 var crypto = require$$3__default["default"];
 var fs = fs__default["default"];
 var util = require$$0__default["default"],
-    path = pathModule,
+    path = path__default["default"],
     File = file,
     MultipartParser = multipart_parser.MultipartParser,
     QuerystringParser = querystring_parser.QuerystringParser,
@@ -1923,15 +1923,15 @@ var _getAllFilesFromFolder = function(dir) {
 };
 
 const getPages=async()=>{
-    // const listsPath=pathModule.join(rootPath,dataFolder)
+    // const listsPath=path__default["default"].join(rootPath,dataFolder)
 	const listsPath=pathModule.join(rootPath,dataFolder)
 // 	const listsPath = process.env.NODE_ENV==="production"
-//   ? pathModule.join("/var/task", dataFolder) // Netlify deployment
-//   : pathModule.join(__dirname, dataFolder);
+//   ? path__default["default"].join("/var/task", dataFolder) // Netlify deployment
+//   : path__default["default"].join(__dirname, dataFolder);
 	const files=_getAllFilesFromFolder(listsPath)
 	const fileNames=[]
 		files.map(async(i)=>{
-			const folderName=await pathModule.parse(i).name
+			const folderName=await path__default["default"].parse(i).name
 			fileNames.push(folderName)
 			return fileNames
 		})
@@ -1940,16 +1940,16 @@ const getPages=async()=>{
 
 const uploadFiles = async (req) => {
   const form = new lib.IncomingForm({ uploadDir: uploadFolder, keepExtensions: true });
-  const uploadPath = pathModule.join("public", uploadFolder);
+  const uploadPath = path__default["default"].join("public", uploadFolder);
   const uploadFolderExists = await exists(uploadPath);
   if (!uploadFolderExists) {
     await fs__default["default"].promises.mkdir(uploadPath);
   }
-  form.on("fileBegin", (_, file) => file.path = pathModule.join("public", uploadFolder, file.name));
+  form.on("fileBegin", (_, file) => file.path = path__default["default"].join("public", uploadFolder, file.name));
   const files = await formParse(form, req);
   const urls = Object.values(files).map((f) => {
     var _a;
-    return pathModule.join(pathModule.sep, uploadFolder, (_a = f.name) != null ? _a : "");
+    return path__default["default"].join(path__default["default"].sep, uploadFolder, (_a = f.name) != null ? _a : "");
   });
   return urls;
 };
@@ -1975,7 +1975,7 @@ const getRouteFromFilename = (filename) => filename === "/home.json" ? "/" : `${
 
 const loadData = async (route) => {
   const fileName =await getFileNameFromRoute(route);
-  const dataPath =await pathModule.join(rootPath, dataFolder, fileName);
+  const dataPath =await path__default["default"].join(rootPath, dataFolder, fileName);
   const dataExists = await exists(dataPath);
   if (!dataExists) {
     return { content: JSON.stringify(DEFAULT_TEMPLATE) };
@@ -1985,14 +1985,14 @@ const loadData = async (route) => {
   }
 };
 const loadAllData = async (req) => {
-  const basePath = pathModule.join(rootPath, dataFolder);
+  const basePath = path__default["default"].join(rootPath, dataFolder);
   const files = readdirRecursive(basePath);
   const data = await Promise.all(files.map((f) => fs__default["default"].promises.readFile(f, "utf8").then((c) => ({ name: getRouteFromFilename(f.replace(basePath, "")), content: c }))));
   return data
 };
 
 const loadDynamicData = async (params) => {
-	const basePath = pathModule.join(rootPath, dataFolder);
+	const basePath = path__default["default"].join(rootPath, dataFolder);
 	console.log(params,"params",basePath,"basePath")
 	const files = readdirRecursive(basePath);
 	const data = await Promise.all(files.map((f) => fs__default["default"].promises.readFile(f, "utf8").then((c) => ({ name: getRouteFromFilename(f.replace(basePath, "")), content: c }))));
@@ -2005,7 +2005,7 @@ const loadDynamicData = async (params) => {
 const updateData = async (route, data) => {
   const fileName =await getFileNameFromRoute(route);
   console.log(fileName,"update data file Name",route,data,"update")
-  await fs__default["default"].promises.writeFile(pathModule.join(rootPath, dataFolder, fileName), JSON.stringify(data,null));
+  await fs__default["default"].promises.writeFile(path__default["default"].join(rootPath, dataFolder, fileName), JSON.stringify(data,null));
 };
 const handleData = async (req, res) => {
   if (req.method === "GET") {
@@ -2032,7 +2032,7 @@ const handleData = async (req, res) => {
   
 const handleFile=async(fileName)=>{
 	var filesystem=require("fs")
-	const basePath = pathModule.join(rootPath, dataFolder);
+	const basePath = path__default["default"].join(rootPath, dataFolder);
 	var NewFileName=fileName+".json"
 	const pathName=`${basePath}/${NewFileName}`
 	const jsonString =JSON.stringify(DEFAULT_TEMPLATE);
@@ -2049,7 +2049,7 @@ const handleFile=async(fileName)=>{
 }
 const handleAsset = async (req, res) => {
   if (req.method === "GET") {
-    const assetPath = pathModule.join(req.query.path);
+    const assetPath = path__default["default"].join(req.query.path);
     const data = await fs__default["default"].promises.readFile(assetPath);
     const options = { "Content-Type": "image/png", "Content-Length": data.length };
     res.writeHead(200, options);

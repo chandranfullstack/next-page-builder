@@ -1456,7 +1456,7 @@ const Pages=()=>{
     method: "get",
     url: `${baseUrl}/api/builder/handle?type=new&path=${fileName}`
   });
-  window.location.reload(data)
+  window.location.reload(true)
   }
 
   return /*@__PURE__*/React__default["default"].createElement("div",{

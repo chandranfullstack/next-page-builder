@@ -20,7 +20,7 @@ export default Dynamic
            },
          }, 
        ],
-       fallback:false, 
+       fallback:true, 
      }
    }
 

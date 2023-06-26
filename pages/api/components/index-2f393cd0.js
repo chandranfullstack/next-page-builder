@@ -1,5 +1,4 @@
 'use strict';
-console.log("running...")
 const source$12 = `
 <section class="bg-gray-50">
   <div
@@ -143,7 +142,7 @@ const Component$10 = {
 
 const source$15 = `
 <section
-  class="relative bg-[url(./bg.png)] bg-cover bg-center bg-no-repeat"
+  class="relative bg-[url(/bg.png)] bg-cover bg-center bg-no-repeat"
 >
 <div>
 <div class=" flex flex-row justify-center">
@@ -157,7 +156,7 @@ const source$15 = `
   </div>
   <div class="w-96  mt-10 pl-6 h-full">
      <img
-     src="./cta.png" 
+     src="/home/develop1.svg" 
      alt="image"
      class="h-96"
      />
@@ -11428,7 +11427,7 @@ const source$13 = `
         <div class=" border-slate-700" style={{border:"1px solid gray"}}>
           <img
             alt="Woman"
-            src="./lxp.png"
+            src="/home/ipx-img.svg"
             class="mx-auto h-24  object-cover  mt-3 pl-3 pr-3 w-full"
           />
 
@@ -11463,7 +11462,7 @@ const source$13 = `
         <div class=" border-slate-700" style={{border:"1px solid gray"}}>
           <img
             alt="Woman"
-            src="./lxp.png"
+            src="/home/ipx-img.svg"
             class="mx-auto h-24  object-cover  mt-3 pl-3 pr-3 w-full"
           />
 
@@ -11498,7 +11497,7 @@ const source$13 = `
         <div class=" border-slate-700" style={{border:"1px solid gray"}}>
           <img
             alt="Woman"
-            src="./lxp.png"
+            src="/home/ipx-img.svg"
             class="mx-auto h-24  object-cover  mt-3 pl-3 pr-3 w-full"
           />
 

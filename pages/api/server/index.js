@@ -2005,8 +2005,6 @@ const loadDynamicData = async (params) => {
   
 const updateData = async (route, data) => {
   const fileName =await getFileNameFromRoute(route);
-  console.log(fileName,"update data file Name",route,data,"update")
-  console.log(pathModule.join(rootPath,dataFolder,fileName),"update file pathname")
   await fs__default["default"].promises.writeFile(pathModule.join(rootPath, dataFolder, fileName), JSON.stringify(data,null));
 };
 const handleData = async (req, res) => {
@@ -2017,9 +2015,7 @@ const handleData = async (req, res) => {
     const contentType = req.headers["content-type"];
     const isMultiPart = contentType.startsWith("multipart/form-data");
     if (!isMultiPart) {
-	  console.log(isMultiPart,"multipart",req.body)
       const body = await getJson(req);
-	  console.log(body,"body",body.data,req.query.path)
       await updateData(req.query.path, body.data);
       return res.status(200).json({});
     } else {

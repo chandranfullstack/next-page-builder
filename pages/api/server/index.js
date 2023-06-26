@@ -1900,7 +1900,7 @@ const DEFAULT_TEMPLATE = {
 const development$1 = process.env.NODE_ENV !== "production";
 const rootPath =process.cwd()
 // const rootPath =__dirname
-const dataFolder = "/public/data";
+const dataFolder = "/data";
 const uploadFolder = "uploaded";
 
 var _getAllFilesFromFolder = function(dir) {

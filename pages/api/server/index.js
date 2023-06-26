@@ -1902,6 +1902,7 @@ const rootPath =process.cwd()
 // const rootPath =__dirname
 const dataFolder = "/data";
 const uploadFolder = "uploaded";
+console.log(rootPath,"root paht")
 
 var _getAllFilesFromFolder = function(dir) {
     var filesystem = require("fs");
@@ -1989,7 +1990,9 @@ const loadAllData = async (req) => {
 };
 
 const loadDynamicData = async (params) => {
-	const basePath = path__default["default"].join(rootPath, dataFolder);
+	// const basePath = path__default["default"].join(rootPath, dataFolder);
+	console.log(rootPath,"root path in loaddynamic dat function")
+	const basePath = pathModule.join(rootPath, dataFolder);
 	console.log(params,"params",basePath,"basePath")
 	const files = readdirRecursive(basePath);
 	const data = await Promise.all(files.map((f) => fs__default["default"].promises.readFile(f, "utf8").then((c) => ({ name: getRouteFromFilename(f.replace(basePath, "")), content: c }))));

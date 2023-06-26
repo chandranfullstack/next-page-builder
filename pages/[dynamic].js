@@ -32,6 +32,6 @@ export const getStaticProps=async(context)=>{
     if(data1===undefined){
     return {props:{data:[]}}
     }else{
-    return {props:{data1}}
+    return {props:{data1},revalidate:10}
     }
 }

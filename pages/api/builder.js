@@ -1367,7 +1367,7 @@ const Item = ({ connectors, c }) => {
   }, /* @__PURE__ */ React__default["default"].createElement("a", {
     className: "cursor-move m-2 pb-2 cursor-pointer block"
   }, /* @__PURE__ */ React__default["default"].createElement("img", {
-    src: getImageUrl(standalone, `/themes/${c.themeFolder}/${c.blockFolder}/preview.png`),
+    src: getImageUrl(standalone, `/public/${c.themeFolder}/${c.blockFolder}/preview.png`),
     width: "600px",
     height: "300px"
   }))));

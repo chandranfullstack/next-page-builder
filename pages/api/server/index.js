@@ -2057,7 +2057,7 @@ const handleAsset = async (req, res) => {
   }
 };
 const handleEditor = async (req, res) => {
-  if (development$1)
+  if (!development$1)
     return res.status(401).json({ error: "Not allowed" });
   if (req.query.type === "data") {
     return handleData(req, res);
@@ -2074,7 +2074,7 @@ const config = { api: { bodyParser: false } };
 
 const development = process.env.NODE_ENV !== "production";
 const getStaticProps = async () => {
-  if (!development) {
+  if (development) {
 	const pages=await getPages()
     return { props: {pages:pages===undefined?null:pages} };
   } else {

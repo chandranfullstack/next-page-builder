@@ -27,6 +27,7 @@ var require$$9__default = /*#__PURE__*/_interopDefaultLegacy(require$$9);
 var require$$11__default = /*#__PURE__*/_interopDefaultLegacy(require$$11);
 var require$$12__default = /*#__PURE__*/_interopDefaultLegacy(require$$12);
 var pathModule=require("path")
+var fsModule=require("fs")
 
 var runtime = {exports: {}};
 
@@ -809,10 +810,10 @@ const getJson = (req) => new Promise((resolve) => {
 });
 const exists = (s) => fs__default["default"].promises.access(s).then(() => true).catch(() => false);
 const readdirRecursive = (folder, files = []) => {
-  fs__default["default"].readdirSync(folder).forEach((file) => {
+  fsModule.readdirSync(folder).forEach((file) => {
     //const pathAbsolute = path__default["default"].join(folder, file);
 	const pathAbsolute = pathModule.join(folder, file);
-    if (fs__default["default"].statSync(pathAbsolute).isDirectory()) {
+    if (fsModule.statSync(pathAbsolute).isDirectory()) {
       readdirRecursive(pathAbsolute, files);
     } else {
       files.push(pathAbsolute);
@@ -1996,8 +1997,8 @@ const loadDynamicData = async (params) => {
 	const basePath = pathModule.join(rootPath, dataFolder);
 	console.log(params,"params",basePath,"basePath",params.dynamic)
 	const files = readdirRecursive(basePath);
-	const data = await Promise.all(files.map((f) => fs__default["default"].promises.readFile(f, "utf8").then((c) => ({ name: getRouteFromFilename(f.replace(basePath, "")), content: c }))));
-	const data1 = await Promise.all(files.map((f) => fs__default["default"].promises.readFile(f, "utf8").then((c)=>({name:f.replace(basePath,""),content:c}))))
+	const data = await Promise.all(files.map((f) => fsModule.promises.readFile(f, "utf8").then((c) => ({ name: getRouteFromFilename(f.replace(basePath, "")), content: c }))));
+	const data1 = await Promise.all(files.map((f) => fsModule.promises.readFile(f, "utf8").then((c)=>({name:f.replace(basePath,""),content:c}))))
 	const finalData=await data1.find((i)=>i.name==="\\"+params.dynamic+".json",console.log( "\\"+ params.dynamic +".json" ,"find fileName"))
 	console.log(finalData,"finalData")
 	return finalData

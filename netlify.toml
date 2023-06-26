@@ -1,5 +1,5 @@
-[functions/server/api/index]
-directory="/pages/api/server"
+[functions]
+directory="/pages/api/server/index"
 included_files=["data/* .json"]
 
 [[redirects]]

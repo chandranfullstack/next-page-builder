@@ -1925,9 +1925,6 @@ var _getAllFilesFromFolder = function(dir) {
 const getPages=async()=>{
     // const listsPath=path__default["default"].join(rootPath,dataFolder)
 	const listsPath=pathModule.join(rootPath,dataFolder)
-// 	const listsPath = process.env.NODE_ENV==="production"
-//   ? path__default["default"].join("/var/task", dataFolder) // Netlify deployment
-//   : path__default["default"].join(__dirname, dataFolder);
 	const files=_getAllFilesFromFolder(listsPath)
 	const fileNames=[]
 		files.map(async(i)=>{
@@ -2005,7 +2002,8 @@ const loadDynamicData = async (params) => {
 const updateData = async (route, data) => {
   const fileName =await getFileNameFromRoute(route);
   console.log(fileName,"update data file Name",route,data,"update")
-  await fs__default["default"].promises.writeFile(path__default["default"].join(rootPath, dataFolder, fileName), JSON.stringify(data,null));
+  console.log(pathModule.join(rootPath,dataFolder,fileName),"update file pathname")
+  await fs__default["default"].promises.writeFile(pathModule.join(rootPath, dataFolder, fileName), JSON.stringify(data,null));
 };
 const handleData = async (req, res) => {
   if (req.method === "GET") {
@@ -2049,7 +2047,7 @@ const handleFile=async(fileName)=>{
 }
 const handleAsset = async (req, res) => {
   if (req.method === "GET") {
-    const assetPath = path__default["default"].join(req.query.path);
+    const assetPath = pathModule.join(req.query.path);
     const data = await fs__default["default"].promises.readFile(assetPath);
     const options = { "Content-Type": "image/png", "Content-Length": data.length };
     res.writeHead(200, options);

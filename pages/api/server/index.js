@@ -1994,7 +1994,7 @@ const loadDynamicData = async (params) => {
 	// const basePath = path__default["default"].join(rootPath, dataFolder);
 	console.log(rootPath,"root path in loaddynamic dat function")
 	const basePath = pathModule.join(rootPath, dataFolder);
-	console.log(params,"params",basePath,"basePath")
+	console.log(params,"params",basePath,"basePath",params.dynamic)
 	const files = readdirRecursive(basePath);
 	const data = await Promise.all(files.map((f) => fs__default["default"].promises.readFile(f, "utf8").then((c) => ({ name: getRouteFromFilename(f.replace(basePath, "")), content: c }))));
 	const data1 = await Promise.all(files.map((f) => fs__default["default"].promises.readFile(f, "utf8").then((c)=>({name:f.replace(basePath,""),content:c}))))
@@ -2057,7 +2057,7 @@ const handleAsset = async (req, res) => {
   }
 };
 const handleEditor = async (req, res) => {
-  if (!development$1)
+  if (development$1)
     return res.status(401).json({ error: "Not allowed" });
   if (req.query.type === "data") {
     return handleData(req, res);
@@ -2074,7 +2074,7 @@ const config = { api: { bodyParser: false } };
 
 const development = process.env.NODE_ENV !== "production";
 const getStaticProps = async () => {
-  if (development) {
+  if (!development) {
 	const pages=await getPages()
     return { props: {pages:pages===undefined?null:pages} };
   } else {

@@ -2011,7 +2011,7 @@ const loadDynamicData = async (params) => {
 const updateData = async (route, data) => {
   console.log(route,data,"route data")
   const fileName =await getFileNameFromRoute(route);
-  console.log(fileName,"filename in update data")
+  console.log(fileName,"filename in update data",pathModule.join(rootPath, dataFolder, fileName))
   await fsModule.promises.writeFile(pathModule.join(rootPath, dataFolder, fileName), JSON.stringify(data,null));
 };
 const handleData = async (req, res) => {
@@ -2042,9 +2042,11 @@ const handleData = async (req, res) => {
   
 const handleFile=async(fileName)=>{
 	var filesystem=require("fs")
-	const basePath = path__default["default"].join(rootPath, dataFolder);
+	const basePath = pathModule.join(rootPath, dataFolder);
+	console.log(basePath,"base path in handleFile")
 	var NewFileName=fileName+".json"
 	const pathName=`${basePath}/${NewFileName}`
+	console.log(pathName,"pathName in creat new file")
 	const jsonString =JSON.stringify(DEFAULT_TEMPLATE);
 	filesystem.writeFile(pathName, jsonString, 'utf8', (err) => {
 		if (err) {

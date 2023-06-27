@@ -13,19 +13,20 @@ export default Dynamic
   const page=getPages()
   console.log(page,"page from getStatic paths")
      return {
-       paths: [
-         {
-           params: {
-             dynamic: 'dynamic'
-           },
-         }, 
-       ],
+      //  paths: [
+      //    {
+      //      params: {
+      //        dynamic: 'dynamic'
+      //      },
+      //    }, 
+      // ],
+      page,
        fallback:true, 
      }
    }
 
 
-export const getStaticProps=async(context)=>{
+export const getServerSideProps=async(context)=>{
     const {params}=context
     console.log(params,"params")
     const data =await loadAllData()

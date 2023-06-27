@@ -810,7 +810,7 @@ const getJson = (req) => new Promise((resolve) => {
   }
 });
 const exists = (s) => fsModule.promises.access(s).then(() => true).catch(() => false);
-fsModule.promises.access(s).then((l)=>console.log(l,"l in exits"))
+const exits=(s)=>fsModule.promises.access(s).then((l)=>console.log(l,"l in exits"))
 const readdirRecursive = (folder, files = []) => {
   fsModule.readdirSync(folder).forEach((file) => {
     //const pathAbsolute = path__default["default"].join(folder, file);
@@ -1944,7 +1944,7 @@ const uploadFiles = async (req) => {
   const form = new lib.IncomingForm({ uploadDir: uploadFolder, keepExtensions: true });
   const uploadPath =pathModule.join("/public", uploadFolder);
   console.log(uploadPath,"uploadPath",form)
-  const uploadFolderExists = await exists(uploadPath);
+  const uploadFolderExists = await exists(uploadPath); exits(uploadPath)
   console.log(uploadFolderExists,"uploadFolderExits",!uploadFolderExists)
   if (!uploadFolderExists) {
     await fsModule.promises.mkdir(uploadPath);

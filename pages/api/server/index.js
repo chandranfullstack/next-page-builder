@@ -1995,13 +1995,12 @@ const loadDynamicData = async (params) => {
 	// const basePath = path__default["default"].join(rootPath, dataFolder);
 	console.log(rootPath,"root path in loaddynamic dat function")
 	const basePath = pathModule.join(rootPath, dataFolder);
-	const basePath1 = pathModule.join(basePath);
 	console.log(params,"params",basePath,"basePath",params.dynamic)
-	const files = readdirRecursive(basePath1);
+	const files = readdirRecursive(basePath);
 	const data = await Promise.all(files.map((f) => fsModule.promises.readFile(f, "utf8").then((c) => ({ name: getRouteFromFilename(f.replace(basePath, "")), content: c }))));
 	const data1 = await Promise.all(files.map((f) => fsModule.promises.readFile(f, "utf8").then((c)=>({name:f.replace(basePath,""),content:c}))))
 	const finalData=await data1.find((i)=>i.name==="\\"+params.dynamic+".json",console.log( "\\"+ params.dynamic +".json" ,"find fileName"))
-	console.log(finalData,"finalData")
+	console.log(data,"finalData","data in load dynamic data")
 	return data
   };
   

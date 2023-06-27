@@ -2137,14 +2137,16 @@ const FrameEditor1 = ({ data1, standaloneServer ,pages}) => {
       if(data1.content!==undefined){
       const content =await JSON.parse(data1.content);
       actions.deserialize(content);
-    }else{
-      //const result = await loadTemplate(standaloneServer);
-      //const content = JSON.parse(result);
-      //actions.deserialize(content);
-      const content =await JSON.parse(data1.content);
-      actions.deserialize(content)
+    }
+    //else{
+    //   //const result = await loadTemplate(standaloneServer);
+    //   //const content = JSON.parse(result);
+    //   //actions.deserialize(content);
+    //   const content =await JSON.parse(data1.content);
+    //   actions.deserialize(content)
 
-    }}}
+    // }
+  }}
     
   React.useEffect(() => {
     loadData();

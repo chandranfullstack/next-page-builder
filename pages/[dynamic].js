@@ -31,7 +31,7 @@ export const getStaticProps=async(context)=>{
     console.log(params,"params")
     const data =await loadAllData()
     const alldata=await loadDynamicData(params)
-    const data1=alldata.find(i=>i.name==="\\"+params.dynamic)
+    const data1=await alldata.find(i=>i.name==="\\"+params.dynamic)
     alldata.find(i=>console.log(i.name,"i name","\\"+params.dynamic))
     console.log(alldata,"all data from dynamci js getstatic props","\\"+params.dynamic+".json",data1)
     if(data1===undefined){

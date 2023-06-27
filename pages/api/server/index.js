@@ -2044,7 +2044,7 @@ const handleData = async (req, res) => {
 
   
 const handleFile=async(fileName)=>{
-	const basePath = pathModule.join(rootPath, dataFolder);
+	const basePath = pathModule.join(dataFolder);
 	console.log(basePath,"base path in handleFile")
 	var NewFileName=fileName+".json"
 	const pathName=`${basePath}/${NewFileName}`
@@ -2063,7 +2063,7 @@ const handleFile=async(fileName)=>{
 }
 const handleAsset = async (req, res) => {
   if (req.method === "GET") {
-    const assetPath = pathModule.join(req.query.path);
+    const assetPath = pathModule.join(process.cwd(),req.query.path);
 	console.log(assetPath,"assestpath",req.query.path)
     const data = await fsModule.promises.readFile(assetPath);
 	console.log(data,"file data")

@@ -812,9 +812,12 @@ const getJson = (req) => new Promise((resolve) => {
 const exists = (s) => fsModule.promises.access(s).then(() => true).catch(() => false);
 const exits=(s)=>fsModule.promises.access(s).then((l)=>console.log(l,"l in exits"))
 const readdirRecursive = (folder, files = []) => {
+	console.log(folder,"folder",files)
   fsModule.readdirSync(folder).forEach((file) => {
+	console.log(file,"file foreach")
     //const pathAbsolute = path__default["default"].join(folder, file);
 	const pathAbsolute = pathModule.join(folder, file);
+	console.log(fsModule.statSync(pathAbsolute).isDirectory(),"is true or false")
     if (fsModule.statSync(pathAbsolute).isDirectory()) {
       readdirRecursive(pathAbsolute, files);
     } else {
@@ -1928,7 +1931,7 @@ var _getAllFilesFromFolder = function(dir) {
 
 const getPages=async()=>{
     // const listsPath=path__default["default"].join(rootPath,dataFolder)
-	const listsPath=pathModule.join(dataFolder)
+	const listsPath=pathModule.join(rootPath,dataFolder)
 	const files=_getAllFilesFromFolder(listsPath)
 	const fileNames=[]
 		files.map(async(i)=>{
@@ -1981,7 +1984,7 @@ const getRouteFromFilename = (filename) => filename === "/home.json" ? "/" : `${
 
 const loadData = async (route) => {
   const fileName =await getFileNameFromRoute(route);
-  const dataPath =await path__default["default"].join( dataFolder, fileName);
+  const dataPath =await path__default["default"].join(rootPath, dataFolder, fileName);
   const dataExists = await exists(dataPath);
   if (!dataExists) {
     return { content: JSON.stringify(DEFAULT_TEMPLATE) };
@@ -1991,7 +1994,8 @@ const loadData = async (route) => {
   }
 };
 const loadAllData = async (req) => {
-  const basePath = path__default["default"].join( dataFolder);
+  const basePath = path__default["default"].join( rootPath,dataFolder);
+  console.log(basePath,"basePath")
   const files = readdirRecursive(basePath);
   const data = await Promise.all(files.map((f) => fs__default["default"].promises.readFile(f, "utf8").then((c) => ({ name: getRouteFromFilename(f.replace(basePath, "")), content: c }))));
   return data

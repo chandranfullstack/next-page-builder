@@ -4,10 +4,12 @@ const port =3001
 const fs=require("fs")
 const path =require("path")
 const bodyParser=require("body-parser")
+const cors=require("cors")
 
 app.use(bodyParser.urlencoded())
 app.use(bodyParser.json())
 app.use(bodyParser.raw({ type: ["image/jpeg", "image/png"], limit: "5mb" }))
+app.use(cors({origin:"https://next-page-builder.netlify.app",credentials:true}))
 app.get("/",(req,res)=>{
     const fileName=req.query.path+".json"
     console.log(fileName,"fileName")

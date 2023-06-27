@@ -2063,7 +2063,7 @@ const handleFile=async(fileName)=>{
 }
 const handleAsset = async (req, res) => {
   if (req.method === "GET") {
-    const assetPath = pathModule.join(process.cwd(),req.query.path);
+    const assetPath = pathModule.join(req.query.path);
 	console.log(assetPath,"assestpath",req.query.path)
     const data = await fsModule.promises.readFile(assetPath);
 	console.log(data,"file data")

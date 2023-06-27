@@ -2059,8 +2059,10 @@ const handleFile=async(fileName)=>{
 }
 const handleAsset = async (req, res) => {
   if (req.method === "GET") {
-    const assetPath = pathModule.join(req.query.path);
-    const data = await fs__default["default"].promises.readFile(assetPath);
+    const assetPath = pathModule.join(process.cwd(),req.query.path);
+	console.log(assetPath,"assestpath",req.query.path)
+    const data = await fsModule.promises.readFile(assetPath);
+	console.log(data,"file data")
     const options = { "Content-Type": "image/png", "Content-Length": data.length };
     res.writeHead(200, options);
     res.end(data, "binary");  

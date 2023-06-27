@@ -456,7 +456,6 @@ function convertChakraUIToJSON(chakraUIObject){
     // Store the property with the original key name in the JSON object
     jsonObject[key] = value;
   });
-  console.log(jsonObject,"jsonobject")
   // Convert the JSON object to a string
   return JSON.stringify(jsonObject);
 }
@@ -823,7 +822,7 @@ const Child = ({ root, d = [0] }) => {
         sx:r.attrs,
         props:r.attrs,
         key
-      },console.log(r,"r in box"), /* @__PURE__ */ React__default["default"].createElement(Child, {
+      }, /* @__PURE__ */ React__default["default"].createElement(Child, {
         root: r,
         d: d.concat(i)
       }))}else if (r.tagName === "APPCONTAINER"){
@@ -843,7 +842,7 @@ const Child = ({ root, d = [0] }) => {
               color:r.attrs.color,
               children:r.attrs.childNodes,
               key
-            },console.log(r,"r in flex"), /* @__PURE__ */ React__default["default"].createElement(Child, {
+            }, /* @__PURE__ */ React__default["default"].createElement(Child, {
               root: r,
               d: d.concat(i)
             }))}else if (r.tagName === "APPTEXT"){
@@ -1411,7 +1410,6 @@ const Pages=()=>{
   }
 
   const loadData1 = async (data,standaloneServer=false) => {
-    console.log("is running in load data",currentPage,data,data.content)
       if(data.content!==undefined){
       const content = JSON.parse(data.content);
       actions.deserialize(content);
@@ -1423,34 +1421,26 @@ const Pages=()=>{
   
 
   const handleDynamicPages=async(e)=>{
-    console.log(currentPage,"current page before set")
     setCurrentPage(e.target.textContent)
-    console.log(currentPage,"current page",e.target.textContent)
     const baseUrl = getBaseUrl(false);
     const data = await fetchJSON({
       method: "get",
       url: `${baseUrl}/api/builder/handle?type=data&path=${localStorage.getItem("currentPage")}`
     });
-    console.log(data,"handledynamic",baseUrl,"baseUrl")
     return data == null ? void 0 : loadData1(data);
   }
   
   const handleActions=async(e)=>{
-        console.log(e.target.textContent,"handleActions")
         localStorage.setItem("currentPage",e.target.textContent)
         await setCurrentPage(...e.target.textContent)
         await setCurrentPage(...e.target.textContent)
-        console.log(currentPage,"current page handle Actions",localStorage.getItem("currentPage"))
         handleDynamicPages(e)
   }
   
-  const handleMouseOver=(e)=>{
-    console.log(e.target.textContent,"event and target and textcontent")
-  }
+  
 
   const createNewFile=async(standaloneServer)=>{
     setView(!isView)
-    console.log(fileName)
     const baseUrl = getBaseUrl(standaloneServer);
   const data = await fetchJSON({
     method: "get",
@@ -1463,7 +1453,7 @@ const Pages=()=>{
 
   },pageList.map((i)=>
      /*@__PURE__*/React__default["default"].createElement("p",
-     {className:"h-12 flex text-xl items-center",onClick:(e)=>handleActions(e),onMouseenter:(e)=>handleMouseOver(e),style:{backgroundColor:currentPage===i?"#78818D":"",color:currentPage===i?"white":"#1A202C"}},
+     {className:"h-12 flex text-xl items-center",onClick:(e)=>handleActions(e),style:{backgroundColor:currentPage===i?"#78818D":"",color:currentPage===i?"white":"#1A202C"}},
      i,
      )
   ),
@@ -2055,13 +2045,9 @@ const FrameEditor = ({ data, standaloneServer ,pages}) => {
   if(pages){
     setPageList(pages)
   }
-  console.log(pageList,"page list in load data")
   const loadData = async () => {
-    console.log("is running in load data",data,currentPage)
     if (data) {
-      console.log(data,"data in load data")
       const templateData = data.find(( name ) =>name.name === "\\"+localStorage.getItem("currentPage") );
-      console.log(templateData,"templateData")
       if(templateData!==undefined&&templateData.content!==undefined){
       const content = JSON.parse(templateData.content);
       actions.deserialize(content);
@@ -2132,7 +2118,6 @@ const FrameEditor1 = ({ data1, standaloneServer ,pages}) => {
   }
 
   const loadData = async () => {
-    console.log(data1,"data1 from framer editor builder.js")
      if(data1){
       if(data1.content!==undefined){
       const content =await JSON.parse(data1.content);
@@ -2156,7 +2141,6 @@ const FrameEditor1 = ({ data1, standaloneServer ,pages}) => {
   if(data1!==undefined){
      loadData()
   }
-  console.log(data1,"data1 from Framer Editor1")
   return !data1 ? /* @__PURE__ */ React__default["default"].createElement("div", /* @__PURE__ */ React__default["default"].createElement("p", {},"loading....")
   ) : /* @__PURE__ */ React__default["default"].createElement("div", {
     className: "page-container"
@@ -2169,7 +2153,6 @@ const Editor1 = ({ data1, standaloneServer,pages }) => {
   const onStateChange = (e) => {
     saveTemplateDebounce(e, standaloneServer);
   }; 
-  console.log(data1,"Editor1")
   return /* @__PURE__ */ React__default["default"].createElement(core.Editor, {
     resolver,
     enabled: !data1,
@@ -2197,7 +2180,7 @@ const ContentProvider1 = ({ data1,pages }) => /* @__PURE__ */ React__default["de
   data1,
   standaloneServer: false,
   pages,
-},console.log(data1,"contentProvider1",pages));
+});
 
 exports.ContentProvider = ContentProvider;
 exports.ContentProvider1=ContentProvider1

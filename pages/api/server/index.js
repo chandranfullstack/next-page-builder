@@ -805,6 +805,7 @@ const getJson = (req) => new Promise((resolve) => {
       const str = Buffer.from(buffer).toString();
       if (str && str.indexOf("{") > -1)
         resolve(JSON.parse(str));
+		console.log(str,"str in data",buffer)
     });
   }
 });
@@ -1958,6 +1959,7 @@ const uploadFiles = async (req) => {
 const allPageList= getPages()
 // const getFileNameFromRoute = (route) => route === "/" ? "home.json" : `${route}.json`;
 const getFileNameFromRoute = async(route) => {
+	 console.log(route,"route in file name")
 	 if(route==="/" || route==="home"){
 		return "home.json"
 	 }else{
@@ -2007,6 +2009,7 @@ const loadDynamicData = async (params) => {
   };
   
 const updateData = async (route, data) => {
+  console.log(route,data,"route data")
   const fileName =await getFileNameFromRoute(route);
   console.log(fileName,"filename in update data")
   await fsModule.promises.writeFile(pathModule.join(rootPath, dataFolder, fileName), JSON.stringify(data,null));
@@ -2022,6 +2025,7 @@ const handleData = async (req, res) => {
 	console.log(isMultiPart,"isMultipart",!isMultiPart)
     if (!isMultiPart) {
       const body = await getJson(req);
+	  console.log("body.data",body.data,req.query.path)
       await updateData(req.query.path, body.data);
 	  console.log(req.query.path,"isnotMultipart section")
       return res.status(200).json({});

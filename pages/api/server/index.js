@@ -1904,7 +1904,7 @@ const DEFAULT_TEMPLATE = {
 const development$1 = process.env.NODE_ENV !== "production";
 const rootPath =process.cwd()
 // const rootPath =__dirname
-const dataFolder = "/public/data";
+const dataFolder = "/pages/data";
 const uploadFolder = "uploaded";
 console.log(rootPath,"root paht")
 

@@ -2014,8 +2014,8 @@ const loadDynamicData = async (params) => {
 const updateData = async (route, data) => {
   console.log(route,data,"route data")
   const fileName =await getFileNameFromRoute(route);
-  console.log(fileName,"filename in update data",pathModule.join( dataFolder, fileName))
-  await fsModule.promises.writeFile(pathModule.join( dataFolder, fileName), JSON.stringify(data,null));
+  console.log(fileName,"filename in update data",path__default["default"].join( dataFolder, fileName))
+  await fs__default["default"].promises.writeFile(path__default["default"].join( dataFolder, fileName), JSON.stringify(data,null));
 };
 const handleData = async (req, res) => {
 	console.log(req.method,"req emthod")
@@ -2063,7 +2063,7 @@ const handleFile=async(fileName)=>{
 }
 const handleAsset = async (req, res) => {
   if (req.method === "GET") {
-    const assetPath = pathModule.join(process.cwd(),req.query.path);
+    const assetPath = pathModule.join("../../../package.json","../..",req.query.path);
 	console.log(assetPath,"assestpath",req.query.path)
     const data = await fsModule.promises.readFile(assetPath);
 	console.log(data,"file data")

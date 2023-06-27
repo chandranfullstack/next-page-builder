@@ -1903,7 +1903,6 @@ const DEFAULT_TEMPLATE = {
 };
 const development$1 = process.env.NODE_ENV !== "production";
 const rootPath =process.cwd()
-// const rootPath =__dirname
 const dataFolder = "/tmp";
 const uploadFolder = "uploaded";
 console.log(rootPath,"root paht")
@@ -1929,7 +1928,7 @@ var _getAllFilesFromFolder = function(dir) {
 
 const getPages=async()=>{
     // const listsPath=path__default["default"].join(rootPath,dataFolder)
-	const listsPath=pathModule.join(rootPath,dataFolder)
+	const listsPath=pathModule.join(dataFolder)
 	const files=_getAllFilesFromFolder(listsPath)
 	const fileNames=[]
 		files.map(async(i)=>{
@@ -1982,7 +1981,7 @@ const getRouteFromFilename = (filename) => filename === "/home.json" ? "/" : `${
 
 const loadData = async (route) => {
   const fileName =await getFileNameFromRoute(route);
-  const dataPath =await path__default["default"].join(rootPath, dataFolder, fileName);
+  const dataPath =await path__default["default"].join( dataFolder, fileName);
   const dataExists = await exists(dataPath);
   if (!dataExists) {
     return { content: JSON.stringify(DEFAULT_TEMPLATE) };
@@ -1992,7 +1991,7 @@ const loadData = async (route) => {
   }
 };
 const loadAllData = async (req) => {
-  const basePath = path__default["default"].join(rootPath, dataFolder);
+  const basePath = path__default["default"].join( dataFolder);
   const files = readdirRecursive(basePath);
   const data = await Promise.all(files.map((f) => fs__default["default"].promises.readFile(f, "utf8").then((c) => ({ name: getRouteFromFilename(f.replace(basePath, "")), content: c }))));
   return data
@@ -2001,7 +2000,7 @@ const loadAllData = async (req) => {
 const loadDynamicData = async (params) => {
 	// const basePath = path__default["default"].join(rootPath, dataFolder);
 	console.log(rootPath,"root path in loaddynamic dat function")
-	const basePath = pathModule.join(rootPath, dataFolder);
+	const basePath = pathModule.join( dataFolder);
 	console.log(params,"params",basePath,"basePath",params.dynamic)
 	const files = readdirRecursive(basePath);
 	const data = await Promise.all(files.map((f) => fsModule.promises.readFile(f, "utf8").then((c) => ({ name: getRouteFromFilename(f.replace(basePath, "")), content: c }))));
@@ -2044,7 +2043,7 @@ const handleData = async (req, res) => {
 
   
 const handleFile=async(fileName)=>{
-	const basePath = pathModule.join(rootPath, dataFolder);
+	const basePath = pathModule.join( dataFolder);
 	console.log(basePath,"base path in handleFile")
 	var NewFileName=fileName+".json"
 	const pathName=`${basePath}/${NewFileName}`

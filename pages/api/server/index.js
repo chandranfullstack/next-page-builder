@@ -1942,7 +1942,7 @@ const getPages=async()=>{
 
 const uploadFiles = async (req) => {
   const form = new lib.IncomingForm({ uploadDir: uploadFolder, keepExtensions: true });
-  const uploadPath =pathModule.join("/public", uploadFolder);
+  const uploadPath =pathModule.join("public", uploadFolder);
   console.log(uploadPath,"uploadPath",form)
   const uploadFolderExists = await exists(uploadPath); exits(uploadPath)
   console.log(uploadFolderExists,"uploadFolderExits",!uploadFolderExists)

@@ -1,7 +1,7 @@
  import {ContentProvider,ContentProvider1} from "./api/builder"
  import {loadAllData,loadDynamicData,getPages} from "./api/server/index"
-import fs from "fs"
-import path from "path"
+// import fs from "fs"
+// import path from "path"
 
 
 const Dynamic =({data1})=>{
@@ -41,7 +41,7 @@ export const getStaticProps=async(context)=>{
     }
 }
 
-export const getServerSidePros=()=>{
-  const dataFolder = "/public/data";
-  const uploadFolder = "uploaded";
-}
+// export const getServerSidePros=()=>{
+//   const dataFolder = "/public/data";
+//   const uploadFolder = "uploaded";
+// }

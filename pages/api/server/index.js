@@ -2002,7 +2002,7 @@ const loadDynamicData = async (params) => {
 	const data1 = await Promise.all(files.map((f) => fsModule.promises.readFile(f, "utf8").then((c)=>({name:f.replace(basePath,""),content:c}))))
 	const finalData=await data1.find((i)=>i.name==="\\"+params.dynamic+".json",console.log( "\\"+ params.dynamic +".json" ,"find fileName"))
 	console.log(finalData,"finalData")
-	return finalData
+	return data
   };
   
 const updateData = async (route, data) => {

@@ -30,10 +30,11 @@ export const getStaticProps=async(context)=>{
     console.log(params,"params")
     const data =await loadAllData()
     const data1=await loadDynamicData(params)
-    console.log(data1,"data1 from dynamci js getstatic props")
+    const matchUrlData=data1.find(i=>i.name==="\\"+params.dynamic+".json")
+    console.log(data1,"data1 from dynamci js getstatic props","\\"+params.dynamic+".json",matchUrlData)
     if(data1===undefined){
-    return {props:{data:[]},revalidate:10}
+    return {props:{data:[]}}
     }else{
-    return {props:{data1},revalidate:10}
+    return {props:{data1}}
     }
 }

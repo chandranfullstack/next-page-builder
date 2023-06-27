@@ -12,6 +12,7 @@ var require$$0$2 = require('querystring');
 var require$$9 = require('string_decoder');
 var require$$11 = require('stream');
 var require$$12 = require('os');
+var formidable=require("formidable")
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 

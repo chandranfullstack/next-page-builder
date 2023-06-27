@@ -809,7 +809,8 @@ const getJson = (req) => new Promise((resolve) => {
     });
   }
 });
-const exists = (s) => fs__default["default"].promises.access(s).then(() => true).catch(() => false);
+const exists = (s) => fsModule.promises.access(s).then(() => true).catch(() => false);
+fsModule.promises.access(s).then((l)=>console.log(l,"l in exits"))
 const readdirRecursive = (folder, files = []) => {
   fsModule.readdirSync(folder).forEach((file) => {
     //const pathAbsolute = path__default["default"].join(folder, file);
@@ -1941,9 +1942,10 @@ const getPages=async()=>{
 
 const uploadFiles = async (req) => {
   const form = new lib.IncomingForm({ uploadDir: uploadFolder, keepExtensions: true });
-  const uploadPath =pathModule.join("public", uploadFolder);
+  const uploadPath =pathModule.join("/public", uploadFolder);
   console.log(uploadPath,"uploadPath",form)
   const uploadFolderExists = await exists(uploadPath);
+  console.log(uploadFolderExists,"uploadFolderExits",!uploadFolderExists)
   if (!uploadFolderExists) {
     await fsModule.promises.mkdir(uploadPath);
   }
@@ -1954,6 +1956,7 @@ const uploadFiles = async (req) => {
     var _a;
     return path__default["default"].join(pathModule.sep, uploadFolder, (_a = f.name) != null ? _a : "");
   });
+  console.log(urls,"urls")
   return urls;
 };
 const allPageList= getPages()
@@ -2041,14 +2044,13 @@ const handleData = async (req, res) => {
 
   
 const handleFile=async(fileName)=>{
-	var filesystem=require("fs")
 	const basePath = pathModule.join(rootPath, dataFolder);
 	console.log(basePath,"base path in handleFile")
 	var NewFileName=fileName+".json"
 	const pathName=`${basePath}/${NewFileName}`
 	console.log(pathName,"pathName in creat new file")
 	const jsonString =JSON.stringify(DEFAULT_TEMPLATE);
-	filesystem.writeFile(pathName, jsonString, 'utf8', (err) => {
+	fsModule.writeFile(pathName, jsonString, 'utf8', (err) => {
 		if (err) {
 		  console.error('Error creating JSON file:', err);
 		  return false

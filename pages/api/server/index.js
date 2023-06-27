@@ -1940,16 +1940,18 @@ const getPages=async()=>{
 
 const uploadFiles = async (req) => {
   const form = new lib.IncomingForm({ uploadDir: uploadFolder, keepExtensions: true });
-  const uploadPath = path__default["default"].join("public", uploadFolder);
+  const uploadPath =pathModule.join("public", uploadFolder);
+  console.log(uploadPath,"uploadPath",form)
   const uploadFolderExists = await exists(uploadPath);
   if (!uploadFolderExists) {
-    await fs__default["default"].promises.mkdir(uploadPath);
+    await fsModule.promises.mkdir(uploadPath);
   }
-  form.on("fileBegin", (_, file) => file.path = path__default["default"].join("public", uploadFolder, file.name));
+  form.on("fileBegin", (_, file) => file.path = pathModule.join("public", uploadFolder, file.name));
   const files = await formParse(form, req);
+  console.log(files,"files in update ",)
   const urls = Object.values(files).map((f) => {
     var _a;
-    return path__default["default"].join(path__default["default"].sep, uploadFolder, (_a = f.name) != null ? _a : "");
+    return path__default["default"].join(pathModule.sep, uploadFolder, (_a = f.name) != null ? _a : "");
   });
   return urls;
 };
@@ -2006,7 +2008,8 @@ const loadDynamicData = async (params) => {
   
 const updateData = async (route, data) => {
   const fileName =await getFileNameFromRoute(route);
-  await fs__default["default"].promises.writeFile(pathModule.join(rootPath, dataFolder, fileName), JSON.stringify(data,null));
+  console.log(fileName,"filename in update data")
+  await fsModule.promises.writeFile(pathModule.join(rootPath, dataFolder, fileName), JSON.stringify(data,null));
 };
 const handleData = async (req, res) => {
 	console.log(req.method,"req emthod")
@@ -2016,11 +2019,14 @@ const handleData = async (req, res) => {
   } else if (req.method === "POST") {
     const contentType = req.headers["content-type"];
     const isMultiPart = contentType.startsWith("multipart/form-data");
+	console.log(isMultiPart,"isMultipart",!isMultiPart)
     if (!isMultiPart) {
       const body = await getJson(req);
       await updateData(req.query.path, body.data);
+	  console.log(req.query.path,"isnotMultipart section")
       return res.status(200).json({});
     } else {
+	  console.log("isMultipart else section working")
       const urls = await uploadFiles(req);
       return res.status(200).json(urls);
     }

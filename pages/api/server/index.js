@@ -2014,8 +2014,8 @@ const loadDynamicData = async (params) => {
 const updateData = async (route, data) => {
   console.log(route,data,"route data")
   const fileName =await getFileNameFromRoute(route);
-  console.log(fileName,"filename in update data",pathModule.join(rootPath, dataFolder, fileName))
-  await fsModule.promises.writeFile(pathModule.join(rootPath, dataFolder, fileName), JSON.stringify(data,null));
+  console.log(fileName,"filename in update data",pathModule.join( dataFolder, fileName))
+  await fsModule.promises.writeFile(pathModule.join( dataFolder, fileName), JSON.stringify(data,null));
 };
 const handleData = async (req, res) => {
 	console.log(req.method,"req emthod")

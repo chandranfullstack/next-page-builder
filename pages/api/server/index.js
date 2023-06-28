@@ -1996,7 +1996,6 @@ const fetchFilesFromBucket = async (bucketName,fileName) => {
 	  return [];
 	}
   };
-  fetchFilesFromBucket("techacademynew","chandran.json")
 
   const editFileInBucket = async (bucketName, fileName, newContent,folder) => {
 	const params = {
@@ -2004,7 +2003,7 @@ const fetchFilesFromBucket = async (bucketName,fileName) => {
 	  Key: `${folder}/${fileName}`,
 	  Body: newContent,
 	};
-  
+    console.log(params,"params")
 	try {
 	  await s3.upload(params).promise();
 	  console.log(`File ${fileName} updated successfully`);

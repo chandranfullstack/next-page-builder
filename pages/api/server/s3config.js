@@ -16,6 +16,7 @@ const config={
     secretAccessKey:process.env.SECRETKEY,
     endpoint:process.env.URL,
     s3ForcePathStyle: true,
+    region:"ap-south-1"
 }
 
 export const s3=new AWS.S3(config)

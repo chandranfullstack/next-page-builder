@@ -13,11 +13,11 @@ export default Dynamic
        paths: [
          {
            params: {
-             dynamic: 'home'
+             dynamic: '/'
            },
          }, 
       ],
-       fallback:true, 
+       fallback:false, 
      }
    }
 

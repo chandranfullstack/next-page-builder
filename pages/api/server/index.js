@@ -1908,6 +1908,9 @@ const rootPath =process.cwd()
 // const rootPath =__dirname
 const dataFolder = "/public/data";
 const uploadFolder = "uploaded";
+const BucketName=process.env.BUCKETNAME
+const BucketFolder="data"
+const BucketImage="images"
 console.log(rootPath,"root paht")
 
 var _getAllFilesFromFolder = function(dir) {
@@ -1929,6 +1932,23 @@ var _getAllFilesFromFolder = function(dir) {
 
 };
 
+const createFolder = async (bucketName, folderName) => {
+	const params = {
+	  Bucket: bucketName,
+	  Key: folderName + '/',
+	};
+  
+	try {
+	  await s3.putObject(params).promise();
+	  console.log(`Folder '${folderName}' created successfully.`);
+	} catch (error) {
+	  console.error(`Error creating folder '${folderName}':`, error);
+	}
+};
+//createFolder(process.env.BUCKETNAME,"data")
+//createFolder(process.env.BUCKETNAME,"images")
+
+
 const getPages=async()=>{
     // const listsPath=path__default["default"].join(rootPath,dataFolder)
 	const listsPath=pathModule.join(rootPath,dataFolder)
@@ -1944,10 +1964,10 @@ const getPages=async()=>{
 
 // utils/s3.js (continued)
 
-const createFile = async (fileName, fileContent) => {
+const createFile = async (bucket,fileName, fileContent,folder) => {
 	const params = {
-	  Bucket: 'techacademynew',
-	  Key: fileName,
+	  Bucket: bucket,
+	  Key: `${folder}/${fileName}`,
 	  Body: fileContent,
 	};
 	try {
@@ -1957,7 +1977,7 @@ const createFile = async (fileName, fileContent) => {
 	  console.error('Error uploading file:', error);
 	}
   };
-
+  
   // utils/s3.js (continued)
 
 const fetchFilesFromBucket = async (bucketName,fileName) => {
@@ -1978,10 +1998,10 @@ const fetchFilesFromBucket = async (bucketName,fileName) => {
   };
   fetchFilesFromBucket("techacademynew","chandran.json")
 
-  const editFileInBucket = async (bucketName, fileName, newContent) => {
+  const editFileInBucket = async (bucketName, fileName, newContent,folder) => {
 	const params = {
 	  Bucket: bucketName, // Name of your S3 bucket
-	  Key: fileName,
+	  Key: `${folder}/${fileName}`,
 	  Body: newContent,
 	};
   
@@ -1993,7 +2013,24 @@ const fetchFilesFromBucket = async (bucketName,fileName) => {
 	}
   };
   
+  const listFoldersInBucket = async (bucketName) => {
+	console.log(bucketName,"bucket name")
+	const params = {
+	  Bucket: bucketName,
+	  Delimiter: '/',
+	};
   
+	try {
+	  const data = await s3.listObjectsV2(params).promise();
+	  const folders = data.CommonPrefixes.map((folder) => folder.Prefix);
+	  console.log(folders,"folders")
+	  return folders;
+	} catch (error) {
+	  console.error('Error listing folders:', error);
+	  throw error;
+	}
+  };
+  listFoldersInBucket(process.env.BUCKETNAME)
   
 
 const uploadFiles = async (req) => {
@@ -2018,10 +2055,13 @@ const uploadFiles = async (req) => {
 
 const getPageNames=async()=>{
       const params={
-		Bucket: 'techacademynew'
+		Bucket: 'techacademynew',
+		Delimiter: '/',
+		Prefix:"data/"
 	  }
-	const getList=await s3.listObjects(params).promise()
-	const pages=getList.Contents.map((c)=>c.Key)
+	const getList=await s3.listObjectsV2(params).promise()
+	console.log(getList,"getList")
+	const pages=getList.Contents.map((c)=>c.Key.slice(5))
 	console.log(pages,"pages")
 	return pages
 }
@@ -2082,7 +2122,7 @@ const updateData = async (route, data) => {
   console.log(route,data,"route data")
   const fileName =await getFileNameFromRoute(route);
   console.log(fileName,"filename in update data",path__default["default"].join(rootPath, dataFolder, fileName))
-  editFileInBucket("techacademynew",fileName,JSON.stringify(data,null))
+  editFileInBucket(BucketName,fileName,JSON.stringify(data,null),BucketFolder)
   await fs__default["default"].promises.writeFile(path__default["default"].join(rootPath, dataFolder, fileName), JSON.stringify(data,null));
 };
 const handleData = async (req, res) => {
@@ -2118,7 +2158,7 @@ const handleFile=async(fileName)=>{
 	const pathName=`${basePath}/${NewFileName}`
 	console.log(pathName,"pathName in creat new file")
 	const jsonString =JSON.stringify(DEFAULT_TEMPLATE);
-	createFile(NewFileName,jsonString)
+	createFile(BucketName,NewFileName,jsonString,BucketFolder)
 	fsModule.writeFileSync(pathName, jsonString, 'utf8', (err) => {
 		if (err) {
 		  console.error('Error creating JSON file:', err);

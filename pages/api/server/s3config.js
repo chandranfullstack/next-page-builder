@@ -12,9 +12,9 @@ const AWS=require("aws-sdk")
 // })
 
 const config={
-    accessKeyId:"XS91ZL5K3DBQ3PAKYDPY",
-    secretAccessKey:"AVnlD076BKrg3uoQO3L7u0l8hrPDD4nj7S5HeGjt",
-    endpoint:"https://ap-south-1.linodeobjects.com",
+    accessKeyId:process.env.ACCESSKEY,
+    secretAccessKey:process.env.SECRETKEY,
+    endpoint:process.env.URL,
     s3ForcePathStyle: true,
 }
 

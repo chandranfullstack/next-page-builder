@@ -1,5 +1,5 @@
- import {ContentProvider,ContentProvider1} from "./api/builder"
- import {loadAllData,loadDynamicData,getPages} from "./api/server/index"
+ import {ContentProvider1} from "./api/builder"
+ import {loadAllData,loadDynamicData} from "./api/server/index"
 
 
 
@@ -9,8 +9,6 @@ const Dynamic =({data1})=>{
 export default Dynamic
 
  export const getStaticPaths = async () => {
-  const page=getPages()
-  console.log(page,"page from getStatic paths")
      return {
        paths: [
          {

@@ -40,5 +40,11 @@ app.get("/img",async(req,res)=>{
     });
 })
 
+app.get("/page",async(req,res)=>{
+      console.log(process.cwd())
+      const data=  fs.promises.readFile(process.cwd()+"/src/home.json","utf-8").then((c)=>console.log(c))
+      res.send(data)
+})
+
 
 app.listen(port,console.log(`the port is running on port ${port}`))

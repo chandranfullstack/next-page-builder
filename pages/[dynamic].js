@@ -15,7 +15,7 @@ export default Dynamic
        paths: [
          {
            params: {
-             dynamic: 'solutions'
+             dynamic: 'home'
            },
          }, 
       ],
@@ -29,7 +29,7 @@ export const getStaticProps=async(context)=>{
     console.log(params,"params")
     const data =await loadAllData()
     const alldata=await loadDynamicData(params)
-    const data1=alldata.find(i=>i.name==="\\"+params.dynamic)
+    const data1=alldata.find(i=>i.name==="/"+params.dynamic)
     if(data1===undefined){
     return {props:{data1:[]}}
     }else{

@@ -2012,24 +2012,7 @@ const fetchFilesFromBucket = async (bucketName,fileName) => {
 	}
   };
   
-  const listFoldersInBucket = async (bucketName) => {
-	console.log(bucketName,"bucket name")
-	const params = {
-	  Bucket: bucketName,
-	  Delimiter: '/',
-	};
   
-	try {
-	  const data = await s3.listObjectsV2(params).promise();
-	  const folders = data.CommonPrefixes.map((folder) => folder.Prefix);
-	  console.log(folders,"folders")
-	  return folders;
-	} catch (error) {
-	  console.error('Error listing folders:', error);
-	  throw error;
-	}
-  };
-  listFoldersInBucket(process.env.BUCKETNAME)
   
 
 const uploadFiles = async (req) => {

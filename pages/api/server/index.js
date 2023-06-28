@@ -2197,6 +2197,7 @@ const handleEditor = async (req, res) => {
     return res.status(400).json({ error: "Invalid type" });
   }
 };
+
 const config = { api: { bodyParser: false } };
 
 const development = process.env.NODE_ENV !== "production";

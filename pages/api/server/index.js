@@ -1980,22 +1980,22 @@ const createFile = async (bucket,fileName, fileContent,folder) => {
   
   // utils/s3.js (continued)
 
-const fetchFilesFromBucket = async (bucketName,fileName) => {
-	const params = {
-	  Bucket: bucketName, // Name of your S3 bucket
-	  Key:fileName
-	};
+// const fetchFilesFromBucket = async (bucketName,fileName) => {
+// 	const params = {
+// 	  Bucket: bucketName, // Name of your S3 bucket
+// 	  Key:fileName
+// 	};
   
-	try {
-	  const data = await s3.getObject(params).promise();
-	  //const files = data.Contents.map((file) => file.Key);
-	  const files=data.Body.toString('utf8')
-	  return files;
-	} catch (error) {
-	  console.error('Error fetching files from S3 bucket:', error);
-	  return [];
-	}
-  };
+// 	try {
+// 	  const data = await s3.getObject(params).promise();
+// 	  //const files = data.Contents.map((file) => file.Key);
+// 	  const files=data.Body.toString('utf8')
+// 	  return files;
+// 	} catch (error) {
+// 	  console.error('Error fetching files from S3 bucket:', error);
+// 	  return [];
+// 	}
+//   };
 
   const editFileInBucket = async (bucketName, fileName, newContent,folder) => {
 	const params = {

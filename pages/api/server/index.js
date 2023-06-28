@@ -2050,9 +2050,10 @@ const handleFile=async(fileName)=>{
 	const pathName=`${basePath}/${NewFileName}`
 	console.log(pathName,"pathName in creat new file")
 	const jsonString =JSON.stringify(DEFAULT_TEMPLATE);
-	fsModule.writeFile(pathName, jsonString, 'utf8', (err) => {
+	fsModule.writeFileSync(pathName, jsonString, 'utf8', (err) => {
 		if (err) {
 		  console.error('Error creating JSON file:', err);
+		  fsModule.appendFileSync(pathName,jsonString, 'utf8',)
 		  return false
 		} else {
 		  console.log('JSON file created successfully!');

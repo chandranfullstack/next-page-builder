@@ -52,6 +52,8 @@ import AppImage from '../../client-components/AppImage/AppImage';
 import RedirectStripe from '../../page-components/RedirectStripe';
 import AppIcon from '../../client-components/AppIcons/AppIcon';
 import AppNav from '../../client-components/AppNav/AppNav';
+import handler from './server/s3files';
+//var {createFile}=require("./server/index")
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -877,8 +879,10 @@ const Child = ({ root, d = [0] }) => {
                 d: d.concat(i)
               }))}else if (r.tagName === "APPCARD"){
                 return /* @__PURE__ */ React__default["default"].createElement(AppCard, {
+                  bodyStyle:r.attrs.bodystyle,
+                  wrapperStyle:r.attrs.wrapperstyle,
                   key
-                }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+                },console.log(r,"r in app card"), /* @__PURE__ */ React__default["default"].createElement(Child, {
                   root: r,
                   d: d.concat(i)
                 }))}else if (r.tagName === "CARDBODY"){
@@ -984,7 +988,8 @@ const Child = ({ root, d = [0] }) => {
                     key,
                     src:r.attrs.src,
                     width:r.attrs.width,
-                    height:r.attrs.width
+                    height:r.attrs.width,
+                    fill:r.attrs.fill
                   }, /* @__PURE__ */ React__default["default"].createElement(Child, {
                     root: r,
                     d: d.concat(i)
@@ -1305,6 +1310,7 @@ const fetchJSON = async ({ method, url, data }) => {
     headers: { "Content-Type": "application/json" },
     body: data ? JSON.stringify(data) : void 0
   });
+  //handler(method,url,data)
   return await res.json();
 };
 function debounce(callback, timeout = 1e3) {
@@ -1442,7 +1448,19 @@ const Pages=()=>{
   const createNewFile=async(standaloneServer)=>{
     setView(!isView)
     const baseUrl = getBaseUrl(standaloneServer);
-  const data = await fetchJSON({
+  const DEFAULT_TEMPLATE = {
+    ROOT: {
+      type: { resolvedName: "Container" },
+      isCanvas: true,
+      props: { width: "100%", height: "800px" },
+      displayName: "Container",
+      custom: { displayName: "App" }
+    }
+  };  
+  const jsonString=JSON.stringify(DEFAULT_TEMPLATE)
+  const body={fileName:fileName,fileData:jsonString}
+  //createFile(fileName,jsonString)
+  await fetchJSON({
     method: "get",
     url: `${baseUrl}/api/builder/handle?type=new&path=${fileName}`
   });
@@ -1875,7 +1893,7 @@ const Dialog = ({ open, setOpen, node, actions }) => {
     placeholder: "Eg. d = 'M150 0 L75 200 L225 200 Z'",
     defaultValue: path,
     onChange: (e) => setPath(e.target.value)
-  }))))), /* @__PURE__ */ React__default["default"].createElement("div", {
+  }))))),React__default["default"].createElement("div", {
     className: "mt-4 flex justify-end"
   }, /* @__PURE__ */ React__default["default"].createElement(DialogPrimitive__namespace.Close, {
     onClick: () => {

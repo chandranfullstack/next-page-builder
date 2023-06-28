@@ -711,7 +711,39 @@ const Component$5 = {
   category: "Testimonials"
 };
 
+const sourceN1=`
+<AppCard
+      bodyStyle={{ p: "0px" }}
+      wrapperStyle={{
+        boxShadow: "0px 1px 25.9355px rgba(192, 192, 192, 0.15)",
+        overflow: "hidden",
+      }}
+    >
+      <AppBox px="1.25rem" pt="1.25rem">
+        <AppFlex justifyContent="space-between">
+          <AppFlex position="relative">
+            <AppImage src="/resources/news.png" alt="" width=52 height=17 />
+          </AppFlex>
+          <AppBox color={appColors.grey["50"]} fontSize="11px">
+            1 min read
+          </AppBox>
+        </AppFlex>
+        <AppBox noOfLines=3 mt="32px" textStyle="fs3" fontWeight="500">
+          Techademy - the enterprise learning expert launches its e-learning
+          platform for techies of today and tomorrow
+        </AppBox>
+      </AppBox>
+      <AppFlex position="relative" height="258px" mt="32px">
+        <AppImage src="/resources/news.png" alt="" fill=true width=52 height=17 />
+      </AppFlex>
+    </AppCard>
+`
 
+const Component$N1={
+  source:sourceN1,
+  displayName:"NewS Card",
+  category:"Cards"
+}
 
 const components1 = {
   Blog1: Component$1f,
@@ -723,6 +755,7 @@ const components1 = {
   Navigation1: Component$t,
   Portfolio1: Component$n,
   Testimonial1: Component$5,
+  NeWsCard:Component$N1
 };
 
 exports["default"] = components1;

@@ -2162,11 +2162,11 @@ const config = { api: { bodyParser: false } };
 const development = process.env.NODE_ENV !== "production";
 const getStaticProps = async () => {
   if (!development) {
-	const pages=await getPages()
+	const pages=await getPageNames()
     return { props: {pages:pages===undefined?null:pages} };
   } else {
     const data = await loadAllData();
-	const pages=await getPages()
+	const pages=await getPageNames()
     return { props: { data:data,pages:pages } };
   }
 };
@@ -2181,6 +2181,6 @@ exports.loadData = loadData;
 exports.updateData = updateData;
 exports.uploadFiles = uploadFiles;
 exports.loadAllData=loadAllData
-exports.getPages=getPages
+exports.getPages=getPageNames
 exports.loadDynamicData=loadDynamicData
 exports.createFile=createFile

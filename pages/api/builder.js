@@ -1471,8 +1471,8 @@ const Pages=()=>{
 
   },pageList.map((i)=>
      /*@__PURE__*/React__default["default"].createElement("p",
-     {className:"h-12 flex text-xl items-center",onClick:(e)=>handleActions(e),style:{backgroundColor:currentPage===i?"#78818D":"",color:currentPage===i?"white":"#1A202C"}},
-     i,
+     {className:"h-12 flex text-xl items-center",onClick:(e)=>handleActions(e),style:{backgroundColor:currentPage===i.slice(0,-5)?"#78818D":"",color:currentPage===i?"white":"#1A202C"}},
+     i.slice(0,-5),
      )
   ),
   /* @__PURE__ */ React__default["default"].createElement("div",

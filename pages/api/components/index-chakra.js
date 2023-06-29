@@ -150,6 +150,130 @@ exports["default"]=components
 
 'use strict';
 
+const sourceH1=`
+<DevelopCard><DevelopCard/>
+`
+const sourceH2=`
+<DigitalTranformation><DigitalTranformation/>
+`
+const sourceH3=`
+<AppFlex>
+      <AppFlex
+        alignItems="center"
+        gap="40px"
+        mt=[{ base= "40px", xl= "28px" }]
+        direction=[{ base= "column", xl= "row" }]
+        background-color="#02387A"
+      >
+        <AppBox customStyle=[w={"base"="100%","xl"="58%" }]>
+          <AppText
+            textStyle="heroSubHead"
+            as="span"
+            fontSize=[{"base":"24px","md":"55px"} ]
+            lineHeight={{ base: "40px", md: "72px" }}
+            text="Start Solving Your Tech Skill Gaps To"
+          />
+          <AppText
+            textStyle="heroHead"
+            as="span"
+            fontSize={{ base: "24px", md: "55px" }}
+            lineHeight={{ base: "40px", md: "72px" }}
+            customStyle={{ paddingLeft: "10px" }}
+            text="Accelerate Business Transformation."
+          />
+
+          <AppDivider customstyle={{ pt: "10px" }} />
+
+          <AppText
+            textStyle="hero_italic"
+            customStyle={{ color: appColors.apporange["100"], pt: "20px" }}
+            text="Digital Transformation. Skill at Scale with Speed."
+          />
+          <AppText
+            textStyle="fs3"
+            customStyle={{ pt: "10px" }}
+            text=
+              "Higher adoption rates. Better learner engagement. Improved course completion rates. Aligned to business impact. Delivered on time, every time through a comprehensive learning ecosystem that enables multiple learner journeys."
+            
+          />
+          <AppFlex
+            gap="8px"
+            justifyContent={{ base: "center", md: "start" }}
+            customStyle={{ pt: "20px" }}
+          >
+            <AppButton variant={"primarybtn"}>Watch Demo</AppButton>
+          </AppFlex>
+        </AppBox>
+        <AppFlex customStyle={{ w: "42%", justifyContent: "end" }}>
+          <AppImage
+            src="/home/hero-img.svg"
+            width=563
+            height=606
+            alt="Image"
+          />
+        </AppFlex>
+      </AppFlex>
+    </AppFlex>
+`
+const sourceH4=`
+<LxpCard><LxpCard/>
+`
+const sourceH5=`
+<MesaureCritical><MesaureCritical/>
+`
+const sourceH6=`
+<Organisations><Organisations/>
+`
+const sourceH7=`
+<Organisations><Organisations/>
+`
+const sourceH8=`
+<Testimonial><Testimonial/>
+`
+
+
+const Component$H1 = {
+  source: sourceH1,
+  displayName: "Component 1",
+  category: "Home"
+};
+const Component$H2 = {
+  source: sourceH2,
+  displayName: "Component 2",
+  category: "Home"
+};
+const Component$H3 = {
+  source: sourceH3,
+  displayName: "Hero",
+  category: "Home"
+};
+const Component$H4 = {
+  source: sourceH4,
+  displayName: "Component 4",
+  category: "Home"
+};
+const Component$H5 = {
+  source: sourceH5,
+  displayName: "Component 5",
+  category: "Home"
+};
+const Component$H6 = {
+  source: sourceH6,
+  displayName: "Component 6",
+  category: "Home"
+};
+const Component$H7 = {
+  source: sourceH7,
+  displayName: "Component 7",
+  category: "Home"
+};
+const Component$H8 = {
+  source: sourceH8,
+  displayName: "Component 8",
+  category: "Home"
+};
+
+
 const source$1f = `
     <section class="bg-white dark:bg-gray-900">
         <div class="container px-6 py-10 mx-auto">
@@ -572,7 +696,7 @@ const source$E = `
             justifyContent="start"
             pt="20px"
           >
-            <AppButton variant={"primarybtn"}>Watch Demo</AppButton>
+            <AppButton variant="primarybtn">Watch Demo</AppButton>
           </AppFlex>
         </AppBox>
         <AppFlex w="42%", justifyContent="end">
@@ -746,6 +870,14 @@ const Component$N1={
 }
 
 const components1 = {
+  Home1:Component$H1,
+  Home2:Component$H2,
+  Home3:Component$H3,
+  Home4:Component$H4,
+  Home5:Component$H5,
+  Home6:Component$H6,
+  Home7:Component$H7,
+  Home8:Component$H8,
   Blog1: Component$1f,
   Cta1: Component$13,
   Features1: Component$U,

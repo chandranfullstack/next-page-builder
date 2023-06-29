@@ -12,7 +12,6 @@ var require$$0$2 = require('querystring');
 var require$$9 = require('string_decoder');
 var require$$11 = require('stream');
 var require$$12 = require('os');
-var {s3}=require("./s3config")
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -29,7 +28,6 @@ var require$$11__default = /*#__PURE__*/_interopDefaultLegacy(require$$11);
 var require$$12__default = /*#__PURE__*/_interopDefaultLegacy(require$$12);
 var pathModule=require("path")
 var fsModule=require("fs")
-
 
 var runtime = {exports: {}};
 
@@ -807,12 +805,10 @@ const getJson = (req) => new Promise((resolve) => {
       const str = Buffer.from(buffer).toString();
       if (str && str.indexOf("{") > -1)
         resolve(JSON.parse(str));
-		console.log(str,"str in data",buffer)
     });
   }
 });
 const exists = (s) => fsModule.promises.access(s).then(() => true).catch(() => false);
-const exits=(s)=>fsModule.promises.access(s).then((l)=>console.log(l,"l in exits"))
 const readdirRecursive = (folder, files = []) => {
   fsModule.readdirSync(folder).forEach((file) => {
     //const pathAbsolute = path__default["default"].join(folder, file);
@@ -1905,23 +1901,35 @@ const DEFAULT_TEMPLATE = {
 };
 const development$1 = process.env.NODE_ENV !== "production";
 const rootPath =process.cwd()
-// const rootPath =__dirname
 const dataFolder = "/public/data";
 const uploadFolder = "uploaded";
-const BucketName=process.env.BUCKETNAME
-const BucketFolder="data"
-const BucketImage="images"
-console.log(rootPath,"root paht")
+
+const  handler=()=>{
+	const folderPath = pathModule.join(rootPath,dataFolder) 
+	
+
+  const folderNames = fs.readdirSync(folderPath, { withFileTypes: true })
+    .filter((dirent) => dirent.isDirectory())
+    .map((dirent) => dirent.name);
+
+  const folderData = folderNames.map((folderName) => {
+    const folder = path.join(folderPath, folderName);
+    const fileNames = fs.readdirSync(folder).map((fileName) => fileName);
+    return {
+      folder: folderName,
+      files: fileNames,
+    };
+  });
+  return folderData
+  }
+  const pages=handler()
 
 var _getAllFilesFromFolder = function(dir) {
-    var filesystem = require("fs");
     var results = [];
-
     fs__default["default"].readdirSync(dir).forEach(function(file) {
 
         file = dir+'/'+file;
         var stat = fs__default["default"].statSync(file);
-
         if (stat && stat.isDirectory()) {
             results = results.concat(_getAllFilesFromFolder(file))
         } else results.push(file);
@@ -1932,126 +1940,39 @@ var _getAllFilesFromFolder = function(dir) {
 
 };
 
-const createFolder = async (bucketName, folderName) => {
-	const params = {
-	  Bucket: bucketName,
-	  Key: folderName + '/',
-	};
-  
-	try {
-	  await s3.putObject(params).promise();
-	  console.log(`Folder '${folderName}' created successfully.`);
-	} catch (error) {
-	  console.error(`Error creating folder '${folderName}':`, error);
-	}
-};
-//createFolder(process.env.BUCKETNAME,"data")
-//createFolder(process.env.BUCKETNAME,"images")
-
-
 const getPages=async()=>{
     // const listsPath=path__default["default"].join(rootPath,dataFolder)
 	const listsPath=pathModule.join(rootPath,dataFolder)
 	const files=_getAllFilesFromFolder(listsPath)
+	handler()
 	const fileNames=[]
 		files.map(async(i)=>{
 			const folderName=await path__default["default"].parse(i).name
+			console.log(folderName,"folder Name")
 			fileNames.push(folderName)
 			return fileNames
 		})
 		return fileNames
 }
 
-// utils/s3.js (continued)
-
-const createFile = async (bucket,fileName, fileContent,folder) => {
-	const params = {
-	  Bucket: bucket,
-	  Key: `${folder}/${fileName}`,
-	  Body: fileContent,
-	};
-	try {
-	  await s3.upload(params).promise();
-	  console.log('File uploaded successfully');
-	} catch (error) {
-	  console.error('Error uploading file:', error);
-	}
-  };
-  
-  // utils/s3.js (continued)
-
-const fetchFilesFromBucket = async (bucketName,fileName) => {
-	const params = {
-	  Bucket: bucketName, // Name of your S3 bucket
-	  Key:fileName
-	};
-  
-	try {
-	  const data = await s3.getObject(params).promise();
-	  //const files = data.Contents.map((file) => file.Key);
-	  const files=data.Body.toString('utf8')
-	  return files;
-	} catch (error) {
-	  console.error('Error fetching files from S3 bucket:', error);
-	  return [];
-	}
-  };
-
-  const editFileInBucket = async (bucketName, fileName, newContent,folder) => {
-	const params = {
-	  Bucket: bucketName, // Name of your S3 bucket
-	  Key: `${folder}/${fileName}`,
-	  Body: newContent,
-	};
-    console.log(params,"params")
-	try {
-	  await s3.upload(params).promise();
-	  console.log(`File ${fileName} updated successfully`);
-	} catch (error) {
-	  console.error(`Error updating file ${fileName} in S3 bucket:`, error);
-	}
-  };
-  
-  
-  
-
 const uploadFiles = async (req) => {
   const form = new lib.IncomingForm({ uploadDir: uploadFolder, keepExtensions: true });
   const uploadPath =pathModule.join(rootPath, uploadFolder);
-  console.log(uploadPath,"uploadPath",form)
   const uploadFolderExists = await exists(uploadPath);
-  console.log(uploadFolderExists,"uploadFolderExits",!uploadFolderExists)
   if (!uploadFolderExists) {
     await fsModule.promises.mkdir(uploadPath);
   }
   form.on("fileBegin", (_, file) => file.path = pathModule.join("public", uploadFolder, file.name));
   const files = await formParse(form, req);
-  console.log(files,"files in update ",)
   const urls = Object.values(files).map((f) => {
     var _a;
     return path__default["default"].join(pathModule.sep, uploadFolder, (_a = f.name) != null ? _a : "");
   });
-  console.log(urls,"urls")
   return urls;
 };
-
-const getPageNames=async()=>{
-      const params={
-		Bucket: 'techacademynew',
-		Delimiter: '/',
-		Prefix:"data/"
-	  }
-	const getList=await s3.listObjectsV2(params).promise()
-	console.log(getList,"getList")
-	const pages=getList.Contents.map((c)=>c.Key.slice(5))
-	console.log(pages,"pages")
-	return pages
-}
-getPageNames()
-const allPageList= getPageNames()
+const allPageList= getPages()
 // const getFileNameFromRoute = (route) => route === "/" ? "home.json" : `${route}.json`;
 const getFileNameFromRoute = async(route) => {
-	 console.log(route,"route in file name")
 	 if(route==="/" || route==="home"){
 		return "home.json"
 	 }else{
@@ -2088,42 +2009,30 @@ const loadAllData = async (req) => {
 };
 
 const loadDynamicData = async (params) => {
-	// const basePath = path__default["default"].join(rootPath, dataFolder);
-	console.log(rootPath,"root path in loaddynamic dat function")
 	const basePath = pathModule.join(rootPath, dataFolder);
-	console.log(params,"params",basePath,"basePath",params.dynamic)
 	const files = readdirRecursive(basePath);
 	const data = await Promise.all(files.map((f) => fsModule.promises.readFile(f, "utf8").then((c) => ({ name: getRouteFromFilename(f.replace(basePath, "")), content: c }))));
 	const data1 = await Promise.all(files.map((f) => fsModule.promises.readFile(f, "utf8").then((c)=>({name:f.replace(basePath,""),content:c}))))
-	const finalData=await data1.find((i)=>i.name==="\\"+params.dynamic+".json",console.log( "\\"+ params.dynamic +".json" ,"find fileName"))
-	console.log(data,"finalData","data in load dynamic data")
+	const finalData=data1.find((i)=>i.name==="\\"+params.dynamic+".json")
 	return data
   };
   
 const updateData = async (route, data) => {
-  console.log(route,data,"route data")
   const fileName =await getFileNameFromRoute(route);
-  console.log(fileName,"filename in update data",path__default["default"].join(rootPath, dataFolder, fileName))
-  editFileInBucket(BucketName,fileName,JSON.stringify(data,null),BucketFolder)
-  await fs__default["default"].promises.writeFile(path__default["default"].join(rootPath, dataFolder, fileName), JSON.stringify(data,null));
+  await fsModule.promises.writeFile(pathModule.join(rootPath, dataFolder, fileName), JSON.stringify(data,null));
 };
 const handleData = async (req, res) => {
-	console.log(req.method,"req emthod")
   if (req.method === "GET") {
     const data = await loadData(req.query.path);
     return res.status(200).json(data);
   } else if (req.method === "POST") {
     const contentType = req.headers["content-type"];
     const isMultiPart = contentType.startsWith("multipart/form-data");
-	console.log(isMultiPart,"isMultipart",!isMultiPart)
     if (!isMultiPart) {
       const body = await getJson(req);
-	  console.log("body.data",body.data,req.query.path)
       await updateData(req.query.path, body.data);
-	  console.log(req.query.path,"isnotMultipart section")
       return res.status(200).json({});
     } else {
-	  console.log("isMultipart else section working")
       const urls = await uploadFiles(req);
       return res.status(200).json(urls);
     }
@@ -2135,13 +2044,10 @@ const handleData = async (req, res) => {
   
 const handleFile=async(fileName)=>{
 	const basePath = pathModule.join(rootPath, dataFolder);
-	console.log(basePath,"base path in handleFile")
 	var NewFileName=fileName+".json"
 	const pathName=`${basePath}/${NewFileName}`
-	console.log(pathName,"pathName in creat new file")
 	const jsonString =JSON.stringify(DEFAULT_TEMPLATE);
-	createFile(BucketName,NewFileName,jsonString,BucketFolder)
-	fsModule.writeFileSync(pathName, jsonString, 'utf8', (err) => {
+	fsModule.writeFile(pathName, jsonString, 'utf8', (err) => {
 		if (err) {
 		  console.error('Error creating JSON file:', err);
 		  return false
@@ -2154,10 +2060,8 @@ const handleFile=async(fileName)=>{
 }
 const handleAsset = async (req, res) => {
   if (req.method === "GET") {
-    const assetPath = pathModule.join(rootPath,req.query.path);
-	console.log(assetPath,"assestpath",req.query.path)
+    const assetPath = pathModule.join(process.cwd(),req.query.path);
     const data = await fsModule.promises.readFile(assetPath);
-	console.log(data,"file data")
     const options = { "Content-Type": "image/png", "Content-Length": data.length };
     res.writeHead(200, options);
     res.end(data, "binary");  
@@ -2166,30 +2070,28 @@ const handleAsset = async (req, res) => {
   }
 };
 const handleEditor = async (req, res) => {
-  if (development$1)
+  if (!development$1)
     return res.status(401).json({ error: "Not allowed" });
   if (req.query.type === "data") {
     return handleData(req, res);
   } else if (req.query.type === "asset") {
     return handleAsset(req, res);
   } else if(req.query.type==="new"){
-	console.log(req.query.path)
     return handleFile(req.query.path)
   }else {
     return res.status(400).json({ error: "Invalid type" });
   }
 };
-
 const config = { api: { bodyParser: false } };
 
 const development = process.env.NODE_ENV !== "production";
 const getStaticProps = async () => {
-  if (!development) {
-	const pages=await getPageNames()
+  if (development) {
+	const pages=await getPages()
     return { props: {pages:pages===undefined?null:pages} };
   } else {
     const data = await loadAllData();
-	const pages=await getPageNames()
+	const pages=await getPages()
     return { props: { data:data,pages:pages } };
   }
 };
@@ -2204,6 +2106,5 @@ exports.loadData = loadData;
 exports.updateData = updateData;
 exports.uploadFiles = uploadFiles;
 exports.loadAllData=loadAllData
-exports.getPages=getPageNames
+exports.getPages=getPages
 exports.loadDynamicData=loadDynamicData
-exports.createFile=createFile

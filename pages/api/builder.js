@@ -52,8 +52,13 @@ import AppImage from '../../client-components/AppImage/AppImage';
 import RedirectStripe from '../../page-components/RedirectStripe';
 import AppIcon from '../../client-components/AppIcons/AppIcon';
 import AppNav from '../../client-components/AppNav/AppNav';
-import handler from './server/s3files';
-//var {createFile}=require("./server/index")
+import DevelopCard from '../../home-components/DevelopCard';
+import DigitalTranformation from "../../home-components/DigitalTranformation"
+import Hero from "../../home-components/Hero"
+import Organistions from "../../home-components/Organisations"
+import Technologies from "../../home-components/Technologies"
+import Testimonial from "../../home-components/Testimonial"
+import MeasureCritical from '../../home-components/MesaureCritical';
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -142,25 +147,74 @@ var Text = (props) => {
     }, 500);
   };
   const onClick = (e) => {
+    console.log("cliicked",connectors,actions)
     if (enabled) {
+      console.log("if enabled",enabled)
       e.preventDefault();
       e.stopPropagation();
     }
   };
   return enabled ? /* @__PURE__ */ React__default["default"].createElement("span", {
     ref: (ref) => connectors.connect(ref),
+    ref:(ref)=>console.log(connectors.connect(ref)),
     contentEditable: true,
     suppressContentEditableWarning: true,
     className: props.className,
     onClick,
     onInput: onChange
-  }, text) : /* @__PURE__ */ React__default["default"].createElement("span", {
+  }, text,) : /* @__PURE__ */ React__default["default"].createElement("span", {
     className: props.className,
     style: __spreadValues$5({}, props)
   }, text);
 };
 Text.craft = {
   displayName: "Text",
+  props: {
+    text: ""
+  },
+  related: {}
+};
+
+var APPText = (props) => {
+  var _a, _b;
+  const { node, connectors, actions } = core.useNode((node2) => ({ node: node2 }));
+  const { enabled } = core.useEditor((state) => ({ enabled: state.options.enabled }));
+  const [text] = React.useState((_b = (_a = node.data.props[props.id]) == null ? void 0 : _a.text) != null ? _b : props.text);
+  const onChange = (e) => {
+    actions.setProp((prop) => {
+      if (!prop[props.id])
+        prop[props.id] = {};
+      prop[props.id].text = e.target.innerText;
+    }, 500);
+  };
+  const onClick = (e) => {
+    console.log("cliicked",connectors,actions)
+    if (enabled) {
+      console.log("if enabled",enabled)
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  };
+  console.log(props)
+  return enabled ? /* @__PURE__ */ React__default["default"].createElement(AppText, {
+    ref: (ref) => connectors.connect(ref),
+    ref:(ref)=>console.log(connectors.connect(ref)),
+    contentEditable: true,
+    suppressContentEditableWarning: true,
+    textStyle:props.textstyle,
+    customStyle:{fontSize:props.fontsize},
+    onClick,
+    onInput: onChange
+  }, text,) : /* @__PURE__ */ React__default["default"].createElement(AppText, {
+    className: props.className,
+    text:props.text,
+    textStyle:props.textstyle,
+    style: __spreadValues$5({}, props)
+  }, text);
+};
+
+APPText.craft = {
+  displayName: "APPText",
   props: {
     text: ""
   },
@@ -848,12 +902,16 @@ const Child = ({ root, d = [0] }) => {
               root: r,
               d: d.concat(i)
             }))}else if (r.tagName === "APPTEXT"){
-        return /* @__PURE__ */ React__default["default"].createElement(AppText, {
+        return /* @__PURE__ */ React__default["default"].createElement(core.Element, {
+          is:APPText,
           className: r.classNames,
           text:r.attrs.text,
           textStyle:r.attrs.textstyle,
-          key
-        }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+          fontsize:r.attrs.fontsize,
+          key,
+          id: key,
+          contenteditable:"true"
+        },console.log(r,"r in appText",d,i), /* @__PURE__ */ React__default["default"].createElement(Child, {
           root: r,
           d: d.concat(i)
         }))}else if (r.tagName === "APPAVATAR"){
@@ -874,15 +932,13 @@ const Child = ({ root, d = [0] }) => {
               return /* @__PURE__ */ React__default["default"].createElement(AppButton, {
                 variant:r.attrs.variant,
                 key
-              }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+              },console.log(r,"r in appButton"), /* @__PURE__ */ React__default["default"].createElement(Child, {
                 root: r,
                 d: d.concat(i)
               }))}else if (r.tagName === "APPCARD"){
                 return /* @__PURE__ */ React__default["default"].createElement(AppCard, {
-                  bodyStyle:r.attrs.bodystyle,
-                  wrapperStyle:r.attrs.wrapperstyle,
                   key
-                },console.log(r,"r in app card"), /* @__PURE__ */ React__default["default"].createElement(Child, {
+                }, /* @__PURE__ */ React__default["default"].createElement(Child, {
                   root: r,
                   d: d.concat(i)
                 }))}else if (r.tagName === "CARDBODY"){
@@ -984,12 +1040,15 @@ const Child = ({ root, d = [0] }) => {
                     root: r,
                     d: d.concat(i)
                   }))}else if (r.tagName === "APPIMAGE"){
-                  return /* @__PURE__ */ React__default["default"].createElement(AppImage, {
+                  return /* @__PURE__ */ React__default["default"].createElement(core.Element, {
                     key,
                     src:r.attrs.src,
                     width:r.attrs.width,
                     height:r.attrs.width,
-                    fill:r.attrs.fill
+                    is:Image,
+                    attrs: attrsR,
+                    id: key,
+                    propId: key
                   }, /* @__PURE__ */ React__default["default"].createElement(Child, {
                     root: r,
                     d: d.concat(i)
@@ -1016,7 +1075,49 @@ const Child = ({ root, d = [0] }) => {
                         }, /* @__PURE__ */ React__default["default"].createElement(Child, {
                           root: r,
                           d: d.concat(i)
-                        }))}
+                        }))}else if (r.tagName === "DEVELOPCARD"){
+                       return /* @__PURE__ */ React__default["default"].createElement(DevelopCard, {
+                          key
+                        }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+                          root: r,
+                          d: d.concat(i)
+                        }))}else if (r.tagName === "DIGITALTRANFORMATION"){
+                       return /* @__PURE__ */ React__default["default"].createElement(DigitalTranformation, {
+                         key
+                       }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+                         root: r,
+                         d: d.concat(i)
+                       }))}else if (r.tagName === "HERO"){
+                      return /* @__PURE__ */ React__default["default"].createElement(Hero, {
+                        key
+                      }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+                        root: r,
+                        d: d.concat(i)
+                      }))}else if (r.tagName === "MESAURECRITICAL"){
+                      return /* @__PURE__ */ React__default["default"].createElement(MeasureCritical, {
+                        key
+                      }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+                        root: r,
+                        d: d.concat(i)
+                      }))}else if (r.tagName === "ORGANISATIONS"){
+                      return /* @__PURE__ */ React__default["default"].createElement(Organistions, {
+                        key
+                      }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+                        root: r,
+                        d: d.concat(i)
+                      }))}else if (r.tagName === "TECHNOLOGIES"){
+                      return /* @__PURE__ */ React__default["default"].createElement(Technologies, {
+                        key
+                      }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+                        root: r,
+                        d: d.concat(i)
+                      }))}else if (r.tagName === "TESTIMONIAL"){
+                      return /* @__PURE__ */ React__default["default"].createElement(Testimonial, {
+                        key
+                      }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+                        root: r,
+                        d: d.concat(i)
+                      }))}
                   else {
         return /* @__PURE__ */ React__default["default"].createElement("p", {
           key
@@ -1030,7 +1131,7 @@ const Child = ({ root, d = [0] }) => {
           text: (_b = r.innerText) != null ? _b : "",
           key,
           id: key
-        });
+        },);
       else
         return /* @__PURE__ */ React__default["default"].createElement("p", {
           key
@@ -1106,7 +1207,8 @@ const _resolver = {
   Link,
   Button,
   Image,
-  Svg
+  Svg,
+  APPText
 };
 const defaultValue = {
   components: [],
@@ -1310,7 +1412,6 @@ const fetchJSON = async ({ method, url, data }) => {
     headers: { "Content-Type": "application/json" },
     body: data ? JSON.stringify(data) : void 0
   });
-  //handler(method,url,data)
   return await res.json();
 };
 function debounce(callback, timeout = 1e3) {
@@ -1414,7 +1515,6 @@ const Pages=()=>{
   const handleInputBox=()=>{
         setIsOpen(!isOpen)  
   }
-
   const loadData1 = async (data,standaloneServer=false) => {
       if(data.content!==undefined){
       const content = JSON.parse(data.content);
@@ -1448,19 +1548,7 @@ const Pages=()=>{
   const createNewFile=async(standaloneServer)=>{
     setView(!isView)
     const baseUrl = getBaseUrl(standaloneServer);
-  const DEFAULT_TEMPLATE = {
-    ROOT: {
-      type: { resolvedName: "Container" },
-      isCanvas: true,
-      props: { width: "100%", height: "800px" },
-      displayName: "Container",
-      custom: { displayName: "App" }
-    }
-  };  
-  const jsonString=JSON.stringify(DEFAULT_TEMPLATE)
-  const body={fileName:fileName,fileData:jsonString}
-  //createFile(fileName,jsonString)
-  await fetchJSON({
+  const data = await fetchJSON({
     method: "get",
     url: `${baseUrl}/api/builder/handle?type=new&path=${fileName}`
   });
@@ -1469,10 +1557,23 @@ const Pages=()=>{
 
   return /*@__PURE__*/React__default["default"].createElement("div",{
 
-  },pageList.map((i)=>
+},
+// pageList.map((folder) => (
+  //   React__default["default"].createElement("div",
+  //    {key:folder.folder},
+  //     React__default["default"].createElement("h3",
+  //     ),folder.folder,
+  //     React__default["default"].createElement("ul",
+  //      folder.files.map((file) => (
+  //         React__default["default"].createElement("li",{key:file},file)
+  //       ))
+  //     )
+  //   )
+  // )),
+   pageList.map((i)=>
      /*@__PURE__*/React__default["default"].createElement("p",
-     {className:"h-12 flex text-xl items-center",onClick:(e)=>handleActions(e),style:{backgroundColor:currentPage===i.slice(0,-5)?"#78818D":"",color:currentPage===i?"white":"#1A202C"}},
-     i.slice(0,-5),
+     {className:"h-12 flex text-xl items-center",onClick:(e)=>handleActions(e),style:{backgroundColor:currentPage===i?"#78818D":"",color:currentPage===i?"white":"#1A202C"}},
+     i,
      )
   ),
   /* @__PURE__ */ React__default["default"].createElement("div",
@@ -1893,7 +1994,7 @@ const Dialog = ({ open, setOpen, node, actions }) => {
     placeholder: "Eg. d = 'M150 0 L75 200 L225 200 Z'",
     defaultValue: path,
     onChange: (e) => setPath(e.target.value)
-  }))))),React__default["default"].createElement("div", {
+  }))))), /* @__PURE__ */ React__default["default"].createElement("div", {
     className: "mt-4 flex justify-end"
   }, /* @__PURE__ */ React__default["default"].createElement(DialogPrimitive__namespace.Close, {
     onClick: () => {

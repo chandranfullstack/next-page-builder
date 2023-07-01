@@ -31,12 +31,7 @@ var fsModule=require("fs")
 
 var runtime = {exports: {}};
 
-/**
- * Copyright (c) 2014-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
+
 
 (function (module) {
 	var runtime = (function (exports) {
@@ -925,7 +920,6 @@ var multipart_parser = {};
 	      PART_END: s++,
 	      END: s++
 	    },
-
 	    f = 1,
 	    F =
 	    { PART_BOUNDARY: f,
@@ -995,7 +989,6 @@ var multipart_parser = {};
 	      bufferLength = buffer.length,
 	      c,
 	      cl,
-
 	      mark = function(name) {
 	        self[name+'Mark'] = i;
 	      },
@@ -1368,6 +1361,7 @@ function IncomingForm$1(opts) {
 
   return this;
 }
+console.log(util.inherits,"util.inherits")
 util.inherits(IncomingForm$1, EventEmitter);
 incoming_form.IncomingForm = IncomingForm$1;
 
@@ -2087,11 +2081,11 @@ const config = { api: { bodyParser: false } };
 const development = process.env.NODE_ENV !== "production";
 const getStaticProps = async () => {
   if (development) {
-	const pages=await getPages()
+	const pages=await handler()
     return { props: {pages:pages===undefined?null:pages} };
   } else {
     const data = await loadAllData();
-	const pages=await getPages()
+	const pages=await handler()
     return { props: { data:data,pages:pages } };
   }
 };

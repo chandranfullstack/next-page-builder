@@ -59,6 +59,9 @@ import Organistions from "../../home-components/Organisations"
 import Technologies from "../../home-components/Technologies"
 import Testimonial from "../../home-components/Testimonial"
 import MeasureCritical from '../../home-components/MesaureCritical';
+import HeroSection from '../../page-components/HeroSection';
+import Nav from '../../client-components/AppNav/AppNav';
+
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -106,15 +109,15 @@ var ListIcon__default=/*#__PURE__*/_interopDefaultLegacy(ListIcon)
 
 
 
-const SimpleTooltip = ({ text, children, side, offset }) => /* @__PURE__ */ React__default["default"].createElement(Tooltip__namespace.Provider, null, /* @__PURE__ */ React__default["default"].createElement(Tooltip__namespace.Root, {
+const SimpleTooltip = ({ text, children, side, offset }) =>  React.createElement(Tooltip__namespace.Provider, null,  React.createElement(Tooltip__namespace.Root, {
   delayDuration: 0
-}, /* @__PURE__ */ React__default["default"].createElement(Tooltip__namespace.Trigger, {
+},  React.createElement(Tooltip__namespace.Trigger, {
   asChild: true
-}, children), /* @__PURE__ */ React__default["default"].createElement(Tooltip__namespace.Content, {
+}, children),  React.createElement(Tooltip__namespace.Content, {
   side,
   sideOffset: offset,
   style: { zIndex: 1e5 }
-}, /* @__PURE__ */ React__default["default"].createElement("div", {
+},  React.createElement("div", {
   className: "bg-gray-600 rounded text-white p-2 text-sm"
 }, text))));
 
@@ -147,22 +150,19 @@ var Text = (props) => {
     }, 500);
   };
   const onClick = (e) => {
-    console.log("cliicked",connectors,actions)
     if (enabled) {
-      console.log("if enabled",enabled)
       e.preventDefault();
       e.stopPropagation();
     }
   };
-  return enabled ? /* @__PURE__ */ React__default["default"].createElement("span", {
+  return enabled ?  React.createElement("span", {
     ref: (ref) => connectors.connect(ref),
-    ref:(ref)=>console.log(connectors.connect(ref)),
     contentEditable: true,
     suppressContentEditableWarning: true,
     className: props.className,
     onClick,
     onInput: onChange
-  }, text,) : /* @__PURE__ */ React__default["default"].createElement("span", {
+  }, text,) :  React.createElement("span", {
     className: props.className,
     style: __spreadValues$5({}, props)
   }, text);
@@ -174,6 +174,17 @@ Text.craft = {
   },
   related: {}
 };
+
+function convertToChakraStyle(style) {
+  const convertedStyle = {};
+
+  for (const key in style) {
+    const value = style[key];
+    convertedStyle[key] = Array.isArray(value) ? JSON.stringify(value) : value;
+  }
+  //console.log(convertedStyle,"convertedStyle")
+  return convertedStyle;
+}
 
 var APPText = (props) => {
   var _a, _b;
@@ -188,27 +199,27 @@ var APPText = (props) => {
     }, 500);
   };
   const onClick = (e) => {
-    console.log("cliicked",connectors,actions)
     if (enabled) {
-      console.log("if enabled",enabled)
       e.preventDefault();
       e.stopPropagation();
     }
   };
-  console.log(props)
-  return enabled ? /* @__PURE__ */ React__default["default"].createElement(AppText, {
+  return enabled ?  React.createElement(AppText, {
     ref: (ref) => connectors.connect(ref),
-    ref:(ref)=>console.log(connectors.connect(ref)),
     contentEditable: true,
     suppressContentEditableWarning: true,
-    textStyle:props.textstyle,
-    customStyle:{fontSize:props.fontsize},
+    textStyle:props.textStyle,
+    color:props.color,
+    fontSize:props.fontsize,
+    as:props.as,
     onClick,
     onInput: onChange
-  }, text,) : /* @__PURE__ */ React__default["default"].createElement(AppText, {
+  }, text) :  React.createElement(AppText, {
     className: props.className,
     text:props.text,
-    textStyle:props.textstyle,
+    textStyle:props.textStyle,
+    customStyle:{w:props.w,pr:props.pr,mt:props.mt,as:props.as,fontWeight:props.fontWeight,lineHeight:props.lineHeight},
+    as:props.as,
     style: __spreadValues$5({}, props)
   }, text);
 };
@@ -271,13 +282,13 @@ const Link = ({ r, d, i, propId }) => {
     if (!enabled)
       handleClick$1(node.data.props[propId]);
   };
-  return /* @__PURE__ */ React__default["default"].createElement("a", __spreadProps$4(__spreadValues$4({
+  return  React.createElement("a", __spreadProps$4(__spreadValues$4({
     ref: (ref) => connectors.connect(ref)
   }, attrsR), {
     href: (_b = node.data.props[propId]) == null ? void 0 : _b.link,
     className: r.classNames,
     onClick
-  }), /* @__PURE__ */ React__default["default"].createElement(Child, {
+  }),  React.createElement(Child, {
     root: r,
     d: d.concat(i)
   }));
@@ -362,12 +373,12 @@ const Button = ({ r, d, i, propId }) => {
     if (!enabled)
       handleClick(node.data.props[propId], e);
   };
-  return /* @__PURE__ */ React__default["default"].createElement("button", __spreadProps$3(__spreadValues$3({
+  return  React.createElement("button", __spreadProps$3(__spreadValues$3({
     ref: (ref) => connectors.connect(ref)
   }, attrsR), {
     className: r.classNames,
     onClick
-  }), /* @__PURE__ */ React__default["default"].createElement(Child, {
+  }),  React.createElement(Child, {
     root: r,
     d: d.concat(i)
   }));
@@ -418,7 +429,7 @@ const Image = ({ d: _d, i: _i, classNames, attrs, propId }) => {
   const { node } = core.useNode((node2) => ({ node: node2 }));
   const url = (_b = (_a = node.data.props[propId]) == null ? void 0 : _a.url) != null ? _b : attrs.src;
   const _c = attrs, attrsR = __objRest$1(_c, ["class"]);
-  return /* @__PURE__ */ React__default["default"].createElement("img", __spreadProps$2(__spreadValues$2({
+  return  React.createElement("img", __spreadProps$2(__spreadValues$2({
     ref: (ref) => connectors.connect(ref),
     className: classNames
   }, attrsR), {
@@ -439,7 +450,7 @@ const Svg = ({ r, propId }) => {
   const { connectors, node } = core.useNode((node2) => ({ node: node2 }));
   const path = (_a = node.data.props[propId]) == null ? void 0 : _a.path;
   const nodes = r.childNodes.filter((c) => c.tagName === "PATH");
-  return /* @__PURE__ */ React__default["default"].createElement("svg", {
+  return  React.createElement("svg", {
     ref: (ref) => connectors.connect(ref),
     className: r.classNames,
     key: propId,
@@ -447,7 +458,7 @@ const Svg = ({ r, propId }) => {
     viewBox: r.attrs["viewbox"],
     stroke: r.attrs["stroke"],
     xmlns: r.attrs["xmlns"]
-  }, nodes.filter((_, i) => i === 0 || !path).map((c, i) => /* @__PURE__ */ React__default["default"].createElement("path", {
+  }, nodes.filter((_, i) => i === 0 || !path).map((c, i) =>  React.createElement("path", {
     key: propId + i.toString(),
     d: path != null ? path : c.attrs["d"],
     fillRule: c.attrs["fill-rule"],
@@ -519,85 +530,85 @@ function convertChakraUIToJSON(chakraUIObject){
 const Child = ({ root, d = [0] }) => {
   if (!root || (root == null ? void 0 : root.childNodes.length) === 0)
     return null;
-  return /* @__PURE__ */ React__default["default"].createElement(React__default["default"].Fragment, null, Array.from(root == null ? void 0 : root.childNodes).map((r, i) => {
+  return  React.createElement(React.Fragment, null, Array.from(root == null ? void 0 : root.childNodes).map((r, i) => {
     var _b;
     const key = d.concat(i).join("");
     const _a = r.attrs, attrsR = __objRest(_a, ["class"]);
     if (r.nodeType === 1) {
       if (r.tagName === "DIV")
-        return /* @__PURE__ */ React__default["default"].createElement("div", {
+        return  React.createElement("div", {
           className: r.classNames,
           key
-        }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+        },  React.createElement(Child, {
           root: r,
           d: d.concat(i)
         }));
       else if (r.tagName === "H1")
-        return /* @__PURE__ */ React__default["default"].createElement("h1", {
+        return  React.createElement("h1", {
           className: r.classNames,
           key
-        }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+        },  React.createElement(Child, {
           root: r,
           d: d.concat(i)
         }));
       else if (r.tagName === "SECTION")
-        return /* @__PURE__ */ React__default["default"].createElement("section", {
+        return  React.createElement("section", {
           className: r.classNames,
           key
-        }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+        },  React.createElement(Child, {
           root: r,
           d: d.concat(i)
         }));
       else if (r.tagName === "H2")
-        return /* @__PURE__ */ React__default["default"].createElement("h2", {
+        return  React.createElement("h2", {
           className: r.classNames,
           key
-        }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+        },  React.createElement(Child, {
           root: r,
           d: d.concat(i)
         }));
       else if (r.tagName === "H3")
-        return /* @__PURE__ */ React__default["default"].createElement("h3", {
+        return  React.createElement("h3", {
           className: r.classNames,
           key
-        }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+        },  React.createElement(Child, {
           root: r,
           d: d.concat(i)
         }));
       else if (r.tagName === "H4")
-        return /* @__PURE__ */ React__default["default"].createElement("h4", {
+        return  React.createElement("h4", {
           className: r.classNames,
           key
-        }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+        },  React.createElement(Child, {
           root: r,
           d: d.concat(i)
         }));
       else if (r.tagName === "H5")
-        return /* @__PURE__ */ React__default["default"].createElement("h5", {
+        return  React.createElement("h5", {
           className: r.classNames,
           key
-        }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+        },  React.createElement(Child, {
           root: r,
           d: d.concat(i)
         }));
       else if (r.tagName === "H6")
-        return /* @__PURE__ */ React__default["default"].createElement("h6", {
+        return  React.createElement("h6", {
           className: r.classNames,
           key
-        }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+        },  React.createElement(Child, {
           root: r,
           d: d.concat(i)
         }));
       else if (r.tagName === "P")
-        return /* @__PURE__ */ React__default["default"].createElement("p", {
+        return  React.createElement("p", {
           className: r.classNames,
           key
-        }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+        },  React.createElement(Child, {
           root: r,
           d: d.concat(i)
         }));
       else if (r.tagName === "A")
-        return /* @__PURE__ */ React__default["default"].createElement(core.Element, {
+        return  React.createElement(core.Element, {
           is: Link,
           key,
           r,
@@ -607,95 +618,95 @@ const Child = ({ root, d = [0] }) => {
           propId: key
         });
       else if (r.tagName === "SPAN")
-        return /* @__PURE__ */ React__default["default"].createElement("span", {
+        return  React.createElement("span", {
           className: r.classNames,
           key
-        }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+        },  React.createElement(Child, {
           root: r,
           d: d.concat(i)
         }));
       else if (r.tagName === "STRONG")
-        return /* @__PURE__ */ React__default["default"].createElement("strong", {
+        return  React.createElement("strong", {
           className: r.classNames,
           key
-        }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+        },  React.createElement(Child, {
           root: r,
           d: d.concat(i)
         }));
       else if (r.tagName === "HEADER")
-        return /* @__PURE__ */ React__default["default"].createElement("header", {
+        return  React.createElement("header", {
           className: r.classNames,
           key
-        }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+        },  React.createElement(Child, {
           root: r,
           d: d.concat(i)
         }));
       else if (r.tagName === "FOOTER")
-        return /* @__PURE__ */ React__default["default"].createElement("footer", {
+        return  React.createElement("footer", {
           className: r.classNames,
           key
-        }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+        },  React.createElement(Child, {
           root: r,
           d: d.concat(i)
         }));
       else if (r.tagName === "NAV")
-        return /* @__PURE__ */ React__default["default"].createElement("nav", {
+        return  React.createElement("nav", {
           className: r.classNames,
           key
-        }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+        },  React.createElement(Child, {
           root: r,
           d: d.concat(i)
         }));
       else if (r.tagName === "ASIDE")
-        return /* @__PURE__ */ React__default["default"].createElement("aside", {
+        return  React.createElement("aside", {
           className: r.classNames,
           key
-        }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+        },  React.createElement(Child, {
           root: r,
           d: d.concat(i)
         }));
       else if (r.tagName === "DETAILS")
-        return /* @__PURE__ */ React__default["default"].createElement("details", {
+        return  React.createElement("details", {
           className: r.classNames,
           key
-        }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+        },  React.createElement(Child, {
           root: r,
           d: d.concat(i)
         }));
       else if (r.tagName === "SUMMARY")
-        return /* @__PURE__ */ React__default["default"].createElement("summary", {
+        return  React.createElement("summary", {
           className: r.classNames,
           key
-        }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+        },  React.createElement(Child, {
           root: r,
           d: d.concat(i)
         }));
       else if (r.tagName === "BLOCKQUOTE")
-        return /* @__PURE__ */ React__default["default"].createElement("blockquote", __spreadValues$1({
+        return  React.createElement("blockquote", __spreadValues$1({
           className: r.classNames,
           key
-        }, attrsR), /* @__PURE__ */ React__default["default"].createElement(Child, {
+        }, attrsR),  React.createElement(Child, {
           root: r,
           d: d.concat(i)
         }));
       else if (r.tagName === "INPUT")
-        return /* @__PURE__ */ React__default["default"].createElement("input", __spreadValues$1({
+        return  React.createElement("input", __spreadValues$1({
           className: r.classNames,
           key
         }, attrsR));
       else if (r.tagName === "LABEL")
-        return /* @__PURE__ */ React__default["default"].createElement("label", __spreadValues$1({
+        return  React.createElement("label", __spreadValues$1({
           className: r.classNames,
           key
         }, attrsR), r.innerText);
       else if (r.tagName === "TEXTAREA")
-        return /* @__PURE__ */ React__default["default"].createElement("textarea", __spreadValues$1({
+        return  React.createElement("textarea", __spreadValues$1({
           defaultValue: r.innerText,
           className: r.classNames,
           key
         }, attrsR));
       else if (r.tagName === "BUTTON")
-        return /* @__PURE__ */ React__default["default"].createElement(core.Element, {
+        return  React.createElement(core.Element, {
           is: Button,
           key,
           r,
@@ -705,15 +716,15 @@ const Child = ({ root, d = [0] }) => {
           propId: key
         });
       else if (r.tagName === "FORM")
-        return /* @__PURE__ */ React__default["default"].createElement("form", __spreadValues$1({
+        return  React.createElement("form", __spreadValues$1({
           className: r.classNames,
           key
-        }, attrsR), /* @__PURE__ */ React__default["default"].createElement(Child, {
+        }, attrsR),  React.createElement(Child, {
           root: r,
           d: d.concat(i)
         }));
       else if (r.tagName === "SVG")
-        return /* @__PURE__ */ React__default["default"].createElement(core.Element, {
+        return  React.createElement(core.Element, {
           is: Svg,
           key,
           r,
@@ -721,16 +732,16 @@ const Child = ({ root, d = [0] }) => {
           propId: key
         });
       else if (r.tagName === "ADDRESS")
-        return /* @__PURE__ */ React__default["default"].createElement("address", __spreadValues$1({
+        return  React.createElement("address", __spreadValues$1({
           className: r.classNames,
           key
-        }, attrsR), /* @__PURE__ */ React__default["default"].createElement(Text, {
+        }, attrsR),  React.createElement(Text, {
           text: r.innerText,
           key,
           id: key
         }));
       else if (r.tagName === "IMG") {
-        return /* @__PURE__ */ React__default["default"].createElement(core.Element, {
+        return  React.createElement(core.Element, {
           is: Image,
           key,
           d,
@@ -741,252 +752,294 @@ const Child = ({ root, d = [0] }) => {
           propId: key
         });
       } else if (r.tagName === "ARTICLE") {
-        return /* @__PURE__ */ React__default["default"].createElement("article", {
+        return  React.createElement("article", {
           className: r.classNames,
           key
-        }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+        },  React.createElement(Child, {
           root: r,
           d: d.concat(i)
         }));
       } else if (r.tagName === "DL") {
-        return /* @__PURE__ */ React__default["default"].createElement("article", {
+        return  React.createElement("article", {
           className: r.classNames,
           key
-        }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+        },  React.createElement(Child, {
           root: r,
           d: d.concat(i)
         }));
       } else if (r.tagName === "DD") {
-        return /* @__PURE__ */ React__default["default"].createElement("article", {
+        return  React.createElement("article", {
           className: r.classNames,
           key
-        }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+        },  React.createElement(Child, {
           root: r,
           d: d.concat(i)
         }));
       } else if (r.tagName === "DT") {
-        return /* @__PURE__ */ React__default["default"].createElement("article", {
+        return  React.createElement("article", {
           className: r.classNames,
           key
-        }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+        },  React.createElement(Child, {
           root: r,
           d: d.concat(i)
         }));
       } else if (r.tagName === "SCRIPT") {
         return null;
       } else if (r.tagName === "LINK") {
-        return /* @__PURE__ */ React__default["default"].createElement("link", __spreadProps$1(__spreadValues$1({
+        return  React.createElement("link", __spreadProps$1(__spreadValues$1({
           className: r.classNames
         }, attrsR), {
           key
         }));
       } else if (r.tagName === "BR") {
-        return /* @__PURE__ */ React__default["default"].createElement("br", {
+        return  React.createElement("br", {
           className: r.classNames,
           key
         });
       } else if (r.tagName === "UL") {
-        return /* @__PURE__ */ React__default["default"].createElement("ul", {
+        return  React.createElement("ul", {
           className: r.classNames,
           key
-        }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+        },  React.createElement(Child, {
           root: r,
           d: d.concat(i)
         }));
       } else if (r.tagName === "LI") {
-        return /* @__PURE__ */ React__default["default"].createElement("li", {
+        return  React.createElement("li", {
           className: r.classNames,
           key
-        }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+        },  React.createElement(Child, {
           root: r,
           d: d.concat(i)
         }));
       } else if (r.tagName === "CITE") {
-        return /* @__PURE__ */ React__default["default"].createElement("cite", {
+        return  React.createElement("cite", {
           className: r.classNames,
           key
-        }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+        },  React.createElement(Child, {
           root: r,
           d: d.concat(i)
         }));
       } else if (r.tagName === "HR") {
-        return /* @__PURE__ */ React__default["default"].createElement("hr", {
+        return  React.createElement("hr", {
           className: r.classNames,
           key
         });
       } else if (r.tagName === "IFRAME") {
-        return /* @__PURE__ */ React__default["default"].createElement("iframe", __spreadProps$1(__spreadValues$1({
+        return  React.createElement("iframe", __spreadProps$1(__spreadValues$1({
           className: r.classNames
         }, attrsR), {
           key
         }));
       } else if (r.tagName === "STYLE") {
-        return /* @__PURE__ */ React__default["default"].createElement("style", {
+        return  React.createElement("style", {
           key
         }, r.innerText);
       } else if (r.tagName === "TABLE") {
-        return /* @__PURE__ */ React__default["default"].createElement("table", {
+        return  React.createElement("table", {
           className: r.classNames,
           key
-        }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+        },  React.createElement(Child, {
           root: r,
           d: d.concat(i)
         }));
       } else if (r.tagName === "THEAD") {
-        return /* @__PURE__ */ React__default["default"].createElement("thead", __spreadProps$1(__spreadValues$1({
+        return  React.createElement("thead", __spreadProps$1(__spreadValues$1({
           className: r.classNames
         }, attrsR), {
           key
-        }), /* @__PURE__ */ React__default["default"].createElement(Child, {
+        }),  React.createElement(Child, {
           root: r,
           d: d.concat(i)
         }));
       } else if (r.tagName === "TBODY") {
-        return /* @__PURE__ */ React__default["default"].createElement("tbody", {
+        return  React.createElement("tbody", {
           className: r.classNames,
           key
-        }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+        },  React.createElement(Child, {
           root: r,
           d: d.concat(i)
         }));
       } else if (r.tagName === "TR") {
-        return /* @__PURE__ */ React__default["default"].createElement("tr", {
+        return  React.createElement("tr", {
           className: r.classNames,
           key
-        }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+        },  React.createElement(Child, {
           root: r,
           d: d.concat(i)
         }));
       } else if (r.tagName === "TD") {
-        return /* @__PURE__ */ React__default["default"].createElement("td", {
+        return  React.createElement("td", {
           className: r.classNames,
           key
-        }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+        },  React.createElement(Child, {
           root: r,
           d: d.concat(i)
         }));
       } else if (r.tagName === "TH") {
-        return /* @__PURE__ */ React__default["default"].createElement("th", {
+        return  React.createElement("th", {
           className: r.classNames,
           key
-        }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+        },  React.createElement(Child, {
           root: r,
           d: d.concat(i)
         }));
       }else if (r.tagName === "APPBOX"){
-      return /* @__PURE__ */ React__default["default"].createElement(AppBox, {
-        sx:r.attrs,
-        props:r.attrs,
+      return  React.createElement(AppBox, {
+        props:r.attrs, 
+        customStyle:{backgroundImage:attrsR.backgroundimage,
+                    backgroundRepeat:attrsR.backgroundrepeat,
+                    backgroundSize:attrsR.backgroundsize,
+                    backgroundPosition:attrsR.backgroundposition,
+                    paddingBottom:attrsR.paddingbottom,
+                    w:attrsR.w,
+                    width:attrsR.width,
+                    py:attrsR.py,
+                    pl:attrsR.pl,
+                    mt:attrsR.mt,
+                    top:attrsR.top,
+                    position:attrsR.position,
+                    zIndex:attrsR.zindex,
+                    width:attrsR.width,
+                    backgroundColor:attrsR.backgroundcolor,
+                    role:attrsR.role
+                  },
         key
-      }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+      },  React.createElement(Child, {
         root: r,
         d: d.concat(i)
       }))}else if (r.tagName === "APPCONTAINER"){
-          return /* @__PURE__ */ React__default["default"].createElement(AppContainer, {
+          return  React.createElement(AppContainer, {
             sx:r.attrs,
             props:r.attrs,
             maxW:r.attrs.maxw,
             key
-          }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+          },  React.createElement(Child, {
             root: r,
             d: d.concat(i)
-          }))}else if (r.tagName === "APPFLEX"){
-            return /* @__PURE__ */ React__default["default"].createElement(AppFlex, {
-              sx:r.attrs,
-              direction:r.attrs.direction,
-              gap:r.attrs.gap,
-              color:r.attrs.color,
-              children:r.attrs.childNodes,
+          }))}else if (r.tagName === "APPNAV"){
+            return  React.createElement(Nav, {
+              logo:attrsR.logo,
+              color:attrsR.color,
               key
-            }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+            },  React.createElement(Child, {
+              root: r,
+              d: d.concat(i)
+            }))}else if (r.tagName === "APPFLEX"){
+            return  React.createElement(AppFlex, {   
+              children:attrsR.childNodes,
+              customStyle:{
+                backgroundImage:attrsR.backgroundimage,
+                backgroundRepeat:attrsR.backgroundrepeat,
+                backgroundSize:attrsR.backgroundsize,
+                alignItems:attrsR.alignitems,
+                gap:attrsR.gap,
+                direction:attrsR.direction,
+                color:attrsR.color,
+                mt:attrsR.mt, 
+                backgroundColor:attrsR.bg,
+                pt:attrsR.pt,
+                pb:attrsR.pb,
+                width:attrsR.width
+              },
+              direction:attrsR.direction,
+              justifyContent:attrsR.justifycontent,
+              key
+            },React.createElement(Child, {
               root: r,
               d: d.concat(i)
             }))}else if (r.tagName === "APPTEXT"){
-        return /* @__PURE__ */ React__default["default"].createElement(core.Element, {
+        return  React.createElement(core.Element, {
           is:APPText,
-          className: r.classNames,
           text:r.attrs.text,
-          textStyle:r.attrs.textstyle,
-          fontsize:r.attrs.fontsize,
+          textStyle:attrsR.textstyle,
+          fontsize:attrsR.fontsize,
+          color:attrsR.color,
+          as:attrsR.as,
+          w:attrsR.w,
+          pr:attrsR.pr,
+          mt:attrsR.mt,
+          fontWeight:attrsR.fontweight,
+          lineHeight:attrsR.lineheight,
           key,
           id: key,
           contenteditable:"true"
-        },console.log(r,"r in appText",d,i), /* @__PURE__ */ React__default["default"].createElement(Child, {
+        },  React.createElement(Child, {
           root: r,
           d: d.concat(i)
         }))}else if (r.tagName === "APPAVATAR"){
-          return /* @__PURE__ */ React__default["default"].createElement(AppAvatar, {
+          return  React.createElement(AppAvatar, {
             name:r.attrs.name,
             link:r.attrs.link,
             key
-          }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+          },  React.createElement(Child, {
             root: r,
             d: d.concat(i)
           }))}else if (r.tagName === "APPBADGE"){
-            return /* @__PURE__ */ React__default["default"].createElement(AppBadge, {
+            return  React.createElement(AppBadge, {
               key
-            }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+            },  React.createElement(Child, {
               root: r,
               d: d.concat(i)
             }))}else if (r.tagName === "APPBUTTON"){
-              return /* @__PURE__ */ React__default["default"].createElement(AppButton, {
+              return  React.createElement(AppButton, {
                 variant:r.attrs.variant,
                 key
-              },console.log(r,"r in appButton"), /* @__PURE__ */ React__default["default"].createElement(Child, {
+              },  React.createElement(Child, {
                 root: r,
                 d: d.concat(i)
               }))}else if (r.tagName === "APPCARD"){
-                return /* @__PURE__ */ React__default["default"].createElement(AppCard, {
+                return  React.createElement(AppCard, {
                   key
-                }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+                },  React.createElement(Child, {
                   root: r,
                   d: d.concat(i)
                 }))}else if (r.tagName === "CARDBODY"){
-                  return /* @__PURE__ */ React__default["default"].createElement(AppCard, {
+                  return  React.createElement(AppCard, {
                     key
-                  }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+                  },  React.createElement(Child, {
                     root: r,
                     d: d.concat(i)
                   }))}else if (r.tagName === "APPCAROUSEL"){
-                    return /* @__PURE__ */ React__default["default"].createElement(AppCarousel, {
+                    return  React.createElement(AppCarousel, {
                       key
-                    }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+                    },  React.createElement(Child, {
                       root: r,
                       d: d.concat(i)
                     }))}else if (r.tagName === "APPDIVIDER"){
-                      return /* @__PURE__ */ React__default["default"].createElement(AppDivider, {
+                      return  React.createElement(AppDivider, {
                         sx:r.attrs.customstyle,
                         key
-                      }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+                      },  React.createElement(Child, {
                         root: r,
                         d: d.concat(i)
                       }))}else if (r.tagName === "APPDRAWER"){
-                  return /* @__PURE__ */ React__default["default"].createElement(AppDrawer, {
+                  return  React.createElement(AppDrawer, {
                     isOpen:r.attrs.isopen,
                     isClose:r.attrs.isclose,
                     color:r.attrs.color,
                     key
-                  }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+                  },  React.createElement(Child, {
                     root: r,
                     d: d.concat(i)
                   }))}else if (r.tagName === "APPFOOTER"){
-                  return /* @__PURE__ */ React__default["default"].createElement(AppFooter, {
+                  return  React.createElement(AppFooter, {
                     key
-                  }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+                  },  React.createElement(Child, {
                     root: r,
                     d: d.concat(i)
                   }))}else if (r.tagName === "APPGRID"){
-                  return /* @__PURE__ */ React__default["default"].createElement(AppGrid, {
+                  return  React.createElement(AppGrid, {
                     gap:r.attrs.gap,
                     templateRows:r.attrs.templaterows,
                     templateColumns:r.attrs.templatecolumns,
                     customstyle:r.attrs.customstyle,
                     key
-                  }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+                  },  React.createElement(Child, {
                     root: r,
                     d: d.concat(i)
                   }))}else if (r.tagName === "APPGRIDITEM"){
-                  return /* @__PURE__ */ React__default["default"].createElement(AppGridItem, {
+                  return  React.createElement(AppGridItem, {
                     key,
                     colspan:r.attrs.colspan,
                     rowspan:r.attrs.rowspan,
@@ -995,52 +1048,52 @@ const Child = ({ root, d = [0] }) => {
                     rowStart:r.attr.rowstart,
                     h:r.attrs.h,
                     border:r.attrs.border
-                  }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+                  },  React.createElement(Child, {
                     root: r,
                     d: d.concat(i)
                   }))}else if (r.tagName === "APPLINK"){
-                  return /* @__PURE__ */ React__default["default"].createElement(AppLink, {
+                  return  React.createElement(AppLink, {
                     key,
                     href:r.attrs.href,
                     customStyle:r.attrs.customstyle
-                  }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+                  },  React.createElement(Child, {
                     root: r,
                     d: d.concat(i)
                   }))}else if (r.tagName === "APPLIST"){
-                    return /* @__PURE__ */ React__default["default"].createElement(AppList, {
+                    return  React.createElement(AppList, {
                       key,
                       list:r.attrs.list
-                    }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+                    },  React.createElement(Child, {
                       root: r,
                       d: d.concat(i)
                     }))}else if (r.tagName === "APPUNORLIST"){
-                      return /* @__PURE__ */ React__default["default"].createElement(AppUnOrList, {
+                      return  React.createElement(AppUnOrList, {
                         key,
                         list:r.attrs.list
-                      }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+                      },  React.createElement(Child, {
                         root: r,
                         d: d.concat(i)
                       }))}else if (r.tagName === "APPLISTItEM"){
-                      return /* @__PURE__ */ React__default["default"].createElement(AppListItem,{
+                      return  React.createElement(AppListItem,{
                         key,
-                      }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+                      },  React.createElement(Child, {
                         root: r,
                         d: d.concat(i)
                       }))}else if (r.tagName === "APPSEARCH"){
-                        return /* @__PURE__ */ React__default["default"].createElement(AppSearch, {
+                        return  React.createElement(AppSearch, {
                           bordercolor:r.attrs.bordercolor,
                           key
-                        }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+                        },  React.createElement(Child, {
                           root: r,
                           d: d.concat(i)
                   }))}else if (r.tagName === "APPPROGRESS"){
-                  return /* @__PURE__ */ React__default["default"].createElement(AppProgress, {
+                  return  React.createElement(AppProgress, {
                     key
-                  }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+                  },  React.createElement(Child, {
                     root: r,
                     d: d.concat(i)
                   }))}else if (r.tagName === "APPIMAGE"){
-                  return /* @__PURE__ */ React__default["default"].createElement(core.Element, {
+                  return  React.createElement(core.Element, {
                     key,
                     src:r.attrs.src,
                     width:r.attrs.width,
@@ -1049,77 +1102,115 @@ const Child = ({ root, d = [0] }) => {
                     attrs: attrsR,
                     id: key,
                     propId: key
-                  }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+                  },  React.createElement(Child, {
                     root: r,
                     d: d.concat(i)
                   }))}else if (r.tagName === "REDIRECTSTRIPE"){
-                    return /* @__PURE__ */ React__default["default"].createElement(RedirectStripe, {
+                    return  React.createElement(RedirectStripe, {
                       key,
                       src:r.attrs.src,
                       width:r.attrs.width,
                       height:r.attrs.width
-                    }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+                    },  React.createElement(Child, {
                       root: r,
                       d: d.concat(i)
                     }))}else if (r.tagName === "APPICON"){
-                      return /* @__PURE__ */ React__default["default"].createElement(AppIcon, {
+                    return  React.createElement(AppIcon, {
+                      key,
+                      index:r.attrs.index,
+                      size:r.attrs.size
+                    },  React.createElement(Child, {
+                      root: r,
+                      d: d.concat(i)
+                    }))}else if (r.tagName === "GRADIENTTEXT"){
+                      return  React.createElement(core.Element, {
+                        is:APPText,
+                        text:r.attrs.text,
+                        textStyle:attrsR.textstyle,
+                        fontsize:attrsR.fontsize,
+                        color:attrsR.color,
+                        as:attrsR.as,
+                        w:attrsR.w,
+                        pr:attrsR.pr,
+                        mt:attrsR.mt,
+                        fontWeight:attrsR.fontweight,
+                        lineHeight:attrsR.lineheight,
                         key,
-                        index:r.attrs.index,
-                        size:r.attrs.size
-                      }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+                        id: key,
+                        contenteditable:"true"
+                      },  React.createElement(Child, {
                         root: r,
                         d: d.concat(i)
-                      }))}else if (r.tagName === "APPNAV"){
-                        return /* @__PURE__ */ React__default["default"].createElement(AppNav, {
+                      }))}else if (r.tagName === "GRADIENTTEXT2"){
+                        return  React.createElement(core.Element, {
+                          is:APPText,
+                          text:r.attrs.text,
+                          textStyle:attrsR.textstyle,
+                          fontsize:attrsR.fontsize,
+                          color:attrsR.color,
+                          as:attrsR.as,
+                          w:attrsR.w,
+                          pr:attrsR.pr,
+                          mt:attrsR.mt,
+                          fontWeight:attrsR.fontweight,
+                          lineHeight:attrsR.lineheight,
+                          key,
+                          id: key,
+                          contenteditable:"true"
+                        },  React.createElement(Child, {
+                          root: r,
+                          d: d.concat(i)
+                        }))}else if (r.tagName === "APPNAV"){
+                        return  React.createElement(AppNav, {
                           key
-                        }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+                        },  React.createElement(Child, {
                           root: r,
                           d: d.concat(i)
                         }))}else if (r.tagName === "DEVELOPCARD"){
-                       return /* @__PURE__ */ React__default["default"].createElement(DevelopCard, {
+                       return  React.createElement(DevelopCard, {
                           key
-                        }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+                        },  React.createElement(Child, {
                           root: r,
                           d: d.concat(i)
                         }))}else if (r.tagName === "DIGITALTRANFORMATION"){
-                       return /* @__PURE__ */ React__default["default"].createElement(DigitalTranformation, {
+                       return  React.createElement(DigitalTranformation, {
                          key
-                       }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+                       },  React.createElement(Child, {
                          root: r,
                          d: d.concat(i)
                        }))}else if (r.tagName === "HERO"){
-                      return /* @__PURE__ */ React__default["default"].createElement(Hero, {
+                      return  React.createElement(Hero, {
                         key
-                      }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+                      },  React.createElement(Child, {
                         root: r,
                         d: d.concat(i)
                       }))}else if (r.tagName === "MESAURECRITICAL"){
-                      return /* @__PURE__ */ React__default["default"].createElement(MeasureCritical, {
+                      return  React.createElement(MeasureCritical, {
                         key
-                      }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+                      },  React.createElement(Child, {
                         root: r,
                         d: d.concat(i)
                       }))}else if (r.tagName === "ORGANISATIONS"){
-                      return /* @__PURE__ */ React__default["default"].createElement(Organistions, {
+                      return  React.createElement(Organistions, {
                         key
-                      }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+                      },  React.createElement(Child, {
                         root: r,
                         d: d.concat(i)
                       }))}else if (r.tagName === "TECHNOLOGIES"){
-                      return /* @__PURE__ */ React__default["default"].createElement(Technologies, {
+                      return  React.createElement(Technologies, {
                         key
-                      }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+                      },  React.createElement(Child, {
                         root: r,
                         d: d.concat(i)
                       }))}else if (r.tagName === "TESTIMONIAL"){
-                      return /* @__PURE__ */ React__default["default"].createElement(Testimonial, {
+                      return  React.createElement(Testimonial, {
                         key
-                      }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+                      },  React.createElement(Child, {
                         root: r,
                         d: d.concat(i)
                       }))}
                   else {
-        return /* @__PURE__ */ React__default["default"].createElement("p", {
+        return  React.createElement("p", {
           key
         }, "Unknown container");
       }
@@ -1127,17 +1218,17 @@ const Child = ({ root, d = [0] }) => {
       if (r.innerText.trim() === "")
         return null;
       if (r.constructor === "TextNode" || r.constructor === "t")
-        return /* @__PURE__ */ React__default["default"].createElement(Text, {
+        return  React.createElement(Text, {
           text: (_b = r.innerText) != null ? _b : "",
           key,
           id: key
         },);
       else
-        return /* @__PURE__ */ React__default["default"].createElement("p", {
+        return  React.createElement("p", {
           key
         }, "Unknown node");
     } else {
-      return /* @__PURE__ */ React__default["default"].createElement("p", {
+      return  React.createElement("p", {
         key
       }, "Unknown type");
     }
@@ -1147,17 +1238,17 @@ const Child = ({ root, d = [0] }) => {
 
 const Component = ({ root }) => {
   const { connectors, node } = core.useNode((node2) => ({ node: node2 }));
-  return /* @__PURE__ */ React__default["default"].createElement("div", {
+  return  React.createElement("div", {
     id: node.data.props.id,
     ref: (ref) => connectors.connect(ref)
-  }, /* @__PURE__ */ React__default["default"].createElement(Child, {
+  },  React.createElement(Child, {
     root
   }));
 };
 
 const Container = ({ children }) => {
   const { connectors } = core.useNode();
-  return /* @__PURE__ */ React__default["default"].createElement("div", {
+  return  React.createElement("div", {
     ref: (ref) => connectors.connect(ref),
     style: { width: "100%", minHeight: "800px" },
     className: "bg-wheate shadow-2xl"
@@ -1274,28 +1365,28 @@ const ThemeProvider = ({ children }) => {
     pageChange,
     setPageChange
   };
-  return /* @__PURE__ */ React__default["default"].createElement(ThemeContext.Provider, {
+  return  React.createElement(ThemeContext.Provider, {
     value
   }, children);
 };
 
 const Select = ({ defaultValue, values, open, setOpen, onChange }) => {
-  return /* @__PURE__ */ React__default["default"].createElement(SelectPrimitive__namespace.Root, {
+  return  React.createElement(SelectPrimitive__namespace.Root, {
     defaultValue,
     onValueChange: onChange,
     open,
     onOpenChange: (e) => setOpen(e)
-  }, /* @__PURE__ */ React__default["default"].createElement(SelectPrimitive__namespace.Content, {
+  },  React.createElement(SelectPrimitive__namespace.Content, {
     className: "z-50 top-2"
-  }, /* @__PURE__ */ React__default["default"].createElement(SelectPrimitive__namespace.Viewport, {
+  },  React.createElement(SelectPrimitive__namespace.Viewport, {
     className: "bg-white p-2 rounded-lg shadow-lg"
-  }, /* @__PURE__ */ React__default["default"].createElement(SelectPrimitive__namespace.Group, null, values.map((f, i) => /* @__PURE__ */ React__default["default"].createElement(SelectPrimitive__namespace.Item, {
+  },  React.createElement(SelectPrimitive__namespace.Group, null, values.map((f, i) =>  React.createElement(SelectPrimitive__namespace.Item, {
     key: i,
     value: f,
     className: cx__default["default"]("relative flex items-center px-8 py-2 rounded-md text-sm text-gray-700 font-medium", "hover:opacity-70 cursor-pointer select-none")
-  }, /* @__PURE__ */ React__default["default"].createElement(SelectPrimitive__namespace.ItemText, null, f), /* @__PURE__ */ React__default["default"].createElement(SelectPrimitive__namespace.ItemIndicator, {
+  },  React.createElement(SelectPrimitive__namespace.ItemText, null, f),  React.createElement(SelectPrimitive__namespace.ItemIndicator, {
     className: "absolute left-2 inline-flex items-center"
-  }, /* @__PURE__ */ React__default["default"].createElement(CheckIcon__default["default"], null))))))));
+  },  React.createElement(CheckIcon__default["default"], null))))))));
 };
 
 const Header = () => {
@@ -1309,78 +1400,78 @@ const Header = () => {
   const togglePreview = () => {
     actions.setOptions((o) => o.enabled = !enabled);
   };
-  return /* @__PURE__ */ React__default["default"].createElement("div", {
+  return  React.createElement("div", {
     className: "transition w-full bg-gray-300"
-  }, /* @__PURE__ */ React__default["default"].createElement("div", {
+  },  React.createElement("div", {
     className: "flex px-4 py-2 justify-end"
-  }, enabled && /* @__PURE__ */ React__default["default"].createElement("div", {
+  }, enabled &&  React.createElement("div", {
     className: "flex-1 flex"
-  }, /* @__PURE__ */ React__default["default"].createElement(SimpleTooltip, {
+  },  React.createElement(SimpleTooltip, {
     text: "Undo",
     side: "bottom",
     offset: 4
-  }, /* @__PURE__ */ React__default["default"].createElement("a", {
+  },  React.createElement("a", {
     className: ` ${query.history.canUndo() ? "hover:opacity-50 cursor-pointer" : "opacity-50 cursor-not-allowed"} p-2`,
     onClick: actions.history.undo
-  }, /* @__PURE__ */ React__default["default"].createElement(ArrowUturnLeftIcon__default["default"], {
+  },  React.createElement(ArrowUturnLeftIcon__default["default"], {
     className: "h-4 w-4"
-  }))), /* @__PURE__ */ React__default["default"].createElement(SimpleTooltip, {
+  }))),  React.createElement(SimpleTooltip, {
     text: "Redo",
     side: "bottom",
     offset: 4
-  }, /* @__PURE__ */ React__default["default"].createElement("a", {
+  },  React.createElement("a", {
     className: ` ${query.history.canRedo() ? "hover:opacity-50 cursor-pointer" : "opacity-50 cursor-not-allowed"} p-2`,
     onClick: actions.history.redo
-  }, /* @__PURE__ */ React__default["default"].createElement(ArrowUturnRightIcon__default["default"], {
+  },  React.createElement(ArrowUturnRightIcon__default["default"], {
     className: "h-4 w-4"
-  }))), /* @__PURE__ */ React__default["default"].createElement("div", {
+  }))),  React.createElement("div", {
     className: "mr-auto ml-auto"
-  }, /* @__PURE__ */ React__default["default"].createElement("div", {
+  },  React.createElement("div", {
     className: "flex rounded py-2 px-4 transition cursor-pointer items-center justify-center mr-auto ml-auto",
     onClick: () => setSelectOpen(true)
-  }, themeNames[themeIndex], /* @__PURE__ */ React__default["default"].createElement(ChevronDownIcon__default["default"], {
+  }, themeNames[themeIndex],  React.createElement(ChevronDownIcon__default["default"], {
     className: "h-4 w-4 ml-2"
-  })), /* @__PURE__ */ React__default["default"].createElement(Select, {
+  })),  React.createElement(Select, {
     defaultValue: themeNames[themeIndex],
     values: themeNames,
     open: selectOpen,
     setOpen: setSelectOpen,
     onChange
-  }))), /* @__PURE__ */ React__default["default"].createElement("div", {
+  }))),  React.createElement("div", {
     className: "flex"
-  }, enabled ? /* @__PURE__ */ React__default["default"].createElement("a", {
+  }, enabled ?  React.createElement("a", {
     className: "flex bg-green-600 text-white rounded py-2 px-4 transition cursor-pointer items-center",
     onClick: togglePreview
-  }, /* @__PURE__ */ React__default["default"].createElement(CheckIcon__default["default"], {
+  },  React.createElement(CheckIcon__default["default"], {
     className: "h-4 w-4 mr-2"
-  }), " Preview") : /* @__PURE__ */ React__default["default"].createElement("a", {
+  }), " Preview") :  React.createElement("a", {
     className: "flex bg-primary text-white rounded py-2 px-4 transition cursor-pointer items-center",
     onClick: togglePreview
-  }, /* @__PURE__ */ React__default["default"].createElement(PencilSquareIcon__default["default"], {
+  },  React.createElement(PencilSquareIcon__default["default"], {
     className: "h-4 w-4 mr-2"
   }), " Edit"))));
 };
 
 const SidebarItem = ({ visible, title, children, onChange }) => {
-  return /* @__PURE__ */ React__default["default"].createElement("div", {
+  return  React.createElement("div", {
     className: "flex flex-col w-full"
-  }, /* @__PURE__ */ React__default["default"].createElement("div", {
+  },  React.createElement("div", {
     onClick: () => {
       if (onChange)
         onChange(!visible);
     },
     className: `h-12 cursor-pointer bg-white border-b last:border-b-0 flex items-center px-2 ${visible ? "shadow-sm" : ""}`
-  }, /* @__PURE__ */ React__default["default"].createElement("div", {
+  },  React.createElement("div", {
     className: "flex-1 flex items-center"
-  }, /* @__PURE__ */ React__default["default"].createElement(Squares2X2Icon__default["default"], {
+  },  React.createElement(Squares2X2Icon__default["default"], {
     className: "h-4 w-4 ml-2 mr-4"
-  }), " ", /* @__PURE__ */ React__default["default"].createElement("h2", {
+  }), " ",  React.createElement("h2", {
     className: "text-xs uppercase"
-  }, title)), /* @__PURE__ */ React__default["default"].createElement("a", {
+  }, title)),  React.createElement("a", {
     style: { transform: `rotate(${visible ? 180 : 0}deg)` }
-  }, /* @__PURE__ */ React__default["default"].createElement(ArrowSmallUpIcon__default["default"], {
+  },  React.createElement(ArrowSmallUpIcon__default["default"], {
     className: "h-4 w-4"
-  }))), visible ? /* @__PURE__ */ React__default["default"].createElement("div", {
+  }))), visible ?  React.createElement("div", {
     className: "w-full flex-1 overflow-auto"
   }, children) : null);
 };
@@ -1443,7 +1534,7 @@ const loadTemplate = async (standaloneServer,page) => {
 
 const saveTemplate = async (state, standaloneServer,page) => {
   const baseUrl = getBaseUrl(standaloneServer);
-  const body = { data: JSON.parse(state.serialize()) };
+  const body = { data: JSON.parse(state.serialize())};
   await fetchJSON({
     method: "post",
     url: `${baseUrl}/api/builder/handle?type=data&path=${page}`,
@@ -1462,17 +1553,17 @@ const saveTemplateDebounce = debounce((e, standaloneServer,page) => {
 const Category = SidebarItem;
 const Item = ({ connectors, c }) => {
   const { standalone } = React.useContext(ThemeContext);
-  return /* @__PURE__ */ React__default["default"].createElement("div", {
-    ref: (ref) => connectors.create(ref, /* @__PURE__ */ React__default["default"].createElement(Component, {
+  return  React.createElement("div", {
+    ref: (ref) => connectors.create(ref,  React.createElement(Component, {
       root: cleanHTMLElement(nodeHtmlParser.parse(c.source))
     }))
-  }, /* @__PURE__ */ React__default["default"].createElement(SimpleTooltip, {
+  },  React.createElement(SimpleTooltip, {
     text: c.displayName,
     side: "right",
     offset: 12
-  }, /* @__PURE__ */ React__default["default"].createElement("a", {
+  },  React.createElement("a", {
     className: "cursor-move m-2 pb-2 cursor-pointer block"
-  }, /* @__PURE__ */ React__default["default"].createElement("img", {
+  },  React.createElement("img", {
     src: getImageUrl(standalone, `/public/${c.themeFolder}/${c.blockFolder}/preview.png`),
     width: "600px",
     height: "300px"
@@ -1489,17 +1580,17 @@ const Sidebar = () => {
   const toggleToolbar = (index) => {
     setToolbarVisible((t) => t.map((c, i) => i === index ? !c : c));
   };
-  return /* @__PURE__ */ React__default["default"].createElement("div", {
+  return  React.createElement("div", {
     className: `toolbox h-full flex flex-col bg-white ${enabled ? "w-48" : "w-0 opacity-0"}`,
     style: { transition: "0.4s cubic-bezier(0.19, 1, 0.22, 1)" }
-  }, /* @__PURE__ */ React__default["default"].createElement("div", {
+  },  React.createElement("div", {
     className: "flex flex-1 flex-col items-center pt-3 overflow-scroll hide-scrollbars"
-  }, categories.map((b, j) => /* @__PURE__ */ React__default["default"].createElement(Category, {
+  }, categories.map((b, j) =>  React.createElement(Category, {
     key: j,
     title: b,
     visible: toolbarVisible[j],
     onChange: () => toggleToolbar(j)
-  }, components == null ? void 0 : components.filter((c) => c.category === b).map((c, i) => /* @__PURE__ */ React__default["default"].createElement(Item, {
+  }, components == null ? void 0 : components.filter((c) => c.category === b).map((c, i) =>  React.createElement(Item, {
     connectors,
     c,
     key: i
@@ -1525,7 +1616,7 @@ const Pages=()=>{
       actions.deserialize(content);
     }}
   
-
+  console.log(pageList,"pageList")
   const handleDynamicPages=async(e)=>{
     setCurrentPage(e.target.textContent)
     const baseUrl = getBaseUrl(false);
@@ -1555,39 +1646,40 @@ const Pages=()=>{
   window.location.reload(true)
   }
 
-  return /*@__PURE__*/React__default["default"].createElement("div",{
+  return /*@__PURE__*/React.createElement("div",{
 
 },
-// pageList.map((folder) => (
-  //   React__default["default"].createElement("div",
-  //    {key:folder.folder},
-  //     React__default["default"].createElement("h3",
-  //     ),folder.folder,
-  //     React__default["default"].createElement("ul",
-  //      folder.files.map((file) => (
-  //         React__default["default"].createElement("li",{key:file},file)
-  //       ))
-  //     )
-  //   )
-  // )),
-   pageList.map((i)=>
-     /*@__PURE__*/React__default["default"].createElement("p",
-     {className:"h-12 flex text-xl items-center",onClick:(e)=>handleActions(e),style:{backgroundColor:currentPage===i?"#78818D":"",color:currentPage===i?"white":"#1A202C"}},
-     i,
+ pageList.map((folder) => (
+     React.createElement("div",
+      {key:folder.folder},
+       React.createElement("h3",
+       {className:"h-12 flex text-xl items-center"},folder.folder
+       ),
+       React.createElement("ul",
+        folder.files.map((file) => (
+           React.createElement("li",{key:file,className:"h-12 flex text-xl items-center",style:{backgroundColor:currentPage===i?"#78818D":"",color:currentPage===i?"white":"#1A202C"}},file)
+         ))
+       )
      )
-  ),
-  /* @__PURE__ */ React__default["default"].createElement("div",
+   )),
+  //  pageList.map((i)=>
+  //    /*@__PURE__*/React.createElement("p",
+  //    {className:"h-12 flex text-xl items-center",onClick:(e)=>handleActions(e),style:{backgroundColor:currentPage===i?"#78818D":"",color:currentPage===i?"white":"#1A202C"}},
+  //    i,
+  //    )
+  // ),
+   React.createElement("div",
   {className:"flex justify-center"},
-  /* @__PURE__ */ React__default["default"].createElement(PlusOutIcon__default["default"],
+   React.createElement(PlusOutIcon__default["default"],
   {className:"w-4 h-4",onClick:handleInputBox},
   )),
   isOpen?
-   /* @__PURE__ */ React__default["default"].createElement("div",
+    React.createElement("div",
    {className:"flex justifiy-between"},
-    /* @__PURE__ */ React__default["default"].createElement("input",{style:{border:"1px solid gray"},onInput:(e)=>setFileName(e.target.value)})
+     React.createElement("input",{style:{border:"1px solid gray"},onInput:(e)=>setFileName(e.target.value)})
    ):null,
    fileName.length!==0?
-   React__default["default"].createElement("button",{
+   React.createElement("button",{
    onClick:()=>createNewFile(false)
    },"Add"):null   
    )
@@ -1603,35 +1695,35 @@ const MainSideBar= () => {
 
   
   
-  return /* @__PURE__ */ React__default["default"].createElement("div", {
+  return  React.createElement("div", {
     className: `toolbox h-full flex flex-col bg-white w-48" `,
     style: { transition: "0.4s cubic-bezier(0.19, 1, 0.22, 1)" }
   },
-  /* @__PURE__ */ React__default["default"].createElement("div", {
+   React.createElement("div", {
     className: `h-full flex flex-col bg-white w-48`,
   },
-  /* @__PURE__ */ React__default["default"].createElement("div", 
+   React.createElement("div", 
   {
     className: ` bg-[#D1D5DB] flex justify-between w-48 cursor-pointer items-center m-4 p-2 h-12 shadow-2xl`,
     style: { transition: "0.4s cubic-bezier(0.19, 1, 0.22, 1)",background:"#D1D5DB" },
     onClick:handleNew
   },
-  /* @__PURE__ */ React__default["default"].createElement(ListIcon__default["default"],
+   React.createElement(ListIcon__default["default"],
   {className:"w-4 h-4",}
   )
   ,"Pages",
-  /* @__PURE__ */ React__default["default"].createElement(ArrowSmallUpIcon__default["default"],
+   React.createElement(ArrowSmallUpIcon__default["default"],
   {className:"w-4 h-4",
   style: { transform: `rotate(${isView ? 180 : 0}deg)` }},
   )
   ), 
-  /* @__PURE__ */ React__default["default"].createElement("div", 
+   React.createElement("div", 
   {
     className: ` bg-white w-48 cursor-pointer items-center m-4`,
     style: { transition: "0.4s cubic-bezier(0.19, 1, 0.22, 1)" },
   },
   isView?
-/* @__PURE__ */ React__default["default"].createElement(Pages, 
+ React.createElement(Pages, 
 {
   style:{display:isView?"flex":"none"},
 }):null,
@@ -1646,30 +1738,30 @@ const Viewport = ({ children }) => {
       actions.setOptions((o) => o.enabled = true);
     }, 200);
   }, [actions.setOptions]);
-  return /* @__PURE__ */ React__default["default"].createElement("div", {
+  return  React.createElement("div", {
     className: "viewport"
   },
-   /* @__PURE__ */ React__default["default"].createElement("div", {
+    React.createElement("div", {
     className: "flex h-full overflow-hidden flex-row w-full fixed"
   },
-  /* @__PURE__ */ React__default["default"].createElement("div", {
+   React.createElement("div", {
     className: "flex h-full overflow-hidden flex-row w-full fixed"
-  }, /* @__PURE__ */ React__default["default"].createElement(MainSideBar, null), 
-   /* @__PURE__ */ React__default["default"].createElement(Sidebar, null), /* @__PURE__ */ React__default["default"].createElement("div", {
+  },  React.createElement(MainSideBar, null), 
+    React.createElement(Sidebar, null),  React.createElement("div", {
     className: "page-container flex flex-1 h-full flex-col"
-  }, /* @__PURE__ */ React__default["default"].createElement(Header, null), /* @__PURE__ */ React__default["default"].createElement("div", {
+  },  React.createElement(Header, null),  React.createElement("div", {
     className: "craftjs-renderer flex-1 h-full w-full transition pb-8 overflow-auto",
     ref: (ref) => connectors.select(connectors.hover(ref, ""), "")
-  }, /* @__PURE__ */ React__default["default"].createElement("div", {
+  },  React.createElement("div", {
     className: "relative flex-col flex items-center pt-8 justify-center",
     style: { maxWidth: "800px", margin: "auto" }
-  }, children), /* @__PURE__ */ React__default["default"].createElement("div", {
+  }, children),  React.createElement("div", {
     className: "flex items-center justify-center w-full pt-6 text-xs text-gray-400"
-  }, "Powered by", " ", /* @__PURE__ */ React__default["default"].createElement("a", {
+  }, "Powered by", " ",  React.createElement("a", {
     className: "mx-1",
     target: "_blank",
     href: "https://craft.js.org/"
-  }, "Craft.js"), " ", "and", " ", /* @__PURE__ */ React__default["default"].createElement("a", {
+  }, "Craft.js"), " ", "and", " ",  React.createElement("a", {
     className: "mx-1",
     target: "_blank",
     href: "https://tailwindui.com/"
@@ -1682,33 +1774,33 @@ const Dialog$4 = ({ open, setOpen, node, actions }) => {
   const key = props.propId;
   const [link, setLink] = React.useState((_c = (_a = node.data.props[key]) == null ? void 0 : _a.link) != null ? _c : (_b = node.dom) == null ? void 0 : _b.href);
   const [newTab, setNewTab] = React.useState((_d = node.data.props[key]) == null ? void 0 : _d.newTab);
-  return /* @__PURE__ */ React__default["default"].createElement(DialogPrimitive__namespace.Root, {
+  return  React.createElement(DialogPrimitive__namespace.Root, {
     open,
     onOpenChange: setOpen
-  }, /* @__PURE__ */ React__default["default"].createElement(DialogPrimitive__namespace.Portal, null, /* @__PURE__ */ React__default["default"].createElement(DialogPrimitive__namespace.Overlay, null, /* @__PURE__ */ React__default["default"].createElement(DialogPrimitive__namespace.Content, {
+  },  React.createElement(DialogPrimitive__namespace.Portal, null,  React.createElement(DialogPrimitive__namespace.Overlay, null,  React.createElement(DialogPrimitive__namespace.Content, {
     className: cx__default["default"]("fixed shadow bg-white rounded-lg p-4", "w-[95vw] max-w-md md:w-full", "top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2")
-  }, /* @__PURE__ */ React__default["default"].createElement(DialogPrimitive__namespace.Title, {
+  },  React.createElement(DialogPrimitive__namespace.Title, {
     className: "text-sm font-medium text-gray-900 dark:text-gray-100"
-  }, "Update Link"), /* @__PURE__ */ React__default["default"].createElement("div", {
+  }, "Update Link"),  React.createElement("div", {
     className: "mt-8 mb-4"
-  }, /* @__PURE__ */ React__default["default"].createElement("div", null, /* @__PURE__ */ React__default["default"].createElement("div", null, /* @__PURE__ */ React__default["default"].createElement("div", {
+  },  React.createElement("div", null,  React.createElement("div", null,  React.createElement("div", {
     className: "flex justify-center mb-4 flex-col"
-  }, /* @__PURE__ */ React__default["default"].createElement("input", {
+  },  React.createElement("input", {
     type: "text",
     className: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 mb-4",
     placeholder: "Eg. https://github.com/LiveDuo/destack",
     defaultValue: link,
     onChange: (e) => setLink(e.target.value)
-  }), /* @__PURE__ */ React__default["default"].createElement("div", {
+  }),  React.createElement("div", {
     className: "flex items-center ml-4"
-  }, /* @__PURE__ */ React__default["default"].createElement("p", null, "Open in new tab"), /* @__PURE__ */ React__default["default"].createElement("input", {
+  },  React.createElement("p", null, "Open in new tab"),  React.createElement("input", {
     defaultChecked: newTab,
     type: "checkbox",
     onChange: (e) => setNewTab(e.target.checked),
     className: "ml-4 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2"
-  })))))), /* @__PURE__ */ React__default["default"].createElement("div", {
+  })))))),  React.createElement("div", {
     className: "mt-4 flex justify-end"
-  }, /* @__PURE__ */ React__default["default"].createElement(DialogPrimitive__namespace.Close, {
+  },  React.createElement(DialogPrimitive__namespace.Close, {
     onClick: () => {
       setOpen(false);
       actions.setProp(node.id, (prop) => {
@@ -1719,45 +1811,45 @@ const Dialog$4 = ({ open, setOpen, node, actions }) => {
       });
     },
     className: cx__default["default"]("inline-flex select-none justify-center rounded-md px-4 py-2 text-sm font-medium", "bg-blue-600 text-white hover:bg-blue-700 border border-transparent")
-  }, "Save")), /* @__PURE__ */ React__default["default"].createElement(DialogPrimitive__namespace.Close, {
+  }, "Save")),  React.createElement(DialogPrimitive__namespace.Close, {
     onClick: () => setOpen(false),
     className: cx__default["default"]("absolute top-3.5 right-3.5 inline-flex items-center justify-center rounded-full p-1")
-  }, /* @__PURE__ */ React__default["default"].createElement(XMarkIcon__default["default"], {
+  },  React.createElement(XMarkIcon__default["default"], {
     className: "h-4 w-4 text-gray-500 hover:text-gray-700"
   }))))));
 };
 
 const Content = ({ url, text, setText, onUpload, onChange }) => {
   const input = React.useRef(null);
-  return /* @__PURE__ */ React__default["default"].createElement("div", {
+  return  React.createElement("div", {
     className: "mt-4 mb-4"
-  }, !url ? /* @__PURE__ */ React__default["default"].createElement("div", null, /* @__PURE__ */ React__default["default"].createElement("div", {
+  }, !url ?  React.createElement("div", null,  React.createElement("div", {
     className: "flex justify-center mt-8 mb-4"
-  }, /* @__PURE__ */ React__default["default"].createElement("input", {
+  },  React.createElement("input", {
     ref: input,
     type: "file",
     onChange: onUpload,
     style: { display: "none" }
-  }), /* @__PURE__ */ React__default["default"].createElement("button", {
+  }),  React.createElement("button", {
     className: "rounded-md px-4 py-2 text-sm font-medium bg-transparent border border-blue-500 text-blue-500 hover:bg-blue-700 hover:text-white border border-transparent",
     onClick: () => {
       var _a;
       (_a = input.current) == null ? void 0 : _a.click();
     }
-  }, "Upload")), /* @__PURE__ */ React__default["default"].createElement("div", {
+  }, "Upload")),  React.createElement("div", {
     className: "flex justify-center mb-4"
-  }, "OR"), /* @__PURE__ */ React__default["default"].createElement("div", {
+  }, "OR"),  React.createElement("div", {
     className: "flex justify-center mb-4"
-  }, /* @__PURE__ */ React__default["default"].createElement("input", {
+  },  React.createElement("input", {
     type: "text",
     className: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5",
     placeholder: "Eg. https://www.w3schools.com/html/pic_trulli.jpg",
     onChange: (e) => setText(e.target.value)
-  }), /* @__PURE__ */ React__default["default"].createElement("button", {
+  }),  React.createElement("button", {
     onClick: () => onChange(),
     className: cx__default["default"]("rounded-md px-4 py-2 text-sm font-medium bg-transparent border", "text-blue-500 hover:opacity-50 border border-transparent", `${text !== "" ? "hover:opacity-50" : "opacity-50 cursor-not-allowed"}`),
     disabled: text === ""
-  }, "Set"))) : /* @__PURE__ */ React__default["default"].createElement("img", {
+  }, "Set"))) :  React.createElement("img", {
     src: url
   }));
 };
@@ -1775,29 +1867,29 @@ const Dialog$3 = ({ open, setOpen, node, actions }) => {
   const onChange = async () => {
     setUrl(text);
   };
-  return /* @__PURE__ */ React__default["default"].createElement(DialogPrimitive__namespace.Root, {
+  return  React.createElement(DialogPrimitive__namespace.Root, {
     open,
     onOpenChange: setOpen
-  }, /* @__PURE__ */ React__default["default"].createElement(DialogPrimitive__namespace.Portal, null, /* @__PURE__ */ React__default["default"].createElement(DialogPrimitive__namespace.Overlay, null, /* @__PURE__ */ React__default["default"].createElement(DialogPrimitive__namespace.Content, {
+  },  React.createElement(DialogPrimitive__namespace.Portal, null,  React.createElement(DialogPrimitive__namespace.Overlay, null,  React.createElement(DialogPrimitive__namespace.Content, {
     className: cx__default["default"]("fixed shadow bg-white rounded-lg p-4", "w-[95vw] max-w-md md:w-full", "top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2")
-  }, /* @__PURE__ */ React__default["default"].createElement(DialogPrimitive__namespace.Title, {
+  },  React.createElement(DialogPrimitive__namespace.Title, {
     className: "text-sm font-medium text-gray-900 dark:text-gray-100"
-  }, "Upload Image"), /* @__PURE__ */ React__default["default"].createElement(Content, {
+  }, "Upload Image"),  React.createElement(Content, {
     url,
     text,
     setText,
     onUpload,
     onChange
-  }), /* @__PURE__ */ React__default["default"].createElement("div", {
+  }),  React.createElement("div", {
     className: "mt-4 flex justify-end"
-  }, /* @__PURE__ */ React__default["default"].createElement("button", {
+  },  React.createElement("button", {
     style: { marginRight: "auto" },
     className: cx__default["default"]("rounded-md px-4 py-2 text-sm font-medium bg-transparent border", "text-blue-500 hover:opacity-50 border border-transparent"),
     onClick: () => {
       setUrl(null);
       setText("");
     }
-  }, "Replace"), /* @__PURE__ */ React__default["default"].createElement(DialogPrimitive__namespace.Close, {
+  }, "Replace"),  React.createElement(DialogPrimitive__namespace.Close, {
     onClick: () => {
       setOpen(false);
       actions.setProp(node.id, (prop) => {
@@ -1808,10 +1900,10 @@ const Dialog$3 = ({ open, setOpen, node, actions }) => {
     },
     className: cx__default["default"]("inline-flex select-none justify-center rounded-md px-4 py-2 text-sm font-medium", `bg-blue-600 text-white border border-transparent ${url ? "hover:bg-blue-700" : "opacity-50 cursor-not-allowed"}`),
     disabled: !url
-  }, "Save")), /* @__PURE__ */ React__default["default"].createElement(DialogPrimitive__namespace.Close, {
+  }, "Save")),  React.createElement(DialogPrimitive__namespace.Close, {
     onClick: () => setOpen(false),
     className: cx__default["default"]("absolute top-3.5 right-3.5 inline-flex items-center justify-center rounded-full p-1")
-  }, /* @__PURE__ */ React__default["default"].createElement(XMarkIcon__default["default"], {
+  },  React.createElement(XMarkIcon__default["default"], {
     className: "h-4 w-4 text-gray-500 hover:text-gray-700"
   }))))));
 };
@@ -1836,82 +1928,82 @@ const Dialog$2 = ({ open, setOpen, node, actions }) => {
   const onChange = (e) => {
     setType(e.toLowerCase());
   };
-  return /* @__PURE__ */ React__default["default"].createElement(DialogPrimitive__namespace.Root, {
+  return  React.createElement(DialogPrimitive__namespace.Root, {
     open,
     onOpenChange: setOpen
-  }, /* @__PURE__ */ React__default["default"].createElement(DialogPrimitive__namespace.Portal, null, /* @__PURE__ */ React__default["default"].createElement(DialogPrimitive__namespace.Overlay, null, /* @__PURE__ */ React__default["default"].createElement(DialogPrimitive__namespace.Content, {
+  },  React.createElement(DialogPrimitive__namespace.Portal, null,  React.createElement(DialogPrimitive__namespace.Overlay, null,  React.createElement(DialogPrimitive__namespace.Content, {
     className: cx__default["default"]("fixed shadow bg-white rounded-lg p-4", "w-[95vw] max-w-md md:w-full", "top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2")
-  }, /* @__PURE__ */ React__default["default"].createElement(DialogPrimitive__namespace.Title, {
+  },  React.createElement(DialogPrimitive__namespace.Title, {
     className: "text-sm font-medium text-gray-900 dark:text-gray-100"
-  }, "Update Button"), /* @__PURE__ */ React__default["default"].createElement(DialogPrimitive__namespace.Description, {
+  }, "Update Button"),  React.createElement(DialogPrimitive__namespace.Description, {
     className: "mt-2 text-sm font-normal text-gray-700 dark:text-gray-400"
-  }, /* @__PURE__ */ React__default["default"].createElement("div", {
+  },  React.createElement("div", {
     className: "mt-4 mb-4"
-  }, /* @__PURE__ */ React__default["default"].createElement("div", null, /* @__PURE__ */ React__default["default"].createElement("div", {
+  },  React.createElement("div", null,  React.createElement("div", {
     className: "flex rounded py-2 px-4 transition cursor-pointer items-center ml-2 mb-4",
     onClick: () => setOpenSelect(true)
-  }, capitalize(type), " ", /* @__PURE__ */ React__default["default"].createElement(ChevronDownIcon__default["default"], {
+  }, capitalize(type), " ",  React.createElement(ChevronDownIcon__default["default"], {
     className: "h-4 w-4 ml-2"
-  })), /* @__PURE__ */ React__default["default"].createElement(Select, {
+  })),  React.createElement(Select, {
     defaultValue: type,
     values: options.map((o) => capitalize(o)),
     open: openSelect,
     setOpen: setOpenSelect,
     onChange
-  }), /* @__PURE__ */ React__default["default"].createElement("div", null, type === "url" && /* @__PURE__ */ React__default["default"].createElement("div", {
+  }),  React.createElement("div", null, type === "url" &&  React.createElement("div", {
     className: "flex justify-center mb-4 flex-col"
-  }, /* @__PURE__ */ React__default["default"].createElement("input", {
+  },  React.createElement("input", {
     type: "text",
     className: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 mb-4",
     placeholder: "Eg. https://github.com/LiveDuo/destack",
     defaultValue: url,
     onChange: (e) => setUrl(e.target.value)
-  }), /* @__PURE__ */ React__default["default"].createElement("div", {
+  }),  React.createElement("div", {
     className: "flex items-center ml-4"
-  }, /* @__PURE__ */ React__default["default"].createElement("p", null, "Open in new tab"), /* @__PURE__ */ React__default["default"].createElement("input", {
+  },  React.createElement("p", null, "Open in new tab"),  React.createElement("input", {
     defaultChecked: newTab,
     type: "checkbox",
     onChange: (e) => setNewTab(e.target.checked),
     className: "ml-4 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2"
-  }))), type === "email" && /* @__PURE__ */ React__default["default"].createElement("div", {
+  }))), type === "email" &&  React.createElement("div", {
     className: "flex justify-center mb-4"
-  }, /* @__PURE__ */ React__default["default"].createElement("input", {
+  },  React.createElement("input", {
     type: "text",
     className: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5",
     placeholder: "Eg. matt@mullenweg.com",
     defaultValue: email,
     onChange: (e) => setEmail(e.target.value)
-  })), type === "submit" && /* @__PURE__ */ React__default["default"].createElement("div", {
+  })), type === "submit" &&  React.createElement("div", {
     className: "flex justify-center mb-4 flex-col"
-  }, /* @__PURE__ */ React__default["default"].createElement("div", {
+  },  React.createElement("div", {
     className: "flex justify-end mb-4"
-  }, /* @__PURE__ */ React__default["default"].createElement("input", {
+  },  React.createElement("input", {
     type: "text",
     className: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5",
     placeholder: "Eg. /api/submit",
     defaultValue: submitUrl,
     onChange: (e) => setSubmitUrl(e.target.value)
-  }), /* @__PURE__ */ React__default["default"].createElement("div", {
+  }),  React.createElement("div", {
     className: "flex rounded py-2 px-4 transition cursor-pointer items-center ml-2",
     onClick: () => setMethodSelect(true)
-  }, submitMethod, " ", /* @__PURE__ */ React__default["default"].createElement(ChevronDownIcon__default["default"], {
+  }, submitMethod, " ",  React.createElement(ChevronDownIcon__default["default"], {
     className: "h-4 w-4 ml-2"
-  })), /* @__PURE__ */ React__default["default"].createElement(Select, {
+  })),  React.createElement(Select, {
     defaultValue: submitMethod,
     values: methods,
     open: methodSelect,
     setOpen: setMethodSelect,
     onChange: (e) => setSubmitMethod(e)
-  })), /* @__PURE__ */ React__default["default"].createElement("div", {
+  })),  React.createElement("div", {
     className: "flex items-center ml-4"
-  }, /* @__PURE__ */ React__default["default"].createElement("p", null, "Async"), /* @__PURE__ */ React__default["default"].createElement("input", {
+  },  React.createElement("p", null, "Async"),  React.createElement("input", {
     defaultChecked: submitAsync,
     type: "checkbox",
     onChange: (e) => setSubmitAsync(e.target.checked),
     className: "ml-4 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2"
-  }))))))), /* @__PURE__ */ React__default["default"].createElement("div", {
+  }))))))),  React.createElement("div", {
     className: "mt-4 flex justify-end"
-  }, /* @__PURE__ */ React__default["default"].createElement(DialogPrimitive__namespace.Close, {
+  },  React.createElement(DialogPrimitive__namespace.Close, {
     onClick: () => {
       setOpen(false);
       actions.setProp(node.id, (prop) => {
@@ -1927,36 +2019,36 @@ const Dialog$2 = ({ open, setOpen, node, actions }) => {
       });
     },
     className: cx__default["default"]("inline-flex select-none justify-center rounded-md px-4 py-2 text-sm font-medium", "bg-blue-600 text-white hover:bg-blue-700 border border-transparent")
-  }, "Save")), /* @__PURE__ */ React__default["default"].createElement(DialogPrimitive__namespace.Close, {
+  }, "Save")),  React.createElement(DialogPrimitive__namespace.Close, {
     onClick: () => setOpen(false),
     className: cx__default["default"]("absolute top-3.5 right-3.5 inline-flex items-center justify-center rounded-full p-1")
-  }, /* @__PURE__ */ React__default["default"].createElement(XMarkIcon__default["default"], {
+  },  React.createElement(XMarkIcon__default["default"], {
     className: "h-4 w-4 text-gray-500 hover:text-gray-700"
   }))))));
 };
 
 const Dialog$1 = ({ open, setOpen, node, actions }) => {
   const [id, setId] = React.useState(node.data.props.id);
-  return /* @__PURE__ */ React__default["default"].createElement(DialogPrimitive__namespace.Root, {
+  return  React.createElement(DialogPrimitive__namespace.Root, {
     open,
     onOpenChange: setOpen
-  }, /* @__PURE__ */ React__default["default"].createElement(DialogPrimitive__namespace.Portal, null, /* @__PURE__ */ React__default["default"].createElement(DialogPrimitive__namespace.Overlay, null, /* @__PURE__ */ React__default["default"].createElement(DialogPrimitive__namespace.Content, {
+  },  React.createElement(DialogPrimitive__namespace.Portal, null,  React.createElement(DialogPrimitive__namespace.Overlay, null,  React.createElement(DialogPrimitive__namespace.Content, {
     className: cx__default["default"]("fixed shadow bg-white rounded-lg p-4", "w-[95vw] max-w-md md:w-full", "top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2")
-  }, /* @__PURE__ */ React__default["default"].createElement(DialogPrimitive__namespace.Title, {
+  },  React.createElement(DialogPrimitive__namespace.Title, {
     className: "text-sm font-medium text-gray-900 dark:text-gray-100"
-  }, "Update Section Id"), /* @__PURE__ */ React__default["default"].createElement("div", {
+  }, "Update Section Id"),  React.createElement("div", {
     className: "mt-8 mb-4"
-  }, /* @__PURE__ */ React__default["default"].createElement("div", null, /* @__PURE__ */ React__default["default"].createElement("div", null, /* @__PURE__ */ React__default["default"].createElement("div", {
+  },  React.createElement("div", null,  React.createElement("div", null,  React.createElement("div", {
     className: "flex justify-center mb-4 flex-col"
-  }, /* @__PURE__ */ React__default["default"].createElement("input", {
+  },  React.createElement("input", {
     type: "text",
     className: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 mb-4",
     placeholder: "Eg. section-1",
     defaultValue: id,
     onChange: (e) => setId(e.target.value)
-  }))))), /* @__PURE__ */ React__default["default"].createElement("div", {
+  }))))),  React.createElement("div", {
     className: "mt-4 flex justify-end"
-  }, /* @__PURE__ */ React__default["default"].createElement(DialogPrimitive__namespace.Close, {
+  },  React.createElement(DialogPrimitive__namespace.Close, {
     onClick: () => {
       setOpen(false);
       actions.setProp(node.id, (prop) => {
@@ -1964,10 +2056,10 @@ const Dialog$1 = ({ open, setOpen, node, actions }) => {
       });
     },
     className: cx__default["default"]("inline-flex select-none justify-center rounded-md px-4 py-2 text-sm font-medium", "bg-blue-600 text-white hover:bg-blue-700 border border-transparent")
-  }, "Save")), /* @__PURE__ */ React__default["default"].createElement(DialogPrimitive__namespace.Close, {
+  }, "Save")),  React.createElement(DialogPrimitive__namespace.Close, {
     onClick: () => setOpen(false),
     className: cx__default["default"]("absolute top-3.5 right-3.5 inline-flex items-center justify-center rounded-full p-1")
-  }, /* @__PURE__ */ React__default["default"].createElement(XMarkIcon__default["default"], {
+  },  React.createElement(XMarkIcon__default["default"], {
     className: "h-4 w-4 text-gray-500 hover:text-gray-700"
   }))))));
 };
@@ -1977,26 +2069,26 @@ const Dialog = ({ open, setOpen, node, actions }) => {
   const props = node.data.props;
   const key = props.propId;
   const [path, setPath] = React.useState((_a = node.data.props[key]) == null ? void 0 : _a.path);
-  return /* @__PURE__ */ React__default["default"].createElement(DialogPrimitive__namespace.Root, {
+  return  React.createElement(DialogPrimitive__namespace.Root, {
     open,
     onOpenChange: setOpen
-  }, /* @__PURE__ */ React__default["default"].createElement(DialogPrimitive__namespace.Portal, null, /* @__PURE__ */ React__default["default"].createElement(DialogPrimitive__namespace.Overlay, null, /* @__PURE__ */ React__default["default"].createElement(DialogPrimitive__namespace.Content, {
+  },  React.createElement(DialogPrimitive__namespace.Portal, null,  React.createElement(DialogPrimitive__namespace.Overlay, null,  React.createElement(DialogPrimitive__namespace.Content, {
     className: cx__default["default"]("fixed shadow bg-white rounded-lg p-4", "w-[95vw] max-w-md md:w-full", "top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2")
-  }, /* @__PURE__ */ React__default["default"].createElement(DialogPrimitive__namespace.Title, {
+  },  React.createElement(DialogPrimitive__namespace.Title, {
     className: "text-sm font-medium text-gray-900 dark:text-gray-100"
-  }, "Update SVG Path"), /* @__PURE__ */ React__default["default"].createElement("div", {
+  }, "Update SVG Path"),  React.createElement("div", {
     className: "mt-8 mb-4"
-  }, /* @__PURE__ */ React__default["default"].createElement("div", null, /* @__PURE__ */ React__default["default"].createElement("div", null, /* @__PURE__ */ React__default["default"].createElement("div", {
+  },  React.createElement("div", null,  React.createElement("div", null,  React.createElement("div", {
     className: "flex justify-center mb-4 flex-col"
-  }, /* @__PURE__ */ React__default["default"].createElement("input", {
+  },  React.createElement("input", {
     type: "text",
     className: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 mb-4",
     placeholder: "Eg. d = 'M150 0 L75 200 L225 200 Z'",
     defaultValue: path,
     onChange: (e) => setPath(e.target.value)
-  }))))), /* @__PURE__ */ React__default["default"].createElement("div", {
+  }))))),  React.createElement("div", {
     className: "mt-4 flex justify-end"
-  }, /* @__PURE__ */ React__default["default"].createElement(DialogPrimitive__namespace.Close, {
+  },  React.createElement(DialogPrimitive__namespace.Close, {
     onClick: () => {
       setOpen(false);
       actions.setProp(node.id, (prop) => {
@@ -2006,10 +2098,10 @@ const Dialog = ({ open, setOpen, node, actions }) => {
       });
     },
     className: cx__default["default"]("inline-flex select-none justify-center rounded-md px-4 py-2 text-sm font-medium", "bg-blue-600 text-white hover:bg-blue-700 border border-transparent")
-  }, "Save")), /* @__PURE__ */ React__default["default"].createElement(DialogPrimitive__namespace.Close, {
+  }, "Save")),  React.createElement(DialogPrimitive__namespace.Close, {
     onClick: () => setOpen(false),
     className: cx__default["default"]("absolute top-3.5 right-3.5 inline-flex items-center justify-center rounded-full p-1")
-  }, /* @__PURE__ */ React__default["default"].createElement(XMarkIcon__default["default"], {
+  },  React.createElement(XMarkIcon__default["default"], {
     className: "h-4 w-4 text-gray-500 hover:text-gray-700"
   }))))));
 };
@@ -2058,7 +2150,7 @@ const EditorElement = ({ render }) => {
   const [openButton, setOpenButton] = React.useState(false);
   const [openHash, setOpenHash] = React.useState(false);
   const [openSvg, setOpenSvg] = React.useState(false);
-  return /* @__PURE__ */ React__default["default"].createElement(React__default["default"].Fragment, null, node.events.hovered || isActive ? ReactDOM__default["default"].createPortal(/* @__PURE__ */ React__default["default"].createElement("div", {
+  return  React.createElement(React.Fragment, null, node.events.hovered || isActive ? ReactDOM__default["default"].createPortal( React.createElement("div", {
     ref: {currentRef},
     className: "px-2 py-2 text-white bg-primary fixed flex items-center leading-3 text-xs",
     style: {
@@ -2068,89 +2160,89 @@ const EditorElement = ({ render }) => {
       top: getPos(dom).top,
       zIndex: 9999
     }
-  }, /* @__PURE__ */ React__default["default"].createElement("h2", {
+  },  React.createElement("h2", {
     className: "flex-1 mr-4"
-  }, displayName), isRootChild && /* @__PURE__ */ React__default["default"].createElement("a", {
+  }, displayName), isRootChild &&  React.createElement("a", {
     className: "mr-2 cursor-move",
     ref: () => connectors.drag
-  }, /* @__PURE__ */ React__default["default"].createElement(ArrowsPointingOutIcon__default["default"], {
+  },  React.createElement(ArrowsPointingOutIcon__default["default"], {
     className: "h-4 w-4"
-  })), isRootChild && /* @__PURE__ */ React__default["default"].createElement("a", {
+  })), isRootChild &&  React.createElement("a", {
     className: "mr-2 cursor-pointer",
     onMouseDown: (e) => {
       e.stopPropagation();
       setOpenHash(true);
     }
-  }, /* @__PURE__ */ React__default["default"].createElement(HashtagIcon__default["default"], {
+  },  React.createElement(HashtagIcon__default["default"], {
     className: "h-4 w-4"
-  })), showFocus && /* @__PURE__ */ React__default["default"].createElement("a", {
+  })), showFocus &&  React.createElement("a", {
     className: "mr-2 cursor-pointer",
     onClick: () => {
       actions.selectNode(data.parent);
     }
-  }, /* @__PURE__ */ React__default["default"].createElement(ArrowSmallUpIcon__default["default"], {
+  },  React.createElement(ArrowSmallUpIcon__default["default"], {
     className: "h-4 w-4"
-  })), (dom == null ? void 0 : dom.nodeName) === "IMG" && /* @__PURE__ */ React__default["default"].createElement("a", {
+  })), (dom == null ? void 0 : dom.nodeName) === "IMG" &&  React.createElement("a", {
     className: "cursor-pointer",
     onMouseDown: (e) => {
       e.stopPropagation();
       setOpenImage(true);
     }
-  }, /* @__PURE__ */ React__default["default"].createElement(PhotoIcon__default["default"], {
+  },  React.createElement(PhotoIcon__default["default"], {
     className: "h-4 w-4"
-  })), (dom == null ? void 0 : dom.nodeName) === "svg" && /* @__PURE__ */ React__default["default"].createElement("a", {
+  })), (dom == null ? void 0 : dom.nodeName) === "svg" &&  React.createElement("a", {
     className: "cursor-pointer",
     onMouseDown: (e) => {
       e.stopPropagation();
       setOpenSvg(true);
     }
-  }, /* @__PURE__ */ React__default["default"].createElement(PhotoIcon__default["default"], {
+  },  React.createElement(PhotoIcon__default["default"], {
     className: "h-4 w-4"
-  })), (dom == null ? void 0 : dom.nodeName) === "A" && /* @__PURE__ */ React__default["default"].createElement("a", {
+  })), (dom == null ? void 0 : dom.nodeName) === "A" &&  React.createElement("a", {
     className: "cursor-pointer",
     onMouseDown: (e) => {
       e.stopPropagation();
       setOpenLink(true);
     }
-  }, /* @__PURE__ */ React__default["default"].createElement(LinkIcon__default["default"], {
+  },  React.createElement(LinkIcon__default["default"], {
     className: "h-4 w-4"
-  })), (dom == null ? void 0 : dom.nodeName) === "BUTTON" && /* @__PURE__ */ React__default["default"].createElement("a", {
+  })), (dom == null ? void 0 : dom.nodeName) === "BUTTON" &&  React.createElement("a", {
     className: "cursor-pointer",
     onMouseDown: (e) => {
       e.stopPropagation();
       setOpenButton(true);
     }
-  }, /* @__PURE__ */ React__default["default"].createElement(CircleStackIcon__default["default"], {
+  },  React.createElement(CircleStackIcon__default["default"], {
     className: "h-4 w-4"
-  })), isRootChild && /* @__PURE__ */ React__default["default"].createElement("a", {
+  })), isRootChild &&  React.createElement("a", {
     className: "cursor-pointer",
     onMouseDown: (e) => {
       e.stopPropagation();
       actions.delete(id);
     }
-  }, /* @__PURE__ */ React__default["default"].createElement(TrashIcon__default["default"], {
+  },  React.createElement(TrashIcon__default["default"], {
     className: "h-4 w-4"
-  })), /* @__PURE__ */ React__default["default"].createElement(Dialog$4, {
+  })),  React.createElement(Dialog$4, {
     open: openLink,
     setOpen: setOpenLink,
     node,
     actions
-  }), /* @__PURE__ */ React__default["default"].createElement(Dialog$3, {
+  }),  React.createElement(Dialog$3, {
     open: openImage,
     setOpen: setOpenImage,
     node,
     actions
-  }), /* @__PURE__ */ React__default["default"].createElement(Dialog$1, {
+  }),  React.createElement(Dialog$1, {
     open: openHash,
     setOpen: setOpenHash,
     node,
     actions
-  }), /* @__PURE__ */ React__default["default"].createElement(Dialog, {
+  }),  React.createElement(Dialog, {
     open: openSvg,
     setOpen: setOpenSvg,
     node,
     actions
-  }), /* @__PURE__ */ React__default["default"].createElement(Dialog$2, {
+  }),  React.createElement(Dialog$2, {
     open: openButton,
     setOpen: setOpenButton,
     node,
@@ -2184,14 +2276,14 @@ const FrameEditor = ({ data, standaloneServer ,pages}) => {
   React.useEffect(() => {
     loadData();
   }, []);
-  return !data ? /* @__PURE__ */ React__default["default"].createElement(Viewport, null, /* @__PURE__ */ React__default["default"].createElement(core.Frame, null, /* @__PURE__ */ React__default["default"].createElement(core.Element, {
+  return !data ?  React.createElement(Viewport, null,  React.createElement(core.Frame, null,  React.createElement(core.Element, {
     canvas: true,
     is: Container,
     children: [],
     custom: { displayName: "App" }
-  }))) : /* @__PURE__ */ React__default["default"].createElement("div", {
+  }))) :  React.createElement("div", {
     className: "page-container"
-  }, /* @__PURE__ */ React__default["default"].createElement(core.Frame, null));
+  },  React.createElement(core.Frame, null));
 };
 
 const Editor = ({ data, standaloneServer,pages }) => {
@@ -2200,12 +2292,12 @@ const Editor = ({ data, standaloneServer,pages }) => {
   const onStateChange = (e) => {
     saveTemplateDebounce(e, standaloneServer,localStorage.getItem("currentPage"));
   }; 
-  return /* @__PURE__ */ React__default["default"].createElement(core.Editor, {
+  return  React.createElement(core.Editor, {
     resolver,
     enabled: !data,
     onRender: EditorElement,
     onNodesChange: onStateChange
-  }, /* @__PURE__ */ React__default["default"].createElement(FrameEditor, {
+  },  React.createElement(FrameEditor, {
     data,
     standaloneServer,
     pages
@@ -2215,15 +2307,15 @@ const Editor = ({ data, standaloneServer,pages }) => {
 
 
 const ContentProviderBase = ({ data, standaloneServer,pages }) => {
-  return /* @__PURE__ */ React__default["default"].createElement(ThemeProvider, null, /* @__PURE__ */ React__default["default"].createElement("div", {
+  return  React.createElement(ThemeProvider, null,  React.createElement("div", {
     className: "h-full h-screen"
-  }, /* @__PURE__ */ React__default["default"].createElement(Editor, {
+  },  React.createElement(Editor, {
     data,
     standaloneServer,
     pages
   })));
 };
-const ContentProvider = ({ data,pages }) => /* @__PURE__ */ React__default["default"].createElement(ContentProviderBase, {
+const ContentProvider = ({ data,pages }) =>  React.createElement(ContentProviderBase, {
   data,
   standaloneServer: false,
   pages,
@@ -2260,10 +2352,10 @@ const FrameEditor1 = ({ data1, standaloneServer ,pages}) => {
   if(data1!==undefined){
      loadData()
   }
-  return !data1 ? /* @__PURE__ */ React__default["default"].createElement("div", /* @__PURE__ */ React__default["default"].createElement("p", {},"loading....")
-  ) : /* @__PURE__ */ React__default["default"].createElement("div", {
+  return !data1 ?  React.createElement("div",  React.createElement("p", {},"loading....")
+  ) :  React.createElement("div", {
     className: "page-container"
-  }, /* @__PURE__ */ React__default["default"].createElement(core.Frame, null));
+  },  React.createElement(core.Frame, null));
 };
 
 const Editor1 = ({ data1, standaloneServer,pages }) => {
@@ -2272,12 +2364,12 @@ const Editor1 = ({ data1, standaloneServer,pages }) => {
   const onStateChange = (e) => {
     saveTemplateDebounce(e, standaloneServer);
   }; 
-  return /* @__PURE__ */ React__default["default"].createElement(core.Editor, {
+  return  React.createElement(core.Editor, {
     resolver,
     enabled: !data1,
     onRender: EditorElement,
     onNodesChange: onStateChange
-  }, /* @__PURE__ */ React__default["default"].createElement(FrameEditor1, {
+  },  React.createElement(FrameEditor1, {
     data1,
     standaloneServer,
     pages
@@ -2287,15 +2379,15 @@ const Editor1 = ({ data1, standaloneServer,pages }) => {
 
 
 const ContentProviderBase1 = ({ data1, standaloneServer,pages }) => {
-  return /* @__PURE__ */ React__default["default"].createElement(ThemeProvider, null, /* @__PURE__ */ React__default["default"].createElement("div", {
+  return  React.createElement(ThemeProvider, null,  React.createElement("div", {
     className: "h-full h-screen"
-  }, /* @__PURE__ */ React__default["default"].createElement(Editor1, {
+  },  React.createElement(Editor1, {
     data1,
     standaloneServer,
     pages
   })));
 };
-const ContentProvider1 = ({ data1,pages }) => /* @__PURE__ */ React__default["default"].createElement(ContentProviderBase1, {
+const ContentProvider1 = ({ data1,pages }) =>  React.createElement(ContentProviderBase1, {
   data1,
   standaloneServer: false,
   pages,

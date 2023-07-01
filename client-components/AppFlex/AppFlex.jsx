@@ -11,8 +11,11 @@ const AppFlex = ({
   alignItems = "center",
   justifyContent = "",
   gap,
+  attrs,
   ...props
 }) => {
+   //console.log(customStyle,"customStyle",gap,direction,)
+   console.log(customStyle,"attrs")
   return (
     <Flex
       direction={direction}

@@ -1,155 +1,5 @@
 'use strict';
 
-const color={
-  backgroundColor:"red"
-}
-
-const source1=
-`<AppBox background-color="red">
-<AppText>Hello World Chakra UI</AppText>
-</AppBox>`
-
-const source2=
-`<AppBox>
-<AppBox
-    background-image= "url('https://media.istockphoto.com/id/696834370/photo/solar-system.jpg?s=2048x2048&w=is&k=20&c=-uioe12V0kimPoV5Wt9Pf71UXreeGUq3UfB2tPFe2c0=')"
-    background-repeat= "no-repeat"
-    background-size= "cover"
-    background-position="flex"
-    py= { md: py, base: "90px" }
-    pl={ md: "120px", base: "10px", sm: "auto" }
-    border-radius= "20px"
-    h= "200px"
-    background-color="green"
-/>
-  <AppBox
-    w={{ base: "auto", sm: "auto", md: "632px" }}
-    pr={{ base: "5px" }}
-    mt="10px"
-    textStyle={{ base: "responsiveParaText", md: "fs3" }}
-  />
-  <AppBox gap={"8px"} mt="25px">
-    <AppText variant={"primarybtn"}>Request a Demo</AppText>
-    <AppText variant={"primaryoutlinebtn"}>Talk to Sales</AppText>
-  </AppBox>
-</AppBox>
-</AppBox>`
-
-
-const source3=
-`<AppBox>
-<AppBox
-    background-image="url('https://images.unsplash.com/photo-1563986768609-322da13575f3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80')",
-    background-repeat= "no-repeat",
-    background-size="cover",
-    background-position="relative",
-    py=80px,
-    pl=80px,
-    border-radius= "20px",
-    height="800px"
-    background-color="green"
->
-  {Component}
-  <AppText
-    w={{ base: "auto", sm: "auto", md: "632px" }}
-    pr={{ base: "5px" }}
-    mt="10px"
-    textStyle={{ base: "responsiveParaText", md: "fs3" }}
-    text={para}
-  />
-  <AppBox gap={"8px"} mt="25px">
-    <AppText variant={"primarybtn"}>Request a Demo</AppText>
-    <AppText variant={"primaryoutlinebtn"}>Talk to Sales</AppText>
-  </AppBox>
-</AppBox>
-</AppBox>`
-
-const FlexComponet=`
-<AppFlex
-justify-content="space-between"
-align-items="center"
-gap="30px"
-py="55px",
-direction="column"
-background-color="green"
-color="white"
->
-<AppFlex
-  direction="column"
-  display=[{"base":"none","md":"initial"}]
->
-  <AppFlex gap="8px">
-    <AppText text="Notion" />
-  </AppFlex>
-  <AppBox mt="157px">
-    <AppText
-      textStyle="countText"
-      fontSize=[{ "base": "40px", "md": "57px" }]
-      text="250k+"
-    />
-    <AppText text="watching hours" />
-  </AppBox>
-</AppFlex>
-<AppFlex direction="column" alignItems="start">
-  <AppText
-    width=[{ "base": "100%", "md": "535px" }]
-    textStyle="fs5"
-    fontSize=[{"base": "14px", "md": "24px" }]
-    text='“Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.'”
-  />
-  <AppFlex gap="16px" mt="35px">
-    <AppBox>
-      <AppText text="John Doe" />
-      <AppText
-        textStyle="fs10"
-        text="Chief Learning Officer @ Notion"
-      />
-    </AppBox>
-  </AppFlex>
-</AppFlex>
-</AppFlex>
-`
-
-
-const Component1 = {
-    source: source1,
-    displayName: "Test Component",
-    category: "Component"
-};
-
-const Component2 = {
-  source: source2,
-  displayName: "Test Component2",
-  category: "Component"
-};
-
-
-const Component3={
-  source:source3,
-  displayName:"Test Component3",
-  category:"Component"
-}
-  
-const Component4={
-  source:FlexComponet,
-  displayName:"flex",
-  category:"AppFlex"
-}
-
-
-const components = {
-    component1: Component1,
-    component2:Component2,
-    component3:Component3,
-    component4:Component4
-  };
-  
-
-exports["default"]=components
-
-
-'use strict';
-
 const sourceH1=`
 <DevelopCard><DevelopCard/>
 `
@@ -157,54 +7,60 @@ const sourceH2=`
 <DigitalTranformation><DigitalTranformation/>
 `
 const sourceH3=`
+<AppBox
+    backgroundImage="url(/home/hero-bg.png)",
+    backgroundRepeat= "no-repeat",
+    backgroundSize="cover",
+    backgroundPosition="bottom",
+    paddingBottom="100px",
+      >
 <AppFlex>
       <AppFlex
         alignItems="center"
         gap="40px"
-        mt=[{ base= "40px", xl= "28px" }]
-        direction=[{ base= "column", xl= "row" }]
-        background-color="#02387A"
+        mt="28px"
+        direction="row"
       >
-        <AppBox customStyle=[w={"base"="100%","xl"="58%" }]>
+        <AppBox w="100%">
           <AppText
             textStyle="heroSubHead"
             as="span"
-            fontSize=[{"base":"24px","md":"55px"} ]
-            lineHeight={{ base: "40px", md: "72px" }}
+            fontSize="55px"
+            lineHeight="72px"
             text="Start Solving Your Tech Skill Gaps To"
           />
           <AppText
             textStyle="heroHead"
             as="span"
-            fontSize={{ base: "24px", md: "55px" }}
-            lineHeight={{ base: "40px", md: "72px" }}
-            customStyle={{ paddingLeft: "10px" }}
+            fontSize="55px"
+            lineHeight="72px"
+            customStyle="10px"
             text="Accelerate Business Transformation."
           />
 
-          <AppDivider customstyle={{ pt: "10px" }} />
+          <AppDivider "pt"="10px" />
 
           <AppText
             textStyle="hero_italic"
-            customStyle={{ color: appColors.apporange["100"], pt: "20px" }}
+            "color"="appColors.apporange["100"]","pt"= "20px"
             text="Digital Transformation. Skill at Scale with Speed."
           />
           <AppText
             textStyle="fs3"
-            customStyle={{ pt: "10px" }}
+            "pt"="10px"
             text=
               "Higher adoption rates. Better learner engagement. Improved course completion rates. Aligned to business impact. Delivered on time, every time through a comprehensive learning ecosystem that enables multiple learner journeys."
             
           />
           <AppFlex
             gap="8px"
-            justifyContent={{ base: "center", md: "start" }}
-            customStyle={{ pt: "20px" }}
+            justifyContent="md":"start"
+            "pt"="20px"
           >
-            <AppButton variant={"primarybtn"}>Watch Demo</AppButton>
+            <AppButton variant="primarybtn">Watch Demo</AppButton>
           </AppFlex>
         </AppBox>
-        <AppFlex customStyle={{ w: "42%", justifyContent: "end" }}>
+        <AppFlex "w"="42%", "justifyContent"="end">
           <AppImage
             src="/home/hero-img.svg"
             width=563
@@ -214,7 +70,9 @@ const sourceH3=`
         </AppFlex>
       </AppFlex>
     </AppFlex>
+    </AppBox>
 `
+
 const sourceH4=`
 <LxpCard><LxpCard/>
 `
@@ -394,24 +252,24 @@ const Component$U = {
 
 const source$N = `
 <AppFlex
-      direction="column"
+      direction="row"
       alignItems="flex-start"
       justifyContent="center"
-        width="100%",
-        pt= "163px",
-        pb="100px",
-        backgroundColor="#1B1B1B",
-        backgroundImage="url('/footerbg.svg')" 
-        backgroundRepeat="no-repeat",
-        backgroundSize= "cover",
+      width="100%",
+      pt= "163px",
+      pb="100px",
+      backgroundColor="#1B1B1B",
+      backgroundImage='url(/footerbg.svg)' 
+      backgroundRepeat="no-repeat",
+      backgroundSize= "cover",
     >
-      <Container>
+      <AppContainer>
         <AppFlex
-          direction="row"
+          direction="column"
             gap= "1rem",
             width= "100%",
             alignItems="start",
-            color="black",
+            color="white",
         >
           <AppFlex
             direction="column"
@@ -436,8 +294,9 @@ const source$N = `
               </AppFlex>
             </AppLink>
           </AppFlex>
-          <Grid
-            width="80%"            gap="40px"
+          <AppGrid
+            width="80%"           
+            gap="40px"
             templateColumns="repeat(3,1fr)",
             justifyItems="start"
           >
@@ -451,11 +310,11 @@ const source$N = `
                   color= "#737373",
                   fontSize="16px",
               />
-              {navDropDown[1].listOne.map((item, index) => (
-                <AppLink key={index} href={item.link} className="link">
-                  {item.title}
-                </AppLink>
-              ))}
+              <a class="link text-white" href="/cloud-labs">Cloud Labs</a>
+              <a class="link text-white" href="/assessments">Assessment Platform</a>
+              <a class="link text-white" href="/content-engine">Content Engine</a>
+              <a class="link text-white" href="/virtutor">Virtutor</a>
+              <a class="link text-white" href="/hackathons">Hackathons</a>
             </AppFlex>
             <AppFlex
               direction="column"
@@ -467,13 +326,11 @@ const source$N = `
                   color= "#737373",
                   fontSize= "16px",
               />
-              {navDropDown[0].listTwo.map((item, index) => (
-                <AppLink key={index} href={item.link} className="link">
-                  {item.title}
-                </AppLink>
-              ))}
+              <a class="link text-white" href="/solutions/ld/lateral-training">Lateral Training</a>
+              <a class="link text-white" href="/solutions/ld/certification-paths">Certification Paths</a>
+              <a class="link text-white" href="/solutions/hr/new-hire-foundation">New Hire Foundation</a>
+              <a class="link text-white" href="/solutions/ld/upskill-and-reskill">Upskilling &amp; Reskilling</a>
             </AppFlex>
-
             <AppFlex
               gap="0.6rem"
               direction="column"
@@ -484,11 +341,10 @@ const source$N = `
                   color="#737373",
                   fontSize= "16px",
               />
-              {navDropDown[0].listOne.map((item, index) => (
-                <AppLink key={index} href={item.link} className="link">
-                  {item.title}
-                </AppLink>
-              ))}
+              <a class="link text-white" href="/solutions/ld">Learning & Development</a>
+              <a class="link text-white" href="/solutions/hr/hiring">Human Resource</a>
+              <a class="link text-white" href="/solutions/cxo">CXO</a>
+              <a class="link text-white" href="/solutions/hr/student-engagement">Student Engagement</a>
             </AppFlex>
             <AppFlex
               direction="column"
@@ -500,11 +356,10 @@ const source$N = `
                 color="#737373",
                 fontSize="16px",
               />
-              {navDropDown[1].listTwo.map((item, index) => (
-                <AppLink key={index} href={item.link} className="link">
-                  {item.title}
-                </AppLink>
-              ))}
+              <a class="link text-white" href="/learning-analytics">Learning Analytics</a>
+              <a class="link text-white" href="/solutions/hr/campus-hiring">Campus Hiring</a>
+              <a class="link text-white" href="/proctoring">Proctoring</a>
+              <a class="link text-white" href="/solutions/hr/hiring">Hiring</a>
             </AppFlex>
 
             <AppFlex
@@ -517,15 +372,11 @@ const source$N = `
                   color="#737373",
                   fontSize= "16px",
               />
-              {navDropDown[2].listOne
-                .concat(navDropDown[2].listTwo)
-                .map((item, index) => (
-                  <AppLink key={index} href={item.link} className="link">
-                    {item.title}
-                  </AppLink>
-                ))}
+              <a class="link text-white" href="/resources/blog">Blog</a>
+              <a class="link text-white" href="/resources/case-studies">Case Studies</a>
+              <a class="link text-white" href="/resources/ebooks">eBooks</a>
             </AppFlex>
-          </Grid>
+          </AppGrid>
         </AppFlex>
         <AppFlex
           direction="column"
@@ -654,15 +505,21 @@ const Component$O={
 }
 
 const source$E = `
+<AppBox
+    backgroundImage="url(/home/hero-bg.png)",
+    backgroundRepeat= "no-repeat",
+    backgroundSize="cover",
+    backgroundPosition="bottom",
+    paddingBottom="100px",
+      >
 <AppFlex>
       <AppFlex
         alignItems="center"
         gap="40px"
         mt="28px"
         direction="row"
-        background-color="#02387A"
       >
-        <AppBox w="58%">
+        <AppBox w="100%">
           <AppText
             textStyle="heroSubHead"
             as="span"
@@ -675,31 +532,33 @@ const source$E = `
             as="span"
             fontSize="55px"
             lineHeight="72px"
-            paddingLeft="10px"
+            customStyle="10px"
             text="Accelerate Business Transformation."
           />
 
-          <AppDivider pt=10px" />
+          <AppDivider "pt"="10px" />
 
           <AppText
             textStyle="hero_italic"
-            color="red", pt= "20px"
+            "color"="appColors.apporange["100"]","pt"= "20px"
             text="Digital Transformation. Skill at Scale with Speed."
           />
           <AppText
             textStyle="fs3"
-            pt="10px"
-            text="Higher adoption rates. Better learner engagement. Improved course completion rates. Aligned to business impact. Delivered on time, every time through a comprehensive learning ecosystem that enables multiple learner journeys."
+            "pt"="10px"
+            text=
+              "Higher adoption rates. Better learner engagement. Improved course completion rates. Aligned to business impact. Delivered on time, every time through a comprehensive learning ecosystem that enables multiple learner journeys."
+            
           />
           <AppFlex
             gap="8px"
             justifyContent="start"
-            pt="20px"
+            "pt"="20px"
           >
             <AppButton variant="primarybtn">Watch Demo</AppButton>
           </AppFlex>
         </AppBox>
-        <AppFlex w="42%", justifyContent="end">
+        <AppFlex "w"="42%", "justifyContent"="end">
           <AppImage
             src="/home/hero-img.svg"
             width=563
@@ -709,20 +568,794 @@ const source$E = `
         </AppFlex>
       </AppFlex>
     </AppFlex>
-`;
+    </AppBox>
+`
 
-const Component$E = {
+const ComponentH = {
   source: source$E,
-  displayName: "Hero 1",
+  displayName: "Hero",
   category: "Heros"
 };
 
+const SourceHero1=`
+    <AppBox
+      backgroundImage= 'url(/platform/assessment-herobg.svg)',
+      backgroundRepeat="no-repeat",
+      backgroundSize="cover",
+      backgroundPosition:="bottom",
+      py="161px",
+      pl="120px",
+    >
+    <AppBox w="586px">
+          <AppText textStyle="fs10"  as="span" text="Having The " />
+          <AppText as="span" textStyle="h10" text=" Right Talent " />
+          <AppText textStyle="fs10" as="span" text=" With The " />
+          <AppText as="span" textStyle="h10" text=" Right Skills " />
+          <AppText
+            as="span"
+            textStyle="fs10"
+            text="Is Critical To Your Success"
+          />
+        </AppBox>
+      <AppText
+        w="632px"
+        pr="5px"
+        mt="10px"
+        textStyle="fs3"
+        text="We get this. That’s why we’ve designed our assessment platform to do the heavy lifting for you. This starts with our End-to-end Fullstack Assessment, giving you clear data to make informed learning decisions, rather than relying on instincts and assumptions."
+      />
+      <AppFlex gap="8px" mt="25px">
+        <AppButton variant="primarybtn">Request a Demo</AppButton>
+        <AppButton variant="primaryoutlinebtn">Talk to Sales</AppButton>
+      </AppFlex>
+  </AppBox>
+`
+
+const ComponentH1 = {
+  source: SourceHero1,
+  displayName: "Hero1",
+  category: "Heros"
+};
+
+const SourceHero2=`
+    <AppBox
+      backgroundImage= 'url(/platform/cl-herobg.png)',
+      backgroundRepeat="no-repeat",
+      backgroundSize="cover",
+      backgroundPosition:="bottom",
+      py="170px",
+      pl="120px",
+    >
+    <AppBox w="666px">
+          <AppText
+            as="span"
+            textStyle="fs10"
+            fontSize="30px"
+            text="Develop And Practice Skills "
+          />
+          <AppText
+            textStyle="fs10"
+            fontSize="30px"
+            as="span"
+            text=" In A secure, Customized Environment That Mirrors Your Production Environments"
+          />
+        </AppBox>
+      <AppText
+        w="632px"
+        pr="5px"
+        mt="10px"
+        textStyle="fs3"
+        text="Change the way your workforce learns by enabling them to develop strong proficiencies with a library of over 2000+ virtual tech labs. Compiled and curated for every leaner’s specific goals and roles, Techademy’s practice labs puts leaners in an environment that mirrors projects that they would tackle in real-world."
+      />
+      <AppFlex gap="8px" mt="25px">
+        <AppButton variant="primarybtn">Request a Demo</AppButton>
+        <AppButton variant="primaryoutlinebtn">Talk to Sales</AppButton>
+      </AppFlex>
+  </AppBox>
+`
+
+const ComponentH2 = {
+  source: SourceHero2,
+  displayName: "Hero 2",
+  category: "Heros"
+};
+
+
+const SourceHero3=`
+    <AppBox
+      backgroundImage= 'url(/platform/contentEngine-herobg.png)',
+      backgroundRepeat="no-repeat",
+      backgroundSize="cover",
+      backgroundPosition="bottom",
+      py="160px",
+      pl="120px",
+    >
+    <AppBox w="666px">
+    <AppText
+    textStyle="fs11"
+    text="Take The Quickest Path To Meeting Your Learning Objectives"
+    color="#FFFFFF"
+    />
+        </AppBox>
+      <AppText
+        w="632px"
+        pr="5px"
+        mt="10px"
+        textStyle="fs3"
+        text="Explore objective-driven learning experiences that combine theory, technical knowledge, practice sessions and end-to-end assessments to master skills that can be used in real-world scenarios"
+      />
+      <AppFlex gap="8px" mt="25px">
+        <AppButton variant="primarybtn">Request a Demo</AppButton>
+        <AppButton variant="primaryoutlinebtn">Talk to Sales</AppButton>
+      </AppFlex>
+  </AppBox>
+`
+
+const ComponentH3 = {
+  source: SourceHero3,
+  displayName: "Hero 3",
+  category: "Heros"
+};
+
+const SourceHero4=`
+    <AppBox
+      backgroundImage= 'url(/platform/analytics.png)',
+      backgroundRepeat="no-repeat",
+      backgroundSize="cover",
+      backgroundPosition="bottom",
+      py="160px",
+      pl="120px",
+    >
+    <AppBox w="666px">
+    <AppText
+    textStyle="fs10"
+    text="Real-Time Insights About"
+    color="#FFFFFF",
+    fontSize= "40px",
+    fontWeight="600",
+    lineHeight="50px",
+    />
+    <AppText 
+          textStyle="fs10"
+          as="span" 
+          text="Your Organization’s Capabilities" 
+          fontSize="40px",fontWeight="600",lineHeight="50px"
+          />
+    </AppBox>
+      <AppText
+        w="632px"
+        pr="5px"
+        mt="10px"
+        textStyle="fs3"
+        text="Track progress with insights into skill development over time to ensure your org is prepared to deliver on key initiative. Leverage an advanced learning analytics to get a better understanding of your organisation’s knowledge progression accurately and objectively. Our out-of-the-box analytics give you clarity into where people sit currently versus your desired future state."
+      />
+      <AppFlex gap="8px" mt="25px">
+        <AppButton variant="primarybtn">Request a Demo</AppButton>
+        <AppButton variant="primaryoutlinebtn">Talk to Sales</AppButton>
+      </AppFlex>
+  </AppBox>
+`
+
+const ComponentH4 = {
+  source: SourceHero4,
+  displayName: "Hero 4",
+  category: "Heros"
+};
+
+const SourceHero5=`
+    <AppBox
+      backgroundImage= 'url(/virtutor/virtutor-herobg.png)',
+      backgroundRepeat="no-repeat",
+      backgroundSize="cover",
+      backgroundPosition="bottom",
+      py="185px",
+      pl="120px",
+    >
+    <AppBox w="586px">
+    <AppText
+    textStyle="h10"
+    text="Train Your Learners Under Industry Experts""
+    color="#FFFFFF",
+    />
+    </AppBox>
+      <AppText
+        w="632px"
+        pr="5px"
+        mt="10px"
+        textStyle="fs3"
+        text="Virtutor provides live interactive tutoring on demand. Being one of the largest communities of tech experts, we have a mentor pool of over 8000 SMEs across various tech stacks. We also allow organisations to add their in-house mentors to our platform."
+      />
+      <AppFlex gap="8px" mt="25px">
+        <AppButton variant="primarybtn">Request a Demo</AppButton>
+        <AppButton variant="primaryoutlinebtn">Talk to Sales</AppButton>
+      </AppFlex>
+  </AppBox>
+`
+
+const ComponentH5 = {
+  source: SourceHero5,
+  displayName: "Hero 5",
+  category: "Heros"
+};
+
+const SourceHero6=`
+    <AppBox
+      backgroundImage= 'url(/proctoring/proctoring-herobg.png)',
+      backgroundRepeat="no-repeat",
+      backgroundSize="cover",
+      backgroundPosition="bottom",
+      py="215px",
+      pl="120px",
+    >
+    <AppBox w="666px">
+    <AppText
+    textStyle="h10"
+    text="Every Test Is Different.  Don’t Settle For Restrictions."
+    color="#FFFFFF",
+    />
+    </AppBox>
+      <AppText
+        w="632px"
+        pr="5px"
+        mt="10px"
+        textStyle="fs3"
+        text="Your one-stop-shop for the most flexible and secure options for proctoring exams online."
+      />
+      <AppFlex gap="8px" mt="25px">
+        <AppButton variant="primarybtn">Request a Demo</AppButton>
+        <AppButton variant="primaryoutlinebtn">Talk to Sales</AppButton>
+      </AppFlex>
+  </AppBox>
+`
+
+const ComponentH6 = {
+  source: SourceHero6,
+  displayName: "Hero 6",
+  category: "Heros"
+};
+
+const SourceHero7=`
+    <AppBox
+      backgroundImage= 'url(/platform/hackathon-herobg.svg)',
+      backgroundRepeat="no-repeat",
+      backgroundSize="cover",
+      backgroundPosition="bottom",
+      py="200px",
+      pl="120px",
+    >
+    <AppBox w="700px">
+    <AppText
+    textStyle="h10"
+    text="Go All Out With Hackathons For Hiring And Employee Engagement"
+    color="#FFFFFF",
+    />
+    </AppBox>
+      <AppText
+        w="632px"
+        pr="5px"
+        mt="10px"
+        textStyle="fs3"
+        text="Explore hackathon challenges that are fully curated and managed. To put it simply, you get the engagement you need, without any bandwidth drain."
+      />
+      <AppFlex gap="8px" mt="25px">
+        <AppButton variant="primarybtn">Request a Demo</AppButton>
+        <AppButton variant="primaryoutlinebtn">Talk to Sales</AppButton>
+      </AppFlex>
+  </AppBox>
+`
+
+const ComponentH7 = {
+  source: SourceHero7,
+  displayName: "Hero 7",
+  category: "Heros"
+};
+
+const SourceC1=`
+<AppFlex
+      backgroundImage='url(/home/develop1-bg.svg)',
+      backgroundRepeat="no-repeat",
+      backgroundSize="cover",
+    >
+      <AppContainer maxW="1264px">
+        <AppFlex
+          alignItems="center"
+          justifyContent="space-between"
+          px="10px"
+          direction="row"
+          gap="20px"
+        >
+          <AppBox width="565px">
+          <AppBox>
+            <AppText
+              as="span"
+              color="black"
+              textStyle="fs13"
+              text="Develop "
+            />
+            <GradientText as="span" text="A Workforce That Delivers " textStyle="gradientText" />
+            <AppText
+              as="span"
+              textStyle="fs13"
+              color="black"
+              text="on Key Initiatives"
+            />
+          </AppBox>
+          <AppBox color="#303030" mt="14px">
+          <AppText 
+          text=" Empower your tech teams to produce key business outcomes by
+          upskilling and reskilling them to drive digital transformation.
+          Upskill your workforce to deliver business results and stay
+          competitive. Reduce ramp time for new hires and existing staff by
+          giving them a training environment customized to your tech stack to
+          quickly build deep expertise." color="black" />
+        </AppBox>
+        <AppFlex
+          color="#0023B5",
+          display= "flex",
+          alignItems="center",
+          gap="8px",
+          marginTop="14px",
+          lineHeight="24px",
+          fontSize="16px",
+          fontWeight= "600",
+          letterSpacing= "-0.36px",
+        role="button"
+           >
+           <AppText text="GET IN TOUCH" color="#0023B5" as="span" />
+           <AppIcon  index="2" />
+          </AppFlex>
+          </AppBox>
+          <AppBox>
+            <AppImage alt="image" src=/home/develop1.svg width=626 height=402 />
+          </AppBox>
+        </AppFlex>
+      </AppContainer>
+    </AppFlex>
+`
+
+const ComponentC1={
+  source:SourceC1,
+  displayName:"Card1",
+  category:"cards"
+}
+
+const SourceC2=`
+    <AppFlex
+      backgroundRepeat="no-repeat",
+      backgroundSize="cover",
+    >
+      <AppContainer maxW="1264px">
+        <AppFlex
+          alignItems="center"
+          justifyContent="space-between"
+          px="10px"
+          direction="row-reverse"
+          gap="20px"
+        >
+          <AppBox width="565px">
+          <AppBox>
+            <GradientText2 text="Develop And Practice Skills" textStyle="gradientText2"/>
+            <AppText
+              as="span"
+              color="black"
+              textStyle="fs13"
+              text="In A Secure, Custom Environment To Drive Hands-On Learning"
+            />
+          </AppBox>
+          <AppBox color="#303030" mt="14px">
+          <AppText 
+          text=" Change the way your workforce learns by enabling them to develop
+          strong proficiencies with a library of over 2000+ virtual tech labs.
+          Compiled and curated for every leaner’s specific goals and roles,
+          Techademy’s practice labs put leaners in an environment that mirrors
+          projects that they would tackle in real-world." color="black" />
+        </AppBox>
+        <AppFlex
+          color="#0023B5",
+          display= "flex",
+          alignItems="center",
+          gap="8px",
+          marginTop="14px",
+          lineHeight="24px",
+          fontSize="16px",
+          fontWeight= "600",
+          letterSpacing= "-0.36px",
+        role="button"
+           >
+           <AppText text="GET IN TOUCH" color="#0023B5" as="span" />
+           <AppIcon  index="2" />
+          </AppFlex>
+          </AppBox>
+          <AppBox>
+            <AppImage alt="image" src=/home/develop2.svg width=668 height=430 />
+          </AppBox>
+        </AppFlex>
+      </AppContainer>
+    </AppFlex>
+`
+
+const ComponentC2={
+  source:SourceC2,
+  displayName:"Card2",
+  category:"cards"
+}
+
+const SourceC3=`
+    <AppFlex
+      bg="#FAFAFA"
+    >
+      <AppContainer maxW="1264px">
+        <AppFlex
+          alignItems="center"
+          justifyContent="space-between"
+          px="10px"
+          direction="row"
+          gap="20px"
+        >
+          <AppBox width="565px">
+          <AppBox>
+            <AppText
+              as="span"
+              color="black"
+              textStyle="fs13"
+              text="Turn Assessment Results Into "
+            />
+            <GradientText2 text="A Development Roadmap" textStyle="gradientText2"/>
+          </AppBox>
+          <AppBox color="#303030" mt="14px">
+          <AppText 
+          text=" Validate the skill strengths of potential hires with end-to-end
+          assessments, so you can make the best possible hiring decision and
+          have upskilling paths set when they start; learning journeys that
+          would help them onboard, learn your unique toolsets, processes, and
+          technology, and help predictably bring their tech skills to where
+          you need them." color="black" />
+        </AppBox>
+        <AppFlex
+          color="#0023B5",
+          display= "flex",
+          alignItems="center",
+          gap="8px",
+          marginTop="14px",
+          lineHeight="24px",
+          fontSize="16px",
+          fontWeight= "600",
+          letterSpacing= "-0.36px",
+        role="button"
+           >
+           <AppText text="GET IN TOUCH" color="#0023B5" as="span" />
+           <AppIcon  index="2" />
+          </AppFlex>
+          </AppBox>
+          <AppBox>
+            <AppImage alt="image" src=/home/develop3.svg width=724 height=464 />
+          </AppBox>
+        </AppFlex>
+      </AppContainer>
+    </AppFlex>
+`
+
+const ComponentC3={
+  source:SourceC3,
+  displayName:"Card3",
+  category:"cards"
+}
+
+const SourceC4=`
+<AppFlex
+      backgroundImage='url(/home/develop4-bg.svg)',
+      backgroundRepeat="no-repeat",
+      backgroundSize="cover",
+    >
+      <AppContainer maxW="1264px">
+        <AppFlex
+          alignItems="center"
+          justifyContent="space-between"
+          px="10px"
+          direction="row-reverse"
+          gap="20px"
+        >
+          <AppBox width="565px">
+          <AppBox>
+            <AppText
+              as="span"
+              color="black"
+              textStyle="fs13"
+              text="Shorten The Learning Curve With "
+            />
+            <GradientText2 text="Tailor-Made Learning Paths" textStyle="gradientText2" />
+          </AppBox>
+          <AppBox color="#303030" mt="14px">
+          <AppText 
+          text="Explore objective-driven learning experiences that combine the
+          theory, technical knowledge, and hands-on practice to master tech
+          skills across major technologies and platforms. Our learning paths
+          combine specific courses and tools into one experience to teach you
+          any given skill from start to finish." color="black" />
+        </AppBox>
+        <AppFlex
+          color="#0023B5",
+          display= "flex",
+          alignItems="center",
+          gap="8px",
+          marginTop="14px",
+          lineHeight="24px",
+          fontSize="16px",
+          fontWeight= "600",
+          letterSpacing= "-0.36px",
+        role="button"
+           >
+           <AppText text="GET IN TOUCH" color="#0023B5" as="span" />
+           <AppIcon  index="2" />
+          </AppFlex>
+          </AppBox>
+          <AppBox>
+            <AppImage alt="image" src=/home/develop4.svg width=668 height=430 />
+          </AppBox>
+        </AppFlex>
+      </AppContainer>
+    </AppFlex>
+`
+
+const ComponentC4={
+  source:SourceC4,
+  displayName:"Card4",
+  category:"cards"
+}
+
+const SourceC5=`
+<AppFlex
+    >
+      <AppContainer maxW="1264px">
+        <AppFlex
+          alignItems="center"
+          justifyContent="space-between"
+          px="10px"
+          direction="row-reverse"
+          gap="20px"
+        >
+          <AppBox width="505px">
+          <AppBox w="505px">
+          <GradientText2 text="Know the true tech skills" textStyle="gradientText1" />
+          <AppText
+            as="span"
+            color="black"
+            textStyle="fs13"
+            text=" of your candidates"
+          />
+        </AppBox>
+          <AppBox color="#303030" mt="14px">
+          <AppText 
+          text="Discover where your organization stands at a glance and begin
+          extending skills right away with comprehensive learning paths. Test
+          your candidates and employees on real-world projects to get deeper
+          insights into their skills and create long term job-skill matrix for
+          your organization." color="black" />
+        </AppBox>
+        <AppFlex
+          color="#0023B5",
+          display= "flex",
+          alignItems="center",
+          gap="8px",
+          marginTop="14px",
+          lineHeight="24px",
+          fontSize="16px",
+          fontWeight= "600",
+          letterSpacing= "-0.36px",
+        role="button"
+           >
+           <AppText text="GET IN TOUCH" color="#0023B5" as="span" />
+           <AppIcon  index="2" />
+          </AppFlex>
+          </AppBox>
+          <AppBox>
+            <AppImage alt="image" src=/platform/techskill.svg width=690 height=444 />
+          </AppBox>
+        </AppFlex>
+      </AppContainer>
+    </AppFlex>
+`
+
+const ComponentC5={
+  source:SourceC5,
+  displayName:"Card5",
+  category:"cards"
+}
+
+const SourceC6=`
+<AppFlex
+      backgroundImage='url(/home/develop1-bg.svg)',
+      backgroundRepeat="no-repeat",
+      backgroundSize="cover",
+      bg="#FAFAFA"
+    >
+      <AppContainer maxW="1264px">
+        <AppFlex
+          alignItems="center"
+          justifyContent="space-between"
+          px="10px"
+          direction="row"
+          gap="20px"
+        >
+          <AppBox width="481px">
+          <AppBox  >
+          <AppText
+            as="span"
+            color="black"
+            textStyle="fs13"
+            text="Turn Assessment Results Into "
+          />
+          <GradientText2 text="a Development Roadmap" textStyle="gradientText2" />
+        </AppBox>
+          <AppBox color="#303030" mt="14px">
+          <AppText 
+          text="Validate the skill strengths of potential hires with end-to-end
+          assessments, so you can make the best possible hiring decision and have
+          upskilling paths set when they start; learning journeys that would help
+          them onboard, learn your unique toolsets, processes, and technology, and
+          help predictably bring their tech skills to where you need them." color="black" />
+        </AppBox>
+        <AppFlex
+          color="#0023B5",
+          display= "flex",
+          alignItems="center",
+          gap="8px",
+          marginTop="14px",
+          lineHeight="24px",
+          fontSize="16px",
+          fontWeight= "600",
+          letterSpacing= "-0.36px",
+        role="button"
+           >
+           <AppText text="GET IN TOUCH" color="#0023B5" as="span" />
+           <AppIcon  index="2" />
+          </AppFlex>
+          </AppBox>
+          <AppBox>
+            <AppImage alt="image" src=/home/develop3.svg width=724 height=464 />
+          </AppBox>
+        </AppFlex>
+      </AppContainer>
+    </AppFlex>
+`
+
+const ComponentC6={
+  source:SourceC6,
+  displayName:"Card6",
+  category:"cards"
+}
+
+const SourceC7=`
+<AppFlex
+      backgroundImage='url(/home/develop1-bg.svg)',
+      backgroundRepeat="no-repeat",
+      backgroundSize="cover",
+    >
+      <AppContainer maxW="1264px">
+        <AppFlex
+          alignItems="center"
+          justifyContent="space-between"
+          px="10px"
+          direction="row-reverse"
+          gap="20px"
+        >
+          <AppBox width="534px">
+          <AppBox>
+          <GradientText2 text="Collaboratively edit and debug" textStyle="gradientText2" />
+          <AppText
+            as="span"
+            color="black"
+            textStyle="fs13"
+            text="with others in real-time, regardless of the programming languages."
+          />
+        </AppBox>
+          <AppBox color="#303030" mt="14px">
+          <AppText 
+          text=" Regardless of what stack your candidates are working on, you can
+          instantly share your projects with your peers with ease. Co-edit,
+          co-debug, chat with your peers, share terminals, servers, look at
+          comments and do so much more without having to clone repositories and
+          environments." color="black" textStyle="fs3" />
+        </AppBox>
+        <AppFlex
+          color="#0023B5",
+          display= "flex",
+          alignItems="center",
+          gap="8px",
+          marginTop="14px",
+          lineHeight="24px",
+          fontSize="16px",
+          fontWeight= "600",
+          letterSpacing= "-0.36px",
+          role="button"
+           >
+           <AppText text="GET IN TOUCH" color="#0023B5" as="span" />
+           <AppIcon  index="2" />
+          </AppFlex>
+          </AppBox>
+          <AppBox>
+            <AppImage alt="image" src=/platform/debug.svg width=694 height=446 />
+          </AppBox>
+        </AppFlex>
+      </AppContainer>
+    </AppFlex>
+`
+
+const ComponentC7={
+  source:SourceC7,
+  displayName:"Card7",
+  category:"cards"
+}
+
 const source$t = `
-<AppNav></AppNav>
+   <AppBox
+    top="0",
+    position="sticky",
+    zIndex="100",
+    width="100%",
+    backgroundColor="white",
+    >
+      <AppContainer>
+      <AppFlex
+        justifyContent="end",
+        backgroundColor="transparent",
+        alignItems="center",
+        height="60px",
+    >
+      <AppFlex
+        gap="22px", alignItems="center", height="100%"
+      >
+        <AppFlex
+          color="black"
+          gap="7px", alignItems="center"
+        >
+          <AppBox>
+            <AppIcon index="4"  size=20 />
+          </AppBox>
+          <AppBox fontSize="17px" >
+            contact@techademy.net
+          </AppBox>
+        </AppFlex>
+
+        <AppFlex gap="1.5rem">
+          <AppLink
+            target="_blank"
+            href="https://www.linkedin.com/company/techademy-ulxp/"
+          >
+            <AppIcon index="6" size=20  />
+          </AppLink>
+          <AppLink
+            target="_blank"
+            href="https://www.youtube.com/@techademy1221"
+          >
+            <AppIcon  size=20 index="7" />
+          </AppLink>
+          <AppLink
+            target="_blank"
+            href="https://www.instagram.com/techademy_ULXP/"
+          >
+            <AppIcon  index="5" size=20  />
+          </AppLink>
+        </AppFlex>
+      </AppFlex>
+      </AppFlex>
+        <AppBox display="block" >
+          <AppNav logo="/home/logoblack.svg" color="black" />
+        </AppBox>
+      </AppContainer>
+    </AppBox>
 `;
 
 const Component$t = {
   source: source$t,
+  displayName: "Navigation 1",
+  category: "Navigation"
+};
+
+const Nav=`<AppNav></AppNav>`
+
+const Component$2 = {
+  source: Nav,
   displayName: "Navigation 1",
   category: "Navigation"
 };
@@ -869,7 +1502,22 @@ const Component$N1={
   category:"Cards"
 }
 
-const components1 = {
+const components = {
+  Hero: ComponentH,
+  Hero1: ComponentH1,
+  Hero2:ComponentH2,
+  Hero3:ComponentH3,
+  Hero4:ComponentH4,
+  Hero5:ComponentH5,
+  Hero6:ComponentH6,
+  Hero7:ComponentH7,
+  Card1:ComponentC1,
+  Card2:ComponentC2,
+  Card3:ComponentC3,
+  Card4:ComponentC4,
+  Card5:ComponentC5,
+  Card6:ComponentC6,
+  Card7:ComponentC7,
   Home1:Component$H1,
   Home2:Component$H2,
   Home3:Component$H3,
@@ -883,11 +1531,11 @@ const components1 = {
   Features1: Component$U,
   Footer1: Component$N,
   Footer2: Component$O,
-  Hero1: Component$E,
   Navigation1: Component$t,
+  Navigation2: Component$2,
   Portfolio1: Component$n,
   Testimonial1: Component$5,
   NeWsCard:Component$N1
 };
 
-exports["default"] = components1;
+exports["default"] = components;

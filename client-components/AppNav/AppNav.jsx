@@ -339,7 +339,7 @@ const Nav = ({ logo, color }) => {
     </>
   );
 };
-const AppNav = ({ logo = "/home/logo.svg", color = "black", customStyle }) => {
+const AppNav = ({ logo = "/home/logoblack.svg", color = "black", customStyle }) => {
   const [isLessThan745] = useMediaQuery("(min-width: 745px)");
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
@@ -347,7 +347,7 @@ const AppNav = ({ logo = "/home/logo.svg", color = "black", customStyle }) => {
       customStyle={{
         top: "0",
         position: "sticky",
-        zIndex: "100",
+        zIndex: "inherit",
         width: "100%",
         backgroundColor: "white",
         // backgroundColor: color === "white" ? "#02387A" : "white",
@@ -387,4 +387,4 @@ const AppNav = ({ logo = "/home/logo.svg", color = "black", customStyle }) => {
   );
 };
 
-export default AppNav;
+export default Nav;

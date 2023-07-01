@@ -4,17 +4,17 @@ import useMediaQuery from '@mui/material/useMediaQuery'
 
 // ** Layout Imports
 // !Do not remove this Layout import
-import VerticalLayout from 'src/@core/layouts/VerticalLayout'
+import VerticalLayout from "../@core/layouts/VerticalLayout"
 
 // ** Navigation Imports
-import VerticalNavItems from 'src/navigation/vertical'
+import VerticalNavItems from '../navigation/vertical'
 
 // ** Component Import
 import UpgradeToProButton from './components/UpgradeToProButton'
 import VerticalAppBarContent from './components/vertical/AppBarContent'
 
 // ** Hook Import
-import { useSettings } from 'src/@core/hooks/useSettings'
+import {useSettings} from "../@core/hooks/useSettings"
 
 const UserLayout = ({ children }) => {
   // ** Hooks

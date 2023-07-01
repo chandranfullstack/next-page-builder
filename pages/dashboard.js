@@ -17,10 +17,39 @@ import StatisticsCard from '../admin/views/dashboard/StatisticsCard'
 import WeeklyOverview from '../admin/views/dashboard/WeeklyOverview'
 import DepositWithdraw from '../admin/views/dashboard/DepositWithdraw'
 import SalesByCountries from '../admin/views/dashboard/SalesByCountries'
+import Head from 'next/head'
+import { Router } from 'next/router'
+import NProgress from 'nprogress'
+import { CacheProvider } from '@emotion/react'
+import themeConfig from "../admin/configs/themeConfig"
+import UserLayout from '../admin/layouts/UserLayout'
+import ThemeComponent from '../admin/@core/theme/ThemeComponent'
+import { SettingsConsumer, SettingsProvider } from '../admin/@core/context/settingsContext'
+import { createEmotionCache } from '../admin/@core/utils/create-emotion-cache'
+
+import 'react-perfect-scrollbar/dist/css/styles.css'
+
+const clientSideEmotionCache = createEmotionCache()
+
+// ** Pace Loader
+if (themeConfig.routingLoader) {
+  Router.events.on('routeChangeStart', () => {
+    NProgress.start()
+  })
+  Router.events.on('routeChangeError', () => {
+    NProgress.done()
+  })
+  Router.events.on('routeChangeComplete', () => {
+    NProgress.done()
+  })
+}
 
 const Dashboard = () => {
   return (
-    <ApexChartWrapper>
+    <CacheProvider value={emotionCache}>
+  <SettingsProvider>
+  <SettingsConsumer>
+     <ApexChartWrapper>
       <Grid container spacing={6}>
         <Grid item xs={12} md={4}>
           <Trophy />
@@ -90,7 +119,10 @@ const Dashboard = () => {
           <Table />
         </Grid>
       </Grid>
-    </ApexChartWrapper>
+     </ApexChartWrapper>
+     </SettingsConsumer>
+     </SettingsProvider>
+   </CacheProvider>
   )
 }
 

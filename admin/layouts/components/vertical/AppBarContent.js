@@ -10,9 +10,9 @@ import Menu from 'mdi-material-ui/Menu'
 import Magnify from 'mdi-material-ui/Magnify'
 
 // ** Components
-import ModeToggler from 'src/@core/layouts/components/shared-components/ModeToggler'
-import UserDropdown from 'src/@core/layouts/components/shared-components/UserDropdown'
-import NotificationDropdown from 'src/@core/layouts/components/shared-components/NotificationDropdown'
+import ModelToggler from "../../../@core/layouts/components/shared-components/ModeToggler"
+import UserDropdown from '../../../@core/layouts/components/shared-components/UserDropdown'
+import NotificationDropdown from '../../../@core/layouts/components/shared-components/NotificationDropdown'
 
 const AppBarContent = props => {
   // ** Props

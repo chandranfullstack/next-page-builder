@@ -15,7 +15,7 @@ import VerticalNavItems from './VerticalNavItems'
 import VerticalNavHeader from './VerticalNavHeader'
 
 // ** Util Import
-import { hexToRGBA } from 'src/@core/utils/hex-to-rgba'
+import { hexToRGBA } from '../../../../utils/hex-to-rgba'
 
 const StyledBoxForShadow = styled(Box)({
   top: 50,

@@ -2081,11 +2081,11 @@ const config = { api: { bodyParser: false } };
 const development = process.env.NODE_ENV !== "production";
 const getStaticProps = async () => {
   if (development) {
-	const pages=await handler()
+	const pages=await getPages()
     return { props: {pages:pages===undefined?null:pages} };
   } else {
     const data = await loadAllData();
-	const pages=await handler()
+	const pages=await getPages()
     return { props: { data:data,pages:pages } };
   }
 };

@@ -1649,25 +1649,25 @@ const Pages=()=>{
   return /*@__PURE__*/React.createElement("div",{
 
 },
- pageList.map((folder) => (
-     React.createElement("div",
-      {key:folder.folder},
-       React.createElement("h3",
-       {className:"h-12 flex text-xl items-center"},folder.folder
-       ),
-       React.createElement("ul",
-        folder.files.map((file) => (
-           React.createElement("li",{key:file,className:"h-12 flex text-xl items-center",style:{backgroundColor:currentPage===i?"#78818D":"",color:currentPage===i?"white":"#1A202C"}},file)
-         ))
-       )
+//  pageList.map((folder) => (
+//      React.createElement("div",
+//       {key:folder.folder},
+//        React.createElement("h3",
+//        {className:"h-12 flex text-xl items-center"},folder.folder
+//        ),
+//        React.createElement("ul",
+//         folder.files.map((file) => (
+//            React.createElement("li",{key:file,className:"h-12 flex text-xl items-center",style:{backgroundColor:currentPage===i?"#78818D":"",color:currentPage===i?"white":"#1A202C"}},file)
+//          ))
+//        )
+//      )
+//    )),
+   pageList.map((i)=>
+     /*@__PURE__*/React.createElement("p",
+     {className:"h-12 flex text-xl items-center",onClick:(e)=>handleActions(e),style:{backgroundColor:currentPage===i?"#78818D":"",color:currentPage===i?"white":"#1A202C"}},
+     i,
      )
-   )),
-  //  pageList.map((i)=>
-  //    /*@__PURE__*/React.createElement("p",
-  //    {className:"h-12 flex text-xl items-center",onClick:(e)=>handleActions(e),style:{backgroundColor:currentPage===i?"#78818D":"",color:currentPage===i?"white":"#1A202C"}},
-  //    i,
-  //    )
-  // ),
+  ),
    React.createElement("div",
   {className:"flex justify-center"},
    React.createElement(PlusOutIcon__default["default"],

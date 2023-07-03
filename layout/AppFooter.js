@@ -1,14 +1,15 @@
 import React, { useContext } from 'react';
 import { LayoutContext } from './context/layoutcontext';
+import Image from "next/image"
 
 const AppFooter = () => {
     const { layoutConfig } = useContext(LayoutContext);
 
     return (
         <div className="layout-footer">
-            <img src={`/layout/images/logo-${layoutConfig.colorScheme === 'light' ? 'dark' : 'white'}.svg`} alt="Logo" height="20" className="mr-2" />
+            <Image src={`/builderFooter/logo-dark.svg.png`} alt="Logo" height={20} width={40} className="mr-2" />
             by
-            <span className="font-medium ml-2">PrimeReact</span>
+            <Image src={`/builderFooter/Layer 1.png`} alt="Logo" height={20} width={160} className="mr-2" />
         </div>
     );
 };

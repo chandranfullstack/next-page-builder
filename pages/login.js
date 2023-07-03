@@ -1,160 +1,92 @@
-// ** React Imports
-import { useState } from 'react'
-
-// ** Next Imports
-import Link from 'next/link'
-import { useRouter } from 'next/router'
-
-// ** MUI Components
-import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
-import Divider from '@mui/material/Divider'
-import Checkbox from '@mui/material/Checkbox'
-import TextField from '@mui/material/TextField'
-import InputLabel from '@mui/material/InputLabel'
-import Typography from '@mui/material/Typography'
-import IconButton from '@mui/material/IconButton'
-import CardContent from '@mui/material/CardContent'
-import FormControl from '@mui/material/FormControl'
-import OutlinedInput from '@mui/material/OutlinedInput'
-import { styled, useTheme } from '@mui/material/styles'
-import MuiCard from '@mui/material/Card'
-import InputAdornment from '@mui/material/InputAdornment'
-import MuiFormControlLabel from '@mui/material/FormControlLabel'
-
-// ** Icons Imports
-import Google from 'mdi-material-ui/Google'
-import Github from 'mdi-material-ui/Github'
-import Twitter from 'mdi-material-ui/Twitter'
-import Facebook from 'mdi-material-ui/Facebook'
-import EyeOutline from 'mdi-material-ui/EyeOutline'
-import EyeOffOutline from 'mdi-material-ui/EyeOffOutline'
-
-// ** Configs
-import themeConfig from 'src/configs/themeConfig'
-
-// ** Layout Import
-import BlankLayout from 'src/@core/layouts/BlankLayout'
-
-// ** Demo Imports
-import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustration'
-import Image from 'next/image'
-
-// ** Styled Components
-const Card = styled(MuiCard)(({ theme }) => ({
-  [theme.breakpoints.up('sm')]: { width: '28rem' }
-}))
-
-const LinkStyled = styled('a')(({ theme }) => ({
-  fontSize: '0.875rem',
-  textDecoration: 'none',
-  color: theme.palette.primary.main
-}))
-
-const FormControlLabel = styled(MuiFormControlLabel)(({ theme }) => ({
-  '& .MuiFormControlLabel-label': {
-    fontSize: '0.875rem',
-    color: theme.palette.text.secondary
-  }
-}))
+import { useRouter } from 'next/router';
+import React, { useContext, useState,useEffect } from 'react';
+import AppConfig from '../layout/AppConfig';
+import { Checkbox } from 'primereact/checkbox';
+import { Button } from 'primereact/button';
+import { Password } from 'primereact/password';
+import { LayoutContext } from '../layout/context/layoutcontext';
+import { InputText } from 'primereact/inputtext';
+import { classNames } from 'primereact/utils';
+import { LayoutProvider } from '../layout/context/layoutcontext';
+import Layout from '../layout/layout';
+import Image from 'next/image';
 
 const LoginPage = () => {
-  // ** State
-  const [values, setValues] = useState({
-    password: '',
-    showPassword: false
-  })
-  const [mail,setMail]=useState("")
-  const [password,setPassword]=useState("")
+    const [user,setUser]=useState("")
+    const [password, setPassword] = useState('');
+    const [checked, setChecked] = useState(false);
+    const { layoutConfig ,setAuth,auth} = useContext(LayoutContext);
 
-  // ** Hook
-  const theme = useTheme()
-  const router = useRouter()
+    const router = useRouter();
 
-  const handleChange = prop => event => {
-    setPassword(event.target.value)
-    setValues({ ...values, [prop]: event.target.value })
-  }
+    const handleSignIn=()=>{
+       if(password==="admin"&&user==="admin"){
+         localStorage.setItem("auth",true)
+         setAuth(true)
+         router.push("/")
+       }else{
+        router.push("/login")
+       }
+    }
+    const handleChange=(value)=>{
+          setUser(value)
+          console.log(value,"value",user)
+    }
+    
+    useEffect(()=>{
+      if(auth){
+        router.push("/")
+        console.log(auth,"auth")
+      }
+    })
+    const containerClassName = classNames('surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden', { 'p-input-filled': layoutConfig.inputStyle === 'filled' });
 
-  const handleClickShowPassword = () => {
-    setValues({ ...values, showPassword: !values.showPassword })
-  }
+    return (
+        <div className={containerClassName}>
+            <div className="flex flex-column align-items-center justify-content-center">
+                {/* <Image src={`/home/logoblack.svg`} alt="Sakai logo" className="mb-5 w-6rem flex-shrink-0" width={24} height={24} /> */}
+                <Image src="/home/logoblack.svg" alt="Image" height={100} className="mb-3" width={350} />
+                <div style={{ borderRadius: '56px', padding: '0.3rem', background: 'linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%)' }}>
+                    <div className="w-full surface-card py-8 px-5 sm:px-8" style={{ borderRadius: '53px' }}>
+                        <div className="text-center mb-5">
+                            <div className="text-900 text-3xl font-medium mb-3">Welcome to TechAcademy</div>
+                            <span className="text-600 font-medium">Sign in to continue</span>
+                        </div>
+                         {console.log(auth,"auth")}
+                        <div>
+                            <label htmlFor="email1" className="border-slate-300 block text-900 text-xl font-medium mb-2">
+                                Email
+                            </label>
+                            <InputText inputid="email1" type="text" placeholder="Email address" className="border-slate-300 w-full md:w-30rem mb-5" style={{ padding: '1rem' }} onInput={(e)=>handleChange(e.target.value)} />
 
-  const handleMouseDownPassword = event => {
-    event.preventDefault()
-  }
+                            <label htmlFor="password1" className="block text-900 font-medium text-xl mb-2">
+                                Password
+                            </label>
+                            <Password inputid="password1" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password"  className="border-slate-300 w-full mb-5" inputClassName="w-full p-3 md:w-30rem"></Password>
+                            <div className="flex align-items-center justify-content-between mb-5 gap-5">
+                                <div className="flex align-items-center">
+                                    <Checkbox inputid="rememberme1" checked={checked} onChange={(e) => setChecked(e.checked)} className="mr-2"></Checkbox>
+                                    <label htmlFor="rememberme1">Remember me</label>
+                                </div>
+                                <a className="font-medium no-underline ml-2 text-right cursor-pointer" style={{ color: 'var(--primary-color)' }}>
+                                    Forgot password?
+                                </a>
+                            </div>
+                            <Button label="Sign In" className="w-full p-3 text-xl" onClick={handleSignIn}></Button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
 
-  const handleLogin=()=>{
-    console.log(mail,values)
-    alert(mail,password)
-       if(mail==="fulgid.in"&&password==="fulgid"){
-         localStorage.setItem("isAuth",true)
-         router.push("/dashboard")
-       } 
-  }
-   
-     
-  return (
-    <Box className='content-center'>
-      <Card sx={{ zIndex: 1 }}>
-        <CardContent sx={{ padding: theme => `${theme.spacing(12, 9, 7)} !important` }}>
-          <Box sx={{ mb: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <Image 
-              src="/home/logoblack.svg"
-              width={150}
-              height={80}
-              />
-          </Box>
-          <Box sx={{ mb: 6 }}>
-            <Typography variant='h5' sx={{ fontWeight: 600, marginBottom: 1.5 }}>
-              Welcome to TechAcademy! 👋🏻
-            </Typography>
-          </Box>
-          <form noValidate autoComplete='off' onSubmit={e =>mail==="fulgid.in"&&password==="fulgid"?router.push("/dashboard"):e.preventDefault()}>
-            <TextField autoFocus fullWidth id='email' onInput={(e)=>setMail(e.target.value)} label='Email' sx={{ marginBottom: 4 }} />
-            <FormControl fullWidth>
-              <InputLabel htmlFor='auth-login-password'>Password</InputLabel>
-              <OutlinedInput
-                label='Password'
-                value={values.password}
-                id='auth-login-password'
-                onChange={handleChange('password')}
-                onInput={(e)=>setPassword(e.target.value)}
-                type={values.showPassword ? 'text' : 'password'}
-                endAdornment={
-                  <InputAdornment position='end'>
-                    <IconButton
-                      edge='end'
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                      aria-label='toggle password visibility'
-                    >
-                      {values.showPassword ? <EyeOutline /> : <EyeOffOutline />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-              />
-            </FormControl>
-            <Box
-              sx={{ mb: 4, display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'space-between' }}
-            >
-            </Box>
-            <Button
-              fullWidth
-              size='large'
-              variant='contained'
-              sx={{ marginBottom: 7 }}
-              // onClick={() => router.push('/dashboard')}
-              onClick={handleLogin}
-            >
-              Login
-            </Button>
-          </form>
-        </CardContent>
-      </Card>
-    </Box>
-  )
-}
-LoginPage.getLayout = page => <BlankLayout>{page}</BlankLayout>
-
-export default LoginPage
+LoginPage.getLayout = function getLayout(page) {
+    return (
+        <React.Fragment>
+            {page}
+            <AppConfig simple />
+        </React.Fragment>
+    );
+};
+export default LoginPage;

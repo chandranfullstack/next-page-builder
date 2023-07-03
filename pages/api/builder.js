@@ -1742,14 +1742,15 @@ const Viewport = ({ children }) => {
     className: "viewport"
   },
     React.createElement("div", {
-    className: "flex h-full overflow-hidden flex-row w-full fixed"
+    className: "flex h-full overflow-hidden flex-row w-full"
   },
-   React.createElement("div", {
-    className: "flex h-full overflow-hidden flex-row w-full fixed"
-  },  React.createElement(MainSideBar, null), 
-    React.createElement(Sidebar, null),  React.createElement("div", {
-    className: "page-container flex flex-1 h-full flex-col"
-  },  React.createElement(Header, null),  React.createElement("div", {
+  //   React.createElement("div", {
+  //    className: "flex h-full overflow-hidden flex-row w-full fixed"
+  //  },  React.createElement(MainSideBar, null), 
+     React.createElement(Sidebar, null),  React.createElement("div", {
+     className: "page-container flex flex-1 h-full flex-col"
+   }, 
+   React.createElement(Header, null),  React.createElement("div", {
     className: "craftjs-renderer flex-1 h-full w-full transition pb-8 overflow-auto",
     ref: (ref) => connectors.select(connectors.hover(ref, ""), "")
   },  React.createElement("div", {
@@ -1765,7 +1766,7 @@ const Viewport = ({ children }) => {
     className: "mx-1",
     target: "_blank",
     href: "https://tailwindui.com/"
-  }, "Tailwind CSS")))))));
+  }, "Tailwind CSS"))))));
 };
 
 const Dialog$4 = ({ open, setOpen, node, actions }) => {
@@ -2395,3 +2396,4 @@ const ContentProvider1 = ({ data1,pages }) =>  React.createElement(ContentProvid
 
 exports.ContentProvider = ContentProvider;
 exports.ContentProvider1=ContentProvider1
+exports.Sidebar=Sidebar

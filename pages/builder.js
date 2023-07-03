@@ -1,11 +1,14 @@
-
-// export { getStaticProps } from "./api/server/index"
-// export { ContentProvider as default } from "./api/builder"
+import {ContentProvider} from "./api/builder"
 
 
-const E=()=>{
+//  export { getStaticProps } from "./api/server/index"
+//  export { ContentProvider as default } from "./api/builder"
+
+const Builder=()=>{
+    const data=[]
     return(
-        <h1>Hello</h1>
+        ContentProvider(data)
     )
 }
-export default E
+export default Builder
+

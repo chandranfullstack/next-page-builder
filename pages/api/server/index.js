@@ -816,7 +816,7 @@ const readdirRecursive = (folder, files = []) => {
   });
   return files;
 };
-path__default["default"].parse(process.argv[1]).base === "next";
+//path__default["default"].parse(process.argv[1]).base === "next";
 
 var incoming_form = {};
 
@@ -1898,7 +1898,7 @@ const rootPath =process.cwd()
 const dataFolder = "/public/data";
 const uploadFolder = "uploaded";
 
-const  handler=()=>{
+const  handler=(req,res)=>{
 	const folderPath = pathModule.join(rootPath,dataFolder) 
 	
 
@@ -1914,9 +1914,50 @@ const  handler=()=>{
       files: fileNames,
     };
   });
+  res.send(folderData)
   return folderData
   }
-  const pages=handler()
+
+
+const  Filehandler=async(req, res)=>{
+  if (req.method === 'GET') {
+    // Read the contents of the JSON file
+	const path=pathModule.join(rootPath,"data","files.json")
+    const jsonData = fsModule.readFileSync(path, 'utf-8');
+    const data = JSON.parse(jsonData);
+    console.log(req.body,"req.body in handleFile")
+    res.status(200).json(data);
+  } else if (req.method === 'POST') {
+    // Read the contents of the JSON file
+	console.log(req.body,"and",req.body)
+	const path=pathModule.join(rootPath,"data","files.json")
+    const jsonData = fsModule.readFileSync(path, 'utf-8');
+    const data = JSON.parse(jsonData);
+    console.log(req.body,"req.body in handleFile")
+    // Add a new object to the "pageList" array
+	const date=new Date().toLocaleDateString()
+	const bodyData=	await getJson(req)
+	console.log(bodyData,"bodyData")
+    const newPage = {
+      page: bodyData.name,
+      slug: bodyData.slug,
+      meta: bodyData.meta,
+	  date:date,
+	  status:"new",
+	  id:bodyData.id
+    };
+	console.log(newPage)
+    data.pageList.push(newPage);
+    
+    // Write the updated data back to the JSON file
+    fsModule.writeFileSync(path, JSON.stringify(data));
+    
+    res.status(200).json({ message: 'New page added successfully' });
+  } else {
+    res.status(405).json({ message: 'Method not allowed' });
+  }
+}
+
 
 var _getAllFilesFromFolder = function(dir) {
     var results = [];
@@ -1938,7 +1979,6 @@ const getPages=async()=>{
     // const listsPath=path__default["default"].join(rootPath,dataFolder)
 	const listsPath=pathModule.join(rootPath,dataFolder)
 	const files=_getAllFilesFromFolder(listsPath)
-	handler()
 	const fileNames=[]
 		files.map(async(i)=>{
 			const folderName=await path__default["default"].parse(i).name
@@ -2036,20 +2076,22 @@ const handleData = async (req, res) => {
 };
 
   
-const handleFile=async(fileName)=>{
+const handleFile=async(req,res)=>{
+	const fileName=req.query.path
 	const basePath = pathModule.join(rootPath, dataFolder);
 	var NewFileName=fileName+".json"
 	const pathName=`${basePath}/${NewFileName}`
 	const jsonString =JSON.stringify(DEFAULT_TEMPLATE);
-	fsModule.writeFile(pathName, jsonString, 'utf8', (err) => {
+	const resp=fsModule.writeFile(pathName, jsonString, 'utf8', (err) => {
 		if (err) {
 		  console.error('Error creating JSON file:', err);
-		  return false
+		  res.status(200).json(false)
 		} else {
 		  console.log('JSON file created successfully!');
-		  return true
+		  res.status(200).json(true)
 		}
-	  });
+	});
+	return resp
 
 }
 const handleAsset = async (req, res) => {
@@ -2063,6 +2105,73 @@ const handleAsset = async (req, res) => {
     return res.status(401).json({ error: "Not allowed" });
   }
 };
+
+const handleFileNames=async(req,res)=>{
+	console.log("file name called",req.method)
+	if(req.method==="GET"){
+	console.log("file get called")
+	const path=pathModule.join(rootPath,"data","files.json")
+	console.log(path,"path")
+	const fileNames=await fsModule.readFileSync(path)
+	const data=fileNames
+	console.log(data,"data in files.json")
+	res.end(data)
+}
+}
+
+const deletePage=(req,res)=>{
+	const id=parseInt(req.query.id)
+	const path=pathModule.join(rootPath,"data","files.json")
+    const fileData = fsModule.readFileSync(path, 'utf-8');
+      const jsonData = JSON.parse(fileData);
+      const index = jsonData.pageList.findIndex(item => item.id === id);
+	  const pagename=jsonData.pageList.find((p)=>(p.id===id))
+	  console.log(pagename,"pageName",id,)
+	  const filePath=pathModule.join(rootPath,"/public/data",pagename.page+".json")
+	  console.log(filePath,"filePath")
+	  const match=jsonData.pageList.find((i)=>(i.id===id))
+	  console.log(match,"match")
+	  const del=fsModule.unlinkSync(filePath)
+	  console.log(index)
+      if (index !== -1) {
+        jsonData.pageList.splice(index, 1);
+      }
+     fsModule.writeFileSync(path, JSON.stringify(jsonData, null, 2));
+	 res.status(200).json(true)
+}
+
+const updatePageData=async(req,res)=>{
+	const id=parseInt(req.query.id)
+	const path=pathModule.join(rootPath,"/data/files.json")
+	const data=fsModule.readFileSync(path,"utf8")
+	const jsonData=JSON.parse(data)
+	const index = jsonData.pageList.findIndex(item => item.id === id);
+	const pagename=jsonData.pageList.find((p)=>(p.id===id))
+	const bodyData=	await getJson(req)
+	console.log(bodyData,"bodyData")
+    const newPage = {
+      page: bodyData.name,
+      slug: bodyData.slug,
+      meta: bodyData.meta,
+	  date:bodyData.date,
+	  status:"new",
+	  id:bodyData.id
+    };
+	if (index !== -1) {
+        jsonData.pageList.splice(index, 1);
+		jsonData.pageList.push(newPage)
+      }
+	console.log(pagename,"pageName",id,newPage)
+	const filePath=pathModule.join(rootPath,"/public/data",bodyData.name+".json")
+	const filePath1=pathModule.join(rootPath,"/public/data",pagename.page+".json")
+	console.log(pagename,"pageName",id,filePath,filePath1)
+    fsModule.renameSync(filePath1,filePath)
+	fsModule.writeFileSync(path, JSON.stringify(jsonData, null, 2));
+	console.log(req.query,)
+	res.status(200).json(true)
+
+}
+
 const handleEditor = async (req, res) => {
   if (!development$1)
     return res.status(401).json({ error: "Not allowed" });
@@ -2071,7 +2180,13 @@ const handleEditor = async (req, res) => {
   } else if (req.query.type === "asset") {
     return handleAsset(req, res);
   } else if(req.query.type==="new"){
-    return handleFile(req.query.path)
+    return handleFile(req,res)
+  }else if(req.query.type==="file"){
+	return Filehandler(req,res)
+  }else if(req.query.type==="update"){
+	return updatePageData(req,res)
+  }else if(req.query.type==="delete"){
+    return deletePage(req,res)
   }else {
     return res.status(400).json({ error: "Invalid type" });
   }
@@ -2102,3 +2217,4 @@ exports.uploadFiles = uploadFiles;
 exports.loadAllData=loadAllData
 exports.getPages=getPages
 exports.loadDynamicData=loadDynamicData
+exports.handler=handler

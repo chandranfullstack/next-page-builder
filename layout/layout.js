@@ -10,8 +10,9 @@ import AppConfig from './AppConfig';
 import { LayoutContext } from './context/layoutcontext';
 import PrimeReact from 'primereact/api';
 
+
 const Layout = (props) => {
-    const { layoutConfig, layoutState, setLayoutState } = useContext(LayoutContext);
+    const { layoutConfig, layoutState, setLayoutState ,onMenuToggle} = useContext(LayoutContext);
     const topbarRef = useRef(null);
     const sidebarRef = useRef(null);
 
@@ -44,12 +45,14 @@ const Layout = (props) => {
     });
 
     const hideMenu = () => {
+        console.log("called hte hidemenu")
         setLayoutState((prevLayoutState) => ({ ...prevLayoutState, overlayMenuActive: false, staticMenuMobileActive: false, menuHoverActive: false }));
         unbindMenuOutsideClickListener();
         unblockBodyScroll();
     };
 
     const hideProfileMenu = () => {
+        console.log("called the profilemenuhide")
         setLayoutState((prevLayoutState) => ({ ...prevLayoutState, profileSidebarVisible: false }));
         unbindProfileMenuOutsideClickListener();
     };
@@ -72,6 +75,10 @@ const Layout = (props) => {
         }
 
         layoutState.staticMenuMobileActive && blockBodyScroll();
+        if(router.pathname==="/page-list/editor"){
+            console.log("worked")
+            onMenuToggle()
+        }
     }, [layoutState.overlayMenuActive, layoutState.staticMenuMobileActive]);
 
     useEffect(() => {

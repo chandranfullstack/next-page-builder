@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import { classNames } from 'primereact/utils';
 import { FilterMatchMode, FilterOperator } from 'primereact/api';
 import { DataTable } from 'primereact/datatable';
@@ -15,6 +15,12 @@ import { ToggleButton } from 'primereact/togglebutton';
 import { Rating } from 'primereact/rating';
 import { CustomerService } from '../../../demo/service/CustomerService';
 import { ProductService } from '../../../demo/service/ProductService';
+import { Dialog } from 'primereact/dialog';
+import { getBaseUrl } from '../../../helpers/url';
+import { fetchJSON } from '../../../helpers/crud';
+import { getPageNames } from '../../../demo/service/fileNames';
+import { useRouter } from 'next/router';
+import { LayoutContext } from '../../../layout/context/layoutcontext';
 
 import { InputText } from 'primereact/inputtext';
 
@@ -22,6 +28,7 @@ const TableDemo = () => {
     const [customers1, setCustomers1] = useState(null);
     const [customers2, setCustomers2] = useState([]);
     const [customers3, setCustomers3] = useState([]);
+    const [pageList, setPageList] = useState([]);
     const [filters1, setFilters1] = useState(null);
     const [loading1, setLoading1] = useState(true);
     const [loading2, setLoading2] = useState(true);
@@ -30,6 +37,16 @@ const TableDemo = () => {
     const [globalFilterValue1, setGlobalFilterValue1] = useState('');
     const [expandedRows, setExpandedRows] = useState(null);
     const [allExpanded, setAllExpanded] = useState(false);
+    const [displayBasic, setDisplayBasic] = useState(false);
+    const [newFileName,setNewFileName]=useState("")
+    const [pageSlug,setPageSlug]=useState("")
+    const [metaDetails,setMetaDetail]=useState("")
+    const router=useRouter()
+    const {currentPage,setCurrentPage}=useContext(LayoutContext)
+    const [editPageList, setEditPageList] = useState([]);
+    const [editDialog, setEditDialog] = useState(false);
+    const [submitted, setSubmitted] = useState(false);
+    const [deletePageDialog, setDeletePageDialog] = useState(false);
 
     const representatives = [
         { name: 'Amy Elsner', image: 'amyelsner.png' },
@@ -78,6 +95,12 @@ const TableDemo = () => {
             setCustomers1(getCustomers(data));
             setLoading1(false);
         });
+        getPageNames().then((data) => {
+            setPageList(data)
+            console.log(pageList,"pageList",data)
+            setEditPageList({...data[0]})
+            setLoading1(false);
+        });
         CustomerService.getCustomersLarge().then((data) => {
             setCustomers2(getCustomers(data));
             setLoading2(false);
@@ -88,13 +111,7 @@ const TableDemo = () => {
         initFilters1();
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-    const balanceTemplate = (rowData) => {
-        return (
-            <div>
-                <span className="text-bold">{formatCurrency(rowData.balance)}</span>
-            </div>
-        );
-    };
+  
 
     const getCustomers = (data) => {
         return [...(data || [])].map((d) => {
@@ -209,9 +226,89 @@ const TableDemo = () => {
         return <span className={`customer-badge status-${option}`}>{option}</span>;
     };
 
+    const handleEditClic=(e)=>{
+        console.log(e.target.value,e.target)
+        // localStorage.setItem("currentPage",e.target.value)
+        // setCurrentPage(e.target.value)
+       // console.log(currentPage,"currentPage")
+       // router.push("/page-list/editor")
+    }
+
+    const DeletePage=async()=>{
+        const baseUrl=getBaseUrl(false)
+        console.log(editPageList.page,editPageList.slug,editPageList.meta,editPageList.id)
+        const data={"name":editPageList.page,"slug":editPageList.slug,"meta":editPageList.meta,id:editPageList.id}
+        console.log("request data in slug")
+        setDeletePageDialog(false);
+        const data1 = await fetchJSON({
+            method: "post",
+            url: `${baseUrl}/api/builder/handle?type=delete&id=${editPageList.id}`,
+            data:data
+          });
+        window.location.reload(true)
+    }
+
+    const UpdatePage=async()=>{
+        const baseUrl=getBaseUrl(false)
+        console.log(newFileName,pageSlug,metaDetails,editPageList.id)
+        const data={"name":newFileName,"slug":pageSlug,"meta":metaDetails,id:editPageList.id,date:editPageList.date}
+        console.log("request data in slug")
+        setEditDialog(false);
+        const data1 = await fetchJSON({
+            method: "post",
+            url: `${baseUrl}/api/builder/handle?type=update&id=${editPageList.id}`,
+            data:data
+        });
+        window.location.reload(true)
+    }
+
     const activityBodyTemplate = (rowData) => {
-        return <ProgressBar value={rowData.activity} showValue={false} style={{ height: '.5rem' }}></ProgressBar>;
+        // console.log(rowData.page)
+        return(
+            <span className=" flex justify-between">
+                        <Button key={rowData.id} value={rowData.page} icon="pi pi-pencil"  className=' rounded-full border-l-indigo-600' onClick={(e)=>handleEditClic(e)} />
+                        <Button  icon="pi pi-pencil" className=' rounded-full bg-blue-400 border-blue-400' />
+                        <Button icon="pi pi-trash" className=' rounded-full bg-red-500 border-red-500' />
+                    </span>
+        )
     };
+
+
+    
+  const editButton = (rowData) => {
+    // Handle edit logic here, using rowData.page to access the page value
+    console.log('Edit:', rowData.page);
+    localStorage.setItem("currentPage",rowData.page)
+    router.push("/page-list/editor")
+  };
+
+  const EditRowButton = (rowData) => {
+    // Handle delete logic here, using rowData.page to access the page value
+    console.log('Delete:',rowData);
+    setEditPageList({ ...rowData});
+    console.log(editPageList,"editPageList")
+    setEditDialog(true);
+  };
+   
+  const confirmDeletePage = (product) => {
+    setEditPageList(product);
+    setDeletePageDialog(true);
+};
+  
+
+  const actionTemplate = (rowData) => {
+    return (
+      <div>
+        {/* <button onClick={() => editButton(rowData)}>Edit</button> */}
+        {/* <button onClick={() => deleteButton(rowData)}>Delete</button> */}
+        <span className=" flex justify-between">
+            <Button key={rowData.id}  icon="pi pi-pencil"  className=' rounded-full border-l-indigo-600' onClick={()=>EditRowButton(rowData)} />
+            <Button  icon="pi pi-code" className=' rounded-full bg-blue-400 border-blue-400' onClick={()=>editButton(rowData)}/>
+            <Button icon="pi pi-trash" className=' rounded-full bg-red-500 border-red-500' onClick={()=>confirmDeletePage(rowData)} />
+        </span>
+      </div>
+    );
+  };
 
     const activityFilterTemplate = (options) => {
         return (
@@ -233,103 +330,60 @@ const TableDemo = () => {
         return <TriStateCheckbox value={options.value} onChange={(e) => options.filterCallback(e.value)} />;
     };
 
-    const toggleAll = () => {
-        if (allExpanded) collapseAll();
-        else expandAll();
+
+    const HandleCreate=async()=>{
+        //const page=await getPageNames()
+        //console.log(page)
+        //page.map((i)=>console.log(i,"i"))
+        setDisplayBasic(false)
+        console.log(newFileName,metaDetails,pageSlug)
+        const baseUrl=getBaseUrl(false)
+        const data={"name":newFileName,"slug":pageSlug,"meta":metaDetails,id:pageList.length+1}
+        console.log("request data in slug")
+        const data1 = await fetchJSON({
+            method: "post",
+            url: `${baseUrl}/api/builder/handle?type=file&path=${newFileName}`,
+            data:data
+          });
+          console.log(data1,"data1")
+        const res = await fetchJSON({
+            method: "get",
+            url: `${baseUrl}/api/builder/handle?type=new&path=${newFileName}`,
+          });
+        window.location.reload(true)
+    }
+
+    const hideDialog = () => {
+        setSubmitted(false);
+        setEditDialog(false);
     };
 
-    const expandAll = () => {
-        let _expandedRows = {};
-        products.forEach((p) => (_expandedRows[`${p.id}`] = true));
-
-        setExpandedRows(_expandedRows);
-        setAllExpanded(true);
+    const hideDeletePageDialog = () => {
+        setDeletePageDialog(false);
     };
 
-    const collapseAll = () => {
-        setExpandedRows(null);
-        setAllExpanded(false);
+    const onInputChange = (e, name) => {
+        const val = (e.target && e.target.value) || '';
+        let _list= { ...editPageList };
+
+        _list[`${name}`] = val;
+
+        setEditPageList(_list);
     };
 
-    const amountBodyTemplate = (rowData) => {
-        return formatCurrency(rowData.amount);
-    };
-
-    const statusOrderBodyTemplate = (rowData) => {
-        return <span className={`order-badge order-${rowData.status.toLowerCase()}`}>{rowData.status}</span>;
-    };
-
-    const searchBodyTemplate = () => {
-        return <Button icon="pi pi-search" />;
-    };
-
-    const imageBodyTemplate = (rowData) => {
-        return <img src={`/demo/images/product/${rowData.image}`} onError={(e) => (e.target.src = 'https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png')} alt={rowData.image} className="shadow-2" width={100} />;
-    };
-
-    const priceBodyTemplate = (rowData) => {
-        return formatCurrency(rowData.price);
-    };
-
-    const ratingBodyTemplate = (rowData) => {
-        return <Rating value={rowData.rating} readOnly cancel={false} />;
-    };
-
-    const statusBodyTemplate2 = (rowData) => {
-        return <span className={`product-badge status-${rowData.inventoryStatus.toLowerCase()}`}>{rowData.inventoryStatus}</span>;
-    };
-
-    const rowExpansionTemplate = (data) => {
-        return (
-            <div className="orders-subtable">
-                <h5>Orders for {data.name}</h5>
-                <DataTable value={data.orders} responsiveLayout="scroll">
-                    <Column field="id" header="Id" sortable></Column>
-                    <Column field="customer" header="Customer" sortable></Column>
-                    <Column field="date" header="Date" sortable></Column>
-                    <Column field="amount" header="Amount" body={amountBodyTemplate} sortable></Column>
-                    <Column field="status" header="Status" body={statusOrderBodyTemplate} sortable></Column>
-                    <Column headerStyle={{ width: '4rem' }} body={searchBodyTemplate}></Column>
-                </DataTable>
-            </div>
-        );
-    };
-
-    const header = <Button icon={allExpanded ? 'pi pi-minus' : 'pi pi-plus'} label={allExpanded ? 'Collapse All' : 'Expand All'} onClick={toggleAll} className="w-11rem" />;
-
-    const headerTemplate = (data) => {
-        return (
-            <React.Fragment>
-                <img alt={data.representative.name} src={`/demo/images/avatar/${data.representative.image}`} width="32" style={{ verticalAlign: 'middle' }} />
-                <span className="font-bold ml-2">{data.representative.name}</span>
-            </React.Fragment>
-        );
-    };
-
-    const footerTemplate = (data) => {
-        return (
-            <React.Fragment>
-                <td colSpan="4" style={{ textAlign: 'right' }} className="text-bold pr-6">
-                    Total Customers
-                </td>
-                <td>{calculateCustomerTotal(data.representative.name)}</td>
-            </React.Fragment>
-        );
-    };
-
-    const calculateCustomerTotal = (name) => {
-        let total = 0;
-
-        if (customers3) {
-            for (let customer of customers3) {
-                if (customer.representative.name === name) {
-                    total++;
-                }
-            }
-        }
-
-        return total;
-    };
+    const basicDialogFooter = <Button type="button" label="Create" onClick={HandleCreate} icon="pi pi-check" severity="secondary" />;
+    const productDialogFooter = (
+        <React.Fragment>
+            <Button label="Cancel" icon="pi pi-times" outlined onClick={hideDialog} />
+            <Button label="Save" icon="pi pi-check" onClick={UpdatePage} />
+        </React.Fragment>
+    );
+    const deletePageDialogFooter = (
+        <React.Fragment>
+            <Button label="No" icon="pi pi-times" outlined onClick={hideDeletePageDialog} />
+            <Button label="Yes" icon="pi pi-check" severity="danger" onClick={DeletePage}  />
+        </React.Fragment>
+    );
 
     const header1 = renderHeader1();
 
@@ -337,9 +391,59 @@ const TableDemo = () => {
         <div className="grid">
             <div className="col-12">
                 <div className="card">
-                    <h5>Filter Menu</h5>
+                    <h5>Pages</h5>
+                    <Button label="Add New" icon="pi pi-plus" className='mt-2 mb-2' onClick={() => setDisplayBasic(true)} />
+                    {/* <div className="card"> */}
+                        {/* <h5 >Create New Page</h5> */}
+                        <Dialog header="Create New Page" visible={displayBasic} style={{ width: '30vw' }} modal footer={basicDialogFooter} onHide={() => setDisplayBasic(false)}>
+                        <div className="card p-fluid">
+                    {/* <h5>Vertical</h5> */}
+                    <div className="field">
+                        <label htmlFor="name1">Title</label>
+                        <InputText id="name1" type="text" onInput={(e)=>setNewFileName(e.target.value)} required />
+                    </div>
+                    <div className="field">
+                        <label htmlFor="email1">Slug</label>
+                        <InputText id="email1" type="text" onInput={(e)=>setPageSlug(e.target.value)} required />
+                    </div>
+                    <div className="field">
+                        <label htmlFor="age1">Description</label>
+                        <InputText id="age1" type="text" onInput={(e)=>setMetaDetail(e.target.value)} required />
+                    </div>
+                </div>
+                </Dialog>
+               < Dialog visible={editDialog} style={{ width: '32rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} header="Product Details" modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>
+               <div className="field">
+                        <label htmlFor="name1">Title</label>
+                        <InputText id="name1" type="text" defaultValue={editPageList.page}  onChange={(e) => setNewFileName(e.target.value)} />
+                    </div>
+                    <div className="field">
+                        <label htmlFor="email1">Slug</label>
+                        <InputText id="email1" type="text" defaultValue={editPageList.slug}   onChange={(e) => setPageSlug(e.target.value)} />
+                    </div>
+                    <div className="field">
+                        <label htmlFor="age1">Description</label>
+                        <InputText id="age1" type="text" defaultValue={editPageList.meta}  onChange={(e) => setMetaDetail(e.target.value)} />
+                    </div>
+               </Dialog>
+               <Dialog visible={deletePageDialog} style={{ width: '32rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} header="Confirm" modal footer={deletePageDialogFooter} onHide={hideDeletePageDialog}>
+                <div className="confirmation-content">
+                    <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
+                    {editPageList && (
+                        <span>
+                            Are you sure you want to delete <b>{editPageList.page}</b>?
+                        </span>
+                    )}
+                </div>
+            </Dialog>
+                        {/* <div className="grid">
+                            <div className="col-12">
+                                <Button type="button" label="Show" icon="pi pi-external-link" onClick={() => setDisplayBasic(true)} />
+                            </div>
+                        </div> */}
+                    {/* </div> */}
                     <DataTable
-                        value={customers1}
+                        value={pageList}
                         paginator
                         className="p-datatable-gridlines"
                         showGridlines
@@ -349,85 +453,15 @@ const TableDemo = () => {
                         filterDisplay="menu"
                         loading={loading1}
                         responsiveLayout="scroll"
-                        emptyMessage="No customers found."
+                        emptyMessage="No Page List found"
                         header={header1}
+                        // onClick={(e)=>handleEditClic(e)}
                     >
-                        <Column field="name" header="Name" filter filterPlaceholder="Search by name" style={{ minWidth: '12rem' }} />
-                        <Column header="Country" filterField="country.name" style={{ minWidth: '12rem' }} body={countryBodyTemplate} filter filterPlaceholder="Search by country" filterClear={filterClearTemplate} filterApply={filterApplyTemplate} />
-                        <Column
-                            header="Agent"
-                            filterField="representative"
-                            showFilterMatchModes={false}
-                            filterMenuStyle={{ width: '14rem' }}
-                            style={{ minWidth: '14rem' }}
-                            body={representativeBodyTemplate}
-                            filter
-                            filterElement={representativeFilterTemplate}
-                        />
-                        <Column header="Date" filterField="date" dataType="date" style={{ minWidth: '10rem' }} body={dateBodyTemplate} filter filterElement={dateFilterTemplate} />
-                        <Column header="Balance" filterField="balance" dataType="numeric" style={{ minWidth: '10rem' }} body={balanceBodyTemplate} filter filterElement={balanceFilterTemplate} />
+                        <Column field="page" header="Title" filter filterPlaceholder="Search by name" style={{ minWidth: '12rem' }} />
+                        <Column header="Slug" field='slug' filterField="country.name" style={{ minWidth: '12rem' }}  filter filterPlaceholder="Search by country" filterClear={filterClearTemplate} filterApply={filterApplyTemplate} />
+                        <Column header="Date" filterField="date" field='date' dataType="date" style={{ minWidth: '10rem' }}  filter filterElement={dateFilterTemplate} />
                         <Column field="status" header="Status" filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '12rem' }} body={statusBodyTemplate} filter filterElement={statusFilterTemplate} />
-                        <Column field="activity" header="Activity" showFilterMatchModes={false} style={{ minWidth: '12rem' }} body={activityBodyTemplate} filter filterElement={activityFilterTemplate} />
-                        <Column field="verified" header="Verified" dataType="boolean" bodyClassName="text-center" style={{ minWidth: '8rem' }} body={verifiedBodyTemplate} filter filterElement={verifiedFilterTemplate} />
-                    </DataTable>
-                </div>
-            </div>
-
-            <div className="col-12">
-                <div className="card">
-                    <h5>Frozen Columns</h5>
-                    <ToggleButton checked={idFrozen} onChange={(e) => setIdFrozen(e.value)} onIcon="pi pi-lock" offIcon="pi pi-lock-open" onLabel="Unfreeze Id" offLabel="Freeze Id" style={{ width: '10rem' }} />
-
-                    <DataTable value={customers2} scrollable scrollHeight="400px" loading={loading2} className="mt-3">
-                        <Column field="name" header="Name" style={{ flexGrow: 1, flexBasis: '160px' }} frozen className="font-bold"></Column>
-                        <Column field="id" header="Id" style={{ flexGrow: 1, flexBasis: '100px' }} frozen={idFrozen} alignFrozen="left" bodyClassName={classNames({ 'font-bold': idFrozen })}></Column>
-                        <Column field="country.name" header="Country" style={{ flexGrow: 1, flexBasis: '200px' }} body={countryBodyTemplate}></Column>
-                        <Column field="date" header="Date" style={{ flexGrow: 1, flexBasis: '200px' }} body={dateBodyTemplate}></Column>
-                        <Column field="company" header="Company" style={{ flexGrow: 1, flexBasis: '200px' }}></Column>
-                        <Column field="status" header="Status" style={{ flexGrow: 1, flexBasis: '200px' }} body={statusBodyTemplate}></Column>
-                        <Column field="activity" header="Activity" style={{ flexGrow: 1, flexBasis: '200px' }}></Column>
-                        <Column field="representative.name" header="Representative" style={{ flexGrow: 1, flexBasis: '200px' }} body={representativeBodyTemplate}></Column>
-                        <Column field="balance" header="Balance" body={balanceTemplate} frozen style={{ flexGrow: 1, flexBasis: '120px' }} className="font-bold" alignFrozen="right"></Column>
-                    </DataTable>
-                </div>
-            </div>
-
-            <div className="col-12">
-                <div className="card">
-                    <h5>Row Expand</h5>
-                    <DataTable value={products} expandedRows={expandedRows} onRowToggle={(e) => setExpandedRows(e.data)} responsiveLayout="scroll" rowExpansionTemplate={rowExpansionTemplate} dataKey="id" header={header}>
-                        <Column expander style={{ width: '3em' }} />
-                        <Column field="name" header="Name" sortable />
-                        <Column header="Image" body={imageBodyTemplate} />
-                        <Column field="price" header="Price" sortable body={priceBodyTemplate} />
-                        <Column field="category" header="Category" sortable />
-                        <Column field="rating" header="Reviews" sortable body={ratingBodyTemplate} />
-                        <Column field="inventoryStatus" header="Status" sortable body={statusBodyTemplate2} />
-                    </DataTable>
-                </div>
-            </div>
-
-            <div className="col-12">
-                <div className="card">
-                    <h5>Subheader Grouping</h5>
-                    <DataTable
-                        value={customers3}
-                        rowGroupMode="subheader"
-                        groupRowsBy="representative.name"
-                        sortMode="single"
-                        sortField="representative.name"
-                        sortOrder={1}
-                        scrollable
-                        scrollHeight="400px"
-                        rowGroupHeaderTemplate={headerTemplate}
-                        rowGroupFooterTemplate={footerTemplate}
-                        responsiveLayout="scroll"
-                    >
-                        <Column field="name" header="Name" style={{ minWidth: '200px' }}></Column>
-                        <Column field="country" header="Country" body={countryBodyTemplate} style={{ minWidth: '200px' }}></Column>
-                        <Column field="company" header="Company" style={{ minWidth: '200px' }}></Column>
-                        <Column field="status" header="Status" body={statusBodyTemplate} style={{ minWidth: '200px' }}></Column>
-                        <Column field="date" header="Date" style={{ minWidth: '200px' }}></Column>
+                        <Column field="activity" header="Actions" showFilterMatchModes={false} style={{ minWidth: '12rem' }} body={actionTemplate} filter filterElement={activityFilterTemplate} />
                     </DataTable>
                 </div>
             </div>

@@ -2,9 +2,10 @@
 import { Button } from "@chakra-ui/react";
 import React from "react";
 
-const AppButton = ({ children, variant, ...props }) => {
+const AppButton = ({ children, variant,colorScheme,load,...props}) => {
+  
   return (
-    <Button variant={variant} {...props}>
+    <Button variant={variant} isLoading={load} {...props} colorScheme={colorScheme}>
       {children}
     </Button>
   );

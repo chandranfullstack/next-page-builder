@@ -1,0 +1,28 @@
+{
+  "pageList": [
+    {
+      "page": "solutions",
+      "slug": "/solutions",
+      "meta": "the solutions page meta data",
+      "date": "7/7/2023",
+      "status": "new",
+      "id": 2
+    },
+    {
+      "page": "hackathons",
+      "slug": "/hackathons",
+      "meta": "The hackathons page",
+      "date": "7/8/2023",
+      "status": "new",
+      "id": 3
+    },
+    {
+      "page": "ld",
+      "slug": "/ld",
+      "meta": "",
+      "date": "7/8/2023",
+      "status": "new",
+      "id": 4
+    }
+  ]
+}

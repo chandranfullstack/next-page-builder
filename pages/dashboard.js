@@ -8,6 +8,8 @@ import { useContext } from 'react';
 import { ProductService } from '../demo/service/ProductService';
 import { LayoutContext } from "../layout/context/layoutcontext"
 import Link from 'next/link';
+import Image from "next/image"
+
 const lineData = {
     labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
     datasets: [
@@ -184,7 +186,7 @@ const Dashboard = () => {
                 <div className="card">
                     <h5>Recent Sales</h5>
                     <DataTable value={products} rows={5} paginator responsiveLayout="scroll">
-                        <Column header="Image" body={(data) => <img className="shadow-2" src={`/demo/images/product/${data.image}`} alt={data.image} width="50" />} />
+                        <Column header="Image" body={(data) => <Image className="shadow-2" src={`/demo/images/product/${data.image}`} alt={data.image} width={50} height={20} />} />
                         <Column field="name" header="Name" sortable style={{ width: '35%' }} />
                         <Column field="price" header="Price" sortable style={{ width: '35%' }} body={(data) => formatCurrency(data.price)} />
                         <Column

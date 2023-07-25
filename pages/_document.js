@@ -11,7 +11,6 @@ class MyDocument extends Document {
             <Html lang="en">
                 <Head>
                     <link id="theme-css" href={`/themes/lara-light-indigo/theme.css`} rel="stylesheet"></link>
-                    <link rel="stylesheet" href="//unpkg.com/grapesjs/dist/css/grapes.min.css"></link>
                 </Head>
                 <body>
                     <Main />

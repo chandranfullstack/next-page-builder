@@ -23,6 +23,7 @@ import { useRouter } from 'next/router';
 import { LayoutContext } from '../../../layout/context/layoutcontext';
 
 import { InputText } from 'primereact/inputtext';
+import Image from "next/image"
 
 const TableDemo = () => {
     const [customers1, setCustomers1] = useState(null);
@@ -150,7 +151,7 @@ const TableDemo = () => {
     const countryBodyTemplate = (rowData) => {
         return (
             <React.Fragment>
-                <img alt="flag" src={`/demo/images/flag/flag_placeholder.png`} className={`flag flag-${rowData.country.code}`} width={30} />
+                <Image alt="flag" src={`/demo/images/flag/flag_placeholder.png`} className={`flag flag-${rowData.country.code}`} width={30} height={80} />
                 <span style={{ marginLeft: '.5em', verticalAlign: 'middle' }}>{rowData.country.name}</span>
             </React.Fragment>
         );
@@ -168,11 +169,12 @@ const TableDemo = () => {
         const representative = rowData.representative;
         return (
             <React.Fragment>
-                <img
+                <Image
                     alt={representative.name}
                     src={`/demo/images/avatar/${representative.image}`}
                     onError={(e) => (e.target.src = 'https://www.primefaces.org/wp-content/uploads/2020/05/placeholder.png')}
                     width={32}
+                    height={20}
                     style={{ verticalAlign: 'middle' }}
                 />
                 <span style={{ marginLeft: '.5em', verticalAlign: 'middle' }}>{representative.name}</span>
@@ -192,7 +194,7 @@ const TableDemo = () => {
     const representativesItemTemplate = (option) => {
         return (
             <div className="p-multiselect-representative-option">
-                <img alt={option.name} src={`/demo/images/avatar/${option.image}`} width={32} style={{ verticalAlign: 'middle' }} />
+                <Image alt={option.name} src={`/demo/images/avatar/${option.image}`} width={32} height={30} style={{ verticalAlign: 'middle' }} />
                 <span style={{ marginLeft: '.5em', verticalAlign: 'middle' }}>{option.name}</span>
             </div>
         );

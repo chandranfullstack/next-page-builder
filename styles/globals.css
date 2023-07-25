@@ -19,6 +19,8 @@
 ::after {
   --tw-content: '';
 }
+
+
 /*
 1. Use a consistent sensible line-height in all browsers.
 2. Prevent adjustments of font size after orientation changes in iOS.
@@ -5010,4 +5012,20 @@ body {
     font-size: 6rem;
     line-height: 1;
   }
+}
+.layer-name>h2{
+  color: rgb(12, 1, 1);
+}
+.layer-name:hover{
+  color: black;
+}
+.sc-bdDrbm:hover{
+  color: black;
+}
+
+select {
+  display:table-row;
+}
+option {
+  display:table-cell;
 }

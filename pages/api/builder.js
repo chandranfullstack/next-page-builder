@@ -68,6 +68,7 @@ import { useEffect ,useCallback,useState,useRef,useContext} from 'react';
 import { textStyle } from '../../themes/textStyle';
 
 
+
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
 function _interopNamespace(e) {
@@ -202,7 +203,7 @@ const TextEditor = () => {
         setCurrentStyle(textStyle[prop.textStyle])
       }
     }
-  },[styleKeys])
+  },[styleKeys,prop.textStyle])
   //console.log(styleKeys,"styleKeys")
   const handleTextChange=(e)=>{
     console.log(e.target.value,"text value",enabled)
@@ -783,7 +784,7 @@ const ButtonSettings=()=>{
           <div className=' justify-between h-full'>
                {
                 colors.map((i,index)=>
-                <p key={index} load={false} className=' h-full flex justify-center items-center cursor-pointer w-full px-5 py-3' value={i} style={{background:i}} onClick={(e)=>handleColors(e)}>{i}</p>
+                <p key={index}  className=' h-full flex justify-center items-center cursor-pointer w-full px-5 py-3' value={i} style={{background:i}} onClick={(e)=>handleColors(e)}>{i}</p>
                 )
                }
           </div>
@@ -1551,7 +1552,6 @@ const Child = ({ root, d = [0] }) => {
           height:attrsR.height,
           border:attrsR.border,
           canvas:true,
-          children:[],
           id:key,key
         },React.createElement(Child, {
           root: r,
@@ -1600,7 +1600,6 @@ const Child = ({ root, d = [0] }) => {
               d: d.concat(i)
             }))}else if (r.tagName === "APPFLEX"){
             return  React.createElement(AppFlex, {   
-              children:attrsR.childNodes,
               customStyle:{
                 backgroundImage:attrsR.backgroundimage,
                 backgroundRepeat:attrsR.backgroundrepeat,
@@ -2292,17 +2291,17 @@ const Header = () => {
           </div>
         )}
       <div className="bg-gray-600 py-2 px-6  text-white">
-        <a href="/page-list">Back</a>
+        <AppLink href="/page-list">Back</AppLink>
       </div>
       <div className="flex">
         {enabled ? (
-          <a
+          <AppLink
             className="flex bg-green-600 text-white rounded py-2 px-4 transition cursor-pointer items-center"
             onClick={togglePreview}
           >
             <CheckIcon className="h-4  mr-2" />
             Finish Editing
-          </a>
+          </AppLink>
         ) : (
           <a
             className="flex bg-primary text-white rounded py-2 px-4 transition cursor-pointer items-center"
@@ -2645,7 +2644,7 @@ const Viewport = ({ children }) => {
     setTimeout(() => {
       actions.setOptions((o) => o.enabled = true);
     }, 200);
-  }, [actions.setOptions]); 
+  }, [actions]); 
 
   return (
     <div className="viewport">
@@ -2908,7 +2907,7 @@ const Content = ({ url,text,setText, onUpload, onChange }) => {
           </div>
         </div>
       ) : (
-        <img src={url} />
+        <AppImage src={url} alt="image" />
       )}
     </div>
   );
@@ -3457,7 +3456,7 @@ const  CustomEditorElement= ({render}) => {
         dom.classList.remove('component-selected');
       }
     }
-  }, [dom, isActive, node.events.hovered]);
+  }, [dom, isActive, node.events.hovered,setView,node.events.selected]);
   const getPos = useCallback((dom2) => {
     const { top, left, bottom } = dom2 ? dom2.getBoundingClientRect() : { top: 0, left: 0, bottom: 0 };
     return { top: `${top > 0 ? top : bottom}px`, left: `${left}px` };
@@ -3841,12 +3840,13 @@ const FrameEditor = ({ data, standaloneServer ,pages}) => {
   };
   React.useEffect(() => {
     loadData();
-  }, []);
+  });
   return(
     !data?
     // <Viewport>
       <core.Frame>
-        <core.Element canvas={true} is={Container} children={[]} custom={{displayName:"App"}}>
+        <core.Element canvas={true} is={Container}  custom={{displayName:"App"}}>
+          {[]}
         </core.Element>
       </core.Frame>
     // </Viewport> 
@@ -3861,7 +3861,7 @@ const FrameEditor = ({ data, standaloneServer ,pages}) => {
 
 const Editor = ({ data, standaloneServer,pages }) => {
   const { resolver, setStandalone,currentPage } = React.useContext(ThemeContext);
-  React.useEffect(() => setStandalone(standaloneServer), []);
+  React.useEffect(() => setStandalone(standaloneServer),);
   const onStateChange = (e) => {
     saveTemplateDebounce(e, standaloneServer,localStorage.getItem("currentPage"));
   }; 
@@ -3926,7 +3926,7 @@ const FrameEditor1 = ({ data1, standaloneServer ,pages}) => {
     
   React.useEffect(() => {
     loadData();
-  }, []);
+  });
 
 
   if(data1!==undefined){
@@ -3940,7 +3940,7 @@ const FrameEditor1 = ({ data1, standaloneServer ,pages}) => {
 
 const Editor1 = ({ data1, standaloneServer,pages }) => {
   const { resolver, setStandalone } = React.useContext(ThemeContext);
-  React.useEffect(() => setStandalone(standaloneServer), []);
+  React.useEffect(() => setStandalone(standaloneServer));
   const onStateChange = (e) => {
     saveTemplateDebounce(e, standaloneServer);
   }; 

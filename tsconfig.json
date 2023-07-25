@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
-    "lib": [
+"types": [ "jasmine" , "node" ],
+        "typeRoots": ["node_modules/@types"],
+      	  "lib": [
       "dom",
       "dom.iterable",
       "esnext"

@@ -2,6 +2,7 @@ import { useNode,useEditor } from "@craftjs/core";
 import { useState } from "react";
 import React from "react"
 import TextEditor from "../settings/textSettings";
+import AppText from "../../client-components/AppText/AppText";
 
 
 var APPText = (props) => {

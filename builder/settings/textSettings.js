@@ -1,5 +1,6 @@
 import { useNode,useEditor } from "@craftjs/core";
 import { useState,useEffect } from "react";
+import { textStyle } from "../../themes/textStyle";
 
 const TextEditor = () => {
     const {prop, props1,actions,node ,color,connectors} = useNode(node => ({

@@ -6,6 +6,11 @@ import APPText from "./textResolver";
 import Image from "./imageResolver";
 import Link from "./linkResolver";
 import Svg from "./svgResolver";
+import { Button } from "./buttonResolver";
+import AppFlex from "../../client-components/AppFlex/AppFlex";
+import AppBox from "../../client-components/AppBox/AppBox";
+import AppContainer from "../../client-components/AppContainer/AppContainer";
+import AppIcon from "../../client-components/AppIcons/AppIcon";
 
 var __defProp$1 = Object.defineProperty;
 var __defProps$1 = Object.defineProperties;

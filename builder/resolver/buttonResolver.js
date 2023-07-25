@@ -2,6 +2,9 @@ import {useNode,useEditor} from "@craftjs/core"
 import React from "react"
 import DefaultButtonSettings from "../settings/defaultButtonSettings";
 import ButtonSettings from "../settings/buttonSettings";
+import { __objRest$2,__spreadProps$3,__spreadValues$3 } from "../functions";
+import Child from "./childResolver";
+
 
 export const Button = ({ r, d, i, propId ,color,background,width,height,borderRadius}) => {
     const { node } = useNode((node2) => ({ node: node2 }));

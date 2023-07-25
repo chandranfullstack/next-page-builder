@@ -1,4 +1,5 @@
-import {ContentProvider} from "../api/builder"
+// import {ContentProvider} from "../api/builder"
+import ContentProvider from "../../builder"
 import Layout from "../../layout/layout"
 import AppTopbar from "../../layout/AppTopbar"
 import { LayoutContext } from "../../layout/context/layoutcontext"

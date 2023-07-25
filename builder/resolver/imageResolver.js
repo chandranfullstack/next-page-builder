@@ -1,5 +1,6 @@
 import { useNode } from "@craftjs/core";
 import React from "react"
+import { __objRest$1,__spreadProps$2,__spreadValues$2} from "../functions";
 
 const Image = ({ d: _d, i: _i, classNames, attrs, propId }) => {
     var _a, _b;

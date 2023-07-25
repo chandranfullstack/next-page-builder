@@ -60,7 +60,7 @@ const DefaultButtonSettings=()=>{
           onChange={handleWidth}
           min={50}
           max={200}
-          defaultValue={prop.width.slice(0,-2)}
+          defaultValue={prop.width}
           style={{color:"black",border:"1px solid gray"}}
           className="w-full"
           />
@@ -70,7 +70,7 @@ const DefaultButtonSettings=()=>{
           <input 
           type='number'
           onChange={handleHeight}
-          defaultValue={prop.height.slice(0,-2)}
+          defaultValue={prop.height}
           style={{color:"black",border:"1px solid gray"}}
           className="w-full"
           />

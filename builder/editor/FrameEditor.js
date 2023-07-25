@@ -2,6 +2,7 @@ import { useContext,useEffect } from "react";
 import { ThemeContext } from "../context/builder-context";
 import { useEditor,Element,Frame, } from "@craftjs/core";
 import { loadTemplate } from "../functions";
+import { Container } from "../resolver/resolver";
 
 const FrameEditor = ({ data, standaloneServer ,pages}) => {
     const { actions } = useEditor();

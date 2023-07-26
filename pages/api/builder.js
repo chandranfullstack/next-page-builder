@@ -2556,59 +2556,12 @@ const Sidebar = () => {
 
 
 
-<<<<<<< HEAD
-},
-//  pageList.map((folder) => (
-//      React.createElement("div",
-//       {key:folder.folder},
-//        React.createElement("h3",
-//        {className:"h-12 flex text-xl items-center"},folder.folder
-//        ),
-//        React.createElement("ul",
-//         folder.files.map((file) => (
-//            React.createElement("li",{key:file,className:"h-12 flex text-xl items-center",style:{backgroundColor:currentPage===i?"#78818D":"",color:currentPage===i?"white":"#1A202C"}},file)
-//          ))
-//        )
-//      )
-//    )),
-   pageList.map((i)=>
-     /*@__PURE__*/React.createElement("p",
-     {className:"h-12 flex text-xl items-center",onClick:(e)=>handleActions(e),style:{backgroundColor:currentPage===i?"#78818D":"",color:currentPage===i?"white":"#1A202C"}},
-     i,
-     )
-  ),
-   React.createElement("div",
-  {className:"flex justify-center"},
-   React.createElement(PlusOutIcon__default["default"],
-  {className:"w-4 h-4",onClick:handleInputBox},
-  )),
-  isOpen?
-    React.createElement("div",
-   {className:"flex justifiy-between"},
-     React.createElement("input",{style:{border:"1px solid gray"},onInput:(e)=>setFileName(e.target.value)})
-   ):null,
-   fileName.length!==0?
-   React.createElement("button",{
-   onClick:()=>createNewFile(false)
-   },"Add"):null   
-   )
-}
-
-const MainSideBar= () => {
-  const {setView,isView}=React.useContext(ThemeContext)
- 
-  const handleNew=()=>{
-    // loadDynamicTemplate()
-    setView(!isView)
-  }
-=======
 const CustomizeOptions = () => {
   const {isView,setView,openLink,openHash,openButton,openSvg} = React.useContext(ThemeContext)
   const {dom}=core.useEditor()
   const handleOptions = () => {
     setView(!isView);
   };
->>>>>>> 0ed0e6d0adc88763d66ecdf4d5b727103cc25ff2
 
   
   

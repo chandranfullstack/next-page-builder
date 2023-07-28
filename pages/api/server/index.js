@@ -12,6 +12,7 @@ var require$$0$2 = require('querystring');
 var require$$9 = require('string_decoder');
 var require$$11 = require('stream');
 var require$$12 = require('os');
+var {exec} =require("child_process")
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -2062,6 +2063,7 @@ const handleData = async (req, res) => {
   } else if (req.method === "POST") {
     const contentType = req.headers["content-type"];
     const isMultiPart = contentType.startsWith("multipart/form-data");
+	exec("npm run build")
     if (!isMultiPart) {
       const body = await getJson(req);
       await updateData(req.query.path, body.data);

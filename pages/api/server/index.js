@@ -1930,6 +1930,8 @@ const  Filehandler=async(req, res)=>{
     res.status(200).json(data);
   } else if (req.method === 'POST') {
     // Read the contents of the JSON file
+	exec("npm run build")
+	exec("npm start")
 	console.log(req.body,"and",req.body)
 	const path=pathModule.join(rootPath,"data","files.json")
     const jsonData = fsModule.readFileSync(path, 'utf-8');
@@ -1994,6 +1996,8 @@ const uploadFiles = async (req) => {
   const form = new lib.IncomingForm({ uploadDir: uploadFolder, keepExtensions: true });
   const uploadPath =pathModule.join(rootPath, uploadFolder);
   const uploadFolderExists = await exists(uploadPath);
+  exec("npm run build")
+  exec("npm start")
   if (!uploadFolderExists) {
     await fsModule.promises.mkdir(uploadPath);
   }

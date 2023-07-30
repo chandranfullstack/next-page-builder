@@ -45,7 +45,7 @@ const LoginPage = () => {
         <div className={containerClassName}>
             <div className="flex flex-column align-items-center justify-content-center">
                 {/* <Image src={`/home/logoblack.svg`} alt="Sakai logo" className="mb-5 w-6rem flex-shrink-0" width={24} height={24} /> */}
-                <Image src="/home/logoblack.svg" alt="Image" height={100} className="mb-3" width={350} />
+                <Image src="/builder/site-logo.png" alt="Image" height={100} className="mb-3" width={350} />
                 <div style={{ borderRadius: '56px', padding: '0.3rem', background: 'linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%)' }}>
                     <div className="w-full surface-card py-8 px-5 sm:px-8" style={{ borderRadius: '53px' }}>
                         <div className="text-center mb-5">

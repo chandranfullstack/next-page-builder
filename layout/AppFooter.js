@@ -7,9 +7,10 @@ const AppFooter = () => {
 
     return (
         <div className="layout-footer">
-            <Image src={`/builderFooter/logo-dark.svg.png`} alt="Logo" height={20} width={40} className="mr-2" />
+            Provide
+            {/* <Image src={`/builderFooter/logo-dark.svg.png`} alt="Logo" height={20} width={40} className="mr-2" /> */}
             by
-            <Image src={`/builderFooter/Layer 1.png`} alt="Logo" height={20} width={160} className="mr-2" />
+            <Image src={`/builder/site-logo.png`} alt="Logo" height={20} width={160} className="mr-2" />
         </div>
     );
 };

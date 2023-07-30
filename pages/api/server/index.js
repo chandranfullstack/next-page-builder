@@ -2027,7 +2027,7 @@ const getFileNameFromRoute = async(route) => {
 	}
 }
 //const getRouteFromFilename = (filename) => filename === "/home.json" ? "/" : `${filename.slice(0, -5)}`;
-const getRouteFromFilename = (filename) => filename === "/home.json" ? "/" : `${filename.slice(0, -5)}`;
+const getRouteFromFilename = (filename) =>  `${filename.slice(0, -5)}`;
 
 const loadData = async (route) => {
   const fileName =await getFileNameFromRoute(route);

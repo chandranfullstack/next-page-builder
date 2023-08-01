@@ -81,9 +81,9 @@ app.use(async(req,res,next)=>{
         }
     }else if(action==="auth"){
         if(!req.session.user){
-            res.redirect("/auth/login")
+            res.send({auth:false})
         }else if(req.session.user){
-            res.send({auth:"true"})
+            res.send({auth:true})
         }
     }
 })

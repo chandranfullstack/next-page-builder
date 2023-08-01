@@ -25,9 +25,12 @@ const HomePage=()=>{
         headers:{"Content-type":"application/json"},
         body:JSON.stringify({data})})
         .then((res)=>(res.json()))
-        console.log(response)
+        console.log(response,response.auth)
         if(response.auth){
-           setAuth(true)
+           setAuth(response.auth)
+        }
+        if(!auth){
+            router.push("/auth/login")
         }
     }
     AuthCheck()

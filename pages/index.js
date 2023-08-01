@@ -14,12 +14,23 @@ import Builder from "./builder";
 import {ContentProvider} from "./api/builder"
 
 const HomePage=()=>{
-    const {auth}=useContext(LayoutContext)
+    const {auth,setAuth}=useContext(LayoutContext)
     const router=useRouter()
+    
     useEffect(()=>{
-        if(!auth){
-            router.push("/auth/login")
-         }
+        const AuthCheck=async()=>{
+        const data={action:"auth"}
+        const response=await fetch("/api/auth/middleware",
+        {method:"POST",
+        headers:{"Content-type":"application/json"},
+        body:JSON.stringify({data})})
+        .then((res)=>(res.json()))
+        console.log(response)
+        if(response.auth){
+           setAuth(true)
+        }
+    }
+    AuthCheck()
     })
    
     return(

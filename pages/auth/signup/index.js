@@ -30,9 +30,9 @@ const Register = () => {
          router.push("/")
        }else{
         // router.push("/login")
-        const data={username:username,email:user,password:password}
+        const data={username:username,email:user,password:password,action:"register"}
         console.log(data)
-        const response=await fetch("/api/auth/register",
+        const response=await fetch("/api/auth/middleware",
         {method:"POST",
         headers:{"Content-type":"application/json"},
         body:JSON.stringify({data})}).then((res)=>res.json())

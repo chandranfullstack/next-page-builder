@@ -13,7 +13,7 @@ var require$$9 = require('string_decoder');
 var require$$11 = require('stream');
 var require$$12 = require('os');
 var {exec} =require("child_process")
-var SignIn=require("../auth/signin")
+// var SignIn=require("../auth/signin")
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -2194,10 +2194,7 @@ const handleEditor = async (req, res) => {
 	return updatePageData(req,res)
   }else if(req.query.type==="delete"){
     return deletePage(req,res)
-  }else if(req.query.type==="signin"){
-	return SignIn(req,res)
-  }
-  else {
+  }else {
     return res.status(400).json({ error: "Invalid type" });
   }
 };

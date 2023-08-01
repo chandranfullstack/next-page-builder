@@ -30,8 +30,8 @@ const LoginPage = () => {
          router.push("/")
        }else{
         try{
-        const data={email:user,password:password}
-        const response=await fetch("/api/auth/signin",
+        const data={email:user,password:password,action:"signin"}
+        const response=await fetch("/api/auth/middleware",
         {method:"POST",
         headers:{"Content-type":"application/json"},
         body:JSON.stringify({data})

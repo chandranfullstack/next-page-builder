@@ -1,12 +1,13 @@
 import mongoose from "mongoose";
-const UserModel=require("../../../server/models/UserModel")
-import { HashPassWord } from "../../../server/utils/hashPassword";
+const UserModel=require("../models/UserModel")
+import { HashPassWord } from "../utils/hashPassword";
+import dbConnect from "../utils/dbConnect";
 
-mongoose.connect("mongodb+srv://chandran:rraavvii@cluster0.0zcd2.mongodb.net/Builder?retryWrites=true&w=majority").then(console.log("connected successuflly"))
 
 const  Register=async(req,res)=>{
     try {
         const { username, email, password } = req.body.data;
+        await  dbConnect()
         console.log("req.body", username, email, password, "body details");
         const existingUser = await UserModel.findOne({ $or: [{ username }, { email }] });
     
@@ -22,13 +23,5 @@ const  Register=async(req,res)=>{
     } catch (error) {
         console.error("Error occurred during registration:", error);
         res.status(500).json({ error: "An error occurred during registration" });
-    }
-    //const {username,email,password}=req.body.data
-    //console.log("req.body",username,email,password,"body details")
-    //const hashPassword=await HashPassWord(password)
-    //console.log(hashPassword,"hashPassowrd")
-    //const registerNewUser=new UserModel({username:username,email:email,password:hashPassword})
-    //await registerNewUser.save()
-    //res.status(200).json({username:username,email:email,password:hashPassword})
-}
+    }}
 export default Register

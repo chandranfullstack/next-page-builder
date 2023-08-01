@@ -39,6 +39,8 @@ const Register = () => {
         console.log(response)
         if(response.error){
             setError(response.error)
+        }else{
+         router.push("/")
         }
     }}
     const handleChange=(value)=>{

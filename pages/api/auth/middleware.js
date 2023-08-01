@@ -72,6 +72,10 @@ app.use(async(req,res,next)=>{
     
             const hashPassword = await HashPassWord(password);
             const newUser = new UserModel({ username, email, password: hashPassword });
+            req.session.user = {
+              id: newUser._id,
+              email: email,
+            };
             await newUser.save();
             res.status(200).json({ username, email, password: hashPassword });
          

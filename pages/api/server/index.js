@@ -13,6 +13,7 @@ var require$$9 = require('string_decoder');
 var require$$11 = require('stream');
 var require$$12 = require('os');
 var {exec} =require("child_process")
+var SignIn=require("../auth/signin")
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -2179,7 +2180,7 @@ const updatePageData=async(req,res)=>{
 }
 console.log(development$1,"development$1")
 const handleEditor = async (req, res) => {
-  if (development$1)
+  if (!development$1)
     return res.status(401).json({ error: "Not allowed" });
   if (req.query.type === "data") {
     return handleData(req, res);
@@ -2193,7 +2194,10 @@ const handleEditor = async (req, res) => {
 	return updatePageData(req,res)
   }else if(req.query.type==="delete"){
     return deletePage(req,res)
-  }else {
+  }else if(req.query.type==="signin"){
+	return SignIn(req,res)
+  }
+  else {
     return res.status(400).json({ error: "Invalid type" });
   }
 };
@@ -2201,7 +2205,7 @@ const config = { api: { bodyParser: false } };
 
 const development = process.env.NODE_ENV !== "production";
 const getStaticProps = async () => {
-  if (!development) {
+  if (development) {
 	const pages=await getPages()
     return { props: {pages:pages===undefined?null:pages} };
   } else {

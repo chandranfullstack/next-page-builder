@@ -18,7 +18,7 @@ const HomePage=()=>{
     const router=useRouter()
     useEffect(()=>{
         if(!auth){
-            router.push("/login")
+            router.push("/auth/login")
          }
     })
    

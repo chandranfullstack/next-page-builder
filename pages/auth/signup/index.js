@@ -11,15 +11,15 @@ import { LayoutProvider } from '../../../layout/context/layoutcontext';
 import Layout from '../../../layout/layout';
 import Image from 'next/image';
 import Link from 'next/link';
-import axios from 'axios';
+import axios from "axios"
 
-const LoginPage = () => {
+const Register = () => {
     const [user,setUser]=useState("")
     const [password, setPassword] = useState('');
+    const [username,setUsername]=useState("")
     const [checked, setChecked] = useState(false);
-    const [error, setError] = useState(null);
     const { layoutConfig ,setAuth,auth} = useContext(LayoutContext);
-
+    const [error, setError] = useState(null);
     const router = useRouter();
 
     const handleSignIn=async()=>{
@@ -29,25 +29,18 @@ const LoginPage = () => {
          setAuth(true)
          router.push("/")
        }else{
-        try{
-        const data={email:user,password:password}
-        const response=await fetch("/api/auth/signin",
+        // router.push("/login")
+        const data={username:username,email:user,password:password}
+        console.log(data)
+        const response=await fetch("/api/auth/register",
         {method:"POST",
         headers:{"Content-type":"application/json"},
-        body:JSON.stringify({data})
-        }).then((res)=>res.json())
+        body:JSON.stringify({data})}).then((res)=>res.json())
+        console.log(response)
         if(response.error){
             setError(response.error)
-        }else if(response.message==="Login successful"){
-            setAuth(true)
-            router.push("/")
         }
-    }catch(error){
-           console.log(error,error.response,"error response")
-           setError(error)
-        }
-       }
-    }
+    }}
     const handleChange=(value)=>{
           setUser(value)
           console.log(value,"value",user)
@@ -70,12 +63,20 @@ const LoginPage = () => {
                     <div className="w-full surface-card py-8 px-5 sm:px-8" style={{ borderRadius: '53px' }}>
                         <div className="text-center mb-5">
                             <div className="text-900 text-3xl font-medium mb-3">Welcome to Fulgid</div>
-                            <span className="text-600 font-medium">Sign in to continue</span>
+                            <span className="text-600 font-medium">Register as New User</span>
                         </div>
                         <div>
                         <div className="flex justify-content-center mb-10">
                         <span className="p-float-label">
-                            <InputText inputid="email1" type="text" placeholder="Email address" className="border-slate-300 w-full md:w-30rem" style={{ padding: '1rem' }} onInput={(e)=>handleChange(e.target.value)} />
+                        <InputText inputid="email1" type="text" placeholder='Enter user name'  className="border-slate-300 w-full md:w-30rem" style={{ padding: '1rem' }} onInput={(e)=>setUsername(e.target.value)} />
+                        <label htmlFor="email1" className="border-slate-300 block text-900 text-xl font-medium">
+                                user name
+                        </label>
+                        </span>
+                        </div>
+                        <div className="flex justify-content-center mb-10">
+                        <span className="p-float-label">
+                            <InputText inputid="email1" type="text" placeholder="Enter Email address" className="border-slate-300 w-full md:w-30rem" style={{ padding: '1rem' }} onInput={(e)=>handleChange(e.target.value)} />
                             <label htmlFor="email1" className="border-slate-300 block text-900 text-xl font-medium mb-2">
                                 Email
                             </label>
@@ -83,26 +84,17 @@ const LoginPage = () => {
                         </div>
                         <div className="flex justify-content-center mb-10">
                         <span className="p-float-label">
-                            <Password inputid="password1" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password"  className="border-slate-300 w-full" inputClassName="w-full p-3 md:w-30rem"></Password>
-                            <label htmlFor="password1" className="block text-900 font-medium text-xl mb-2">
-                                Password
-                            </label>
+                        <Password inputid="password1" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Enter Password"  className="border-slate-300 w-full" inputClassName="w-full p-3 md:w-30rem"></Password>
+                        <label htmlFor="password1" className="block text-900 font-medium text-xl mb-2">
+                            Password
+                        </label>
                         </span>
                         </div>
-                            <div className="flex align-items-center justify-content-between mb-5 gap-5">
-                                <div className="flex align-items-center">
-                                    <Checkbox inputid="rememberme1" checked={checked} onChange={(e) => setChecked(e.checked)} className="mr-2"></Checkbox>
-                                    <label htmlFor="rememberme1">Remember me</label>
-                                </div>
-                                <a className="font-medium no-underline ml-2 text-right cursor-pointer" style={{ color: 'var(--primary-color)' }}>
-                                    Forgot password?
-                                </a>
-                            </div>
-                            <Button label="Sign In" className="w-full p-3 text-xl" onClick={handleSignIn}></Button>
+                            <Button label="Sign Up" className="w-full p-3 text-xl" onClick={handleSignIn}></Button>
                             {error && <div className="text-center text-red-600 mt-2">{error}</div>}
-                            <div className='w-full text-center mt-2'>
+                            <div className='w-full text-center'>
                                 <p>Or</p>
-                                <Link href={"/auth/signup"} >Sign up</Link>
+                                <Link href={"/auth/login"} >Log In</Link>
                             </div>
                         </div>
                     </div>
@@ -112,7 +104,7 @@ const LoginPage = () => {
     );
 };
 
-LoginPage.getLayout = function getLayout(page) {
+Register.getLayout = function getLayout(page) {
     return (
         <React.Fragment>
             {page}
@@ -120,4 +112,4 @@ LoginPage.getLayout = function getLayout(page) {
         </React.Fragment>
     );
 };
-export default LoginPage;
+export default Register

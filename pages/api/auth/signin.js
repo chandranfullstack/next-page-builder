@@ -1,6 +1,6 @@
 import { HashPassWord,ComparePassword } from "../../../server/utils/hashPassword";
 import mongoose from "mongoose";
-const UserModel=require("../../models/UserModel")
+const UserModel=require("../../../server/models/UserModel")
 
 mongoose.connect("mongodb+srv://chandran:rraavvii@cluster0.0zcd2.mongodb.net/Builder?retryWrites=true&w=majority")
 const  SignIn=async(req,res)=>{

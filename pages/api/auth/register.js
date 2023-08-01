@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-const UserModel=require("../../models/UserModel")
+const UserModel=require("../../../server/models/UserModel")
 import { HashPassWord } from "../../../server/utils/hashPassword";
 
 mongoose.connect("mongodb+srv://chandran:rraavvii@cluster0.0zcd2.mongodb.net/Builder?retryWrites=true&w=majority").then(console.log("connected successuflly"))

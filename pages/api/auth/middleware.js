@@ -45,6 +45,7 @@ app.use(async(req,res,next)=>{
             req.session.user = {
               id: user._id,
               email: user.email,
+              name:user.username
             };
             console.log(req.session,"session")
             const passwordMatches = await ComparePassword(password, user.password);
@@ -89,7 +90,9 @@ app.use(async(req,res,next)=>{
         }else if(req.session.user){
             res.send({auth:true})
         }
-    }
+   }else if(action==="session"){
+    res.status(200).json({user:req.session.user})
+   }
 })
 
 

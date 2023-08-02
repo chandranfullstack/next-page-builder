@@ -12,6 +12,7 @@ import Layout from '../../../layout/layout';
 import Image from 'next/image';
 import Link from 'next/link';
 import axios from 'axios';
+import { UserContext } from '../../../layout/context/usercontext';
 
 const LoginPage = () => {
     const [user,setUser]=useState("")
@@ -19,6 +20,7 @@ const LoginPage = () => {
     const [checked, setChecked] = useState(false);
     const [error, setError] = useState(null);
     const { layoutConfig ,setAuth,auth} = useContext(LayoutContext);
+    const {setUserDetails,UserDetails}=useContext(UserContext)
 
     const router = useRouter();
 
@@ -75,7 +77,7 @@ const LoginPage = () => {
                         <div>
                         <div className="flex justify-content-center mb-10">
                         <span className="p-float-label">
-                            <InputText inputid="email1" type="text" placeholder="Email address" className="border-slate-300 w-full md:w-30rem" style={{ padding: '1rem' }} onInput={(e)=>handleChange(e.target.value)} />
+                            <InputText inputid="email1" type="text" placeholder="Email address" className="border-slate-300 w-full md:w-30rem" style={{ padding: '1rem' }} onInput={(e)=>handleChange(e.target.value)} required />
                             <label htmlFor="email1" className="border-slate-300 block text-900 text-xl font-medium mb-2">
                                 Email
                             </label>
@@ -83,7 +85,7 @@ const LoginPage = () => {
                         </div>
                         <div className="flex justify-content-center mb-10">
                         <span className="p-float-label">
-                            <Password inputid="password1" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password"  className="border-slate-300 w-full" inputClassName="w-full p-3 md:w-30rem"></Password>
+                            <Password inputid="password1" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password"  className="border-slate-300 w-full" inputClassName="w-full p-3 md:w-30rem" required></Password>
                             <label htmlFor="password1" className="block text-900 font-medium text-xl mb-2">
                                 Password
                             </label>

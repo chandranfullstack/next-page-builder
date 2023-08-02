@@ -3,6 +3,7 @@ import { ChakraProvider } from "@chakra-ui/react"
 import theme from "../themes/theme"
 import React from 'react';
 import { LayoutProvider } from '../layout/context/layoutcontext';
+import { UserProvider } from "../layout/context/usercontext";
 import Layout from '../layout/layout';
 import 'primereact/resources/primereact.css';
 import 'primeflex/primeflex.css';
@@ -15,11 +16,13 @@ import '../styles/demo/Demos.scss';
  export default function App({ Component, pageProps }) {
    return (
    <ChakraProvider theme={theme}>
+    <UserProvider>
      <LayoutProvider>
       {/* <Layout> */}
       <Component {...pageProps} theme={theme} />
       {/* </Layout> */}
        </LayoutProvider>
+       </UserProvider>
       </ChakraProvider>
    )
  }

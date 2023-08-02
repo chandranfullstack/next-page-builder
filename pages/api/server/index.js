@@ -1931,8 +1931,14 @@ const  Filehandler=async(req, res)=>{
     res.status(200).json(data);
   } else if (req.method === 'POST') {
     // Read the contents of the JSON file
-	exec("npm run build")
-	exec("npm start")
+	// exec("npm run build",function(error,dat){
+	// 	if(error){
+	// 		console.log(error.message,error.name,error)
+	// 	}else if(dat){
+	// 		console.log(dat,dat)
+	// 	}
+	// })
+	// exec("npm start")
 	console.log(req.body,"and",req.body)
 	const path=pathModule.join(rootPath,"data","files.json")
     const jsonData = fsModule.readFileSync(path, 'utf-8');
@@ -1997,8 +2003,8 @@ const uploadFiles = async (req) => {
   const form = new lib.IncomingForm({ uploadDir: uploadFolder, keepExtensions: true });
   const uploadPath =pathModule.join(rootPath, uploadFolder);
   const uploadFolderExists = await exists(uploadPath);
-  exec("npm run build")
-  exec("npm start")
+//   exec("npm run build")
+//   exec("npm start")
   if (!uploadFolderExists) {
     await fsModule.promises.mkdir(uploadPath);
   }
@@ -2068,7 +2074,7 @@ const handleData = async (req, res) => {
   } else if (req.method === "POST") {
     const contentType = req.headers["content-type"];
     const isMultiPart = contentType.startsWith("multipart/form-data");
-	exec("npm run build")
+	// exec("npm run build")
     if (!isMultiPart) {
       const body = await getJson(req);
       await updateData(req.query.path, body.data);
@@ -2180,7 +2186,7 @@ const updatePageData=async(req,res)=>{
 }
 console.log(development$1,"development$1")
 const handleEditor = async (req, res) => {
-  if (development$1)
+  if (!development$1)
     return res.status(401).json({ error: "Not allowed" });
   if (req.query.type === "data") {
     return handleData(req, res);
@@ -2202,7 +2208,7 @@ const config = { api: { bodyParser: false } };
 
 const development = process.env.NODE_ENV !== "production";
 const getStaticProps = async () => {
-  if (!development) {
+  if (development) {
 	const pages=await getPages()
     return { props: {pages:pages===undefined?null:pages} };
   } else {

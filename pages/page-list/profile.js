@@ -11,7 +11,6 @@ import { ProgressBar } from 'primereact/progressbar';
 const Profile = () => {
     const {UserDetails,setUserDetails}=useContext(LayoutContext)
     const {user}=UserDetails
-    const {name,email}=user
     const router=useRouter()
     const [message,setMessage]=useState(null)
     const [progress,setProgress]=useState(false)
@@ -33,7 +32,7 @@ const Profile = () => {
         {message&&<EmptyError color="success" text={message}/>}
         {progress&&<ProgressBar mode="indeterminate" style={{ height: '6px' }}></ProgressBar>}
         {/* <img src="/profile-image.jpg" alt="Profile" className="w-32 h-32 rounded-full mx-auto mb-4" /> */}
-        <h1 className="text-2xl font-bold text-center">Welcome! {name}</h1>
+        <h1 className="text-2xl font-bold text-center">Welcome! {user&&user.name}</h1>
         <p className="text-gray-600 text-center">User</p>
         <div className='flex justify-center items-center mt-5'>
         <Button label="Logout" onClick={handleLogout} className="p-button-secondary w-full" />

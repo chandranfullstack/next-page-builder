@@ -13,7 +13,6 @@ import { ProgressSpinner } from "primereact/progressspinner"
 
 const Builder=()=>{
     const {onMenuToggle,layoutState,setLayoutState,auth}=useContext(LayoutContext)
-<<<<<<< HEAD
     const router=useRouter()
     
 
@@ -25,8 +24,6 @@ const Builder=()=>{
         }
         checkStatus()
     },[])
-=======
->>>>>>> beb75ae (changes from server)
 
     useEffect(()=>{
         setLayoutState({configSidebarVisible:false,
@@ -35,7 +32,6 @@ const Builder=()=>{
             profileSidebarVisible:false,
             staticMenuDesktopInactive:true,
             staticMenuMobileActive:false})
-<<<<<<< HEAD
     },[])
      
     if(!auth){
@@ -45,12 +41,6 @@ const Builder=()=>{
     
 
     
-=======
-    })
-    useEffect(()=>{
-        const checkAuth=()=>
-    })
->>>>>>> beb75ae (changes from server)
     const data=[]
     return(
         <Layout>

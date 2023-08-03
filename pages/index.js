@@ -33,7 +33,7 @@ const HomePage=()=>{
         }
     }
     AuthCheck()
-    },[auth])
+    })
 
     useEffect(()=>{
         const checkSession=async()=>{

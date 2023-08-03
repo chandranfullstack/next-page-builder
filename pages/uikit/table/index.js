@@ -376,8 +376,15 @@ const TableDemo = () => {
     const basicDialogFooter = <Button type="button" label="Create" onClick={HandleCreate} icon="pi pi-check" severity="secondary" />;
     const productDialogFooter = (
         <React.Fragment>
+            {editPageList.page===newFileName&&editPageList.meta===metaDetails&&
             <Button label="Cancel" icon="pi pi-times" outlined onClick={hideDialog} />
+            }
+            {
+            editPageList.page!==newFileName&&editPageList.meta!==metaDetails&&
             <Button label="Save" icon="pi pi-check" onClick={UpdatePage} />
+            }
+            
+            
         </React.Fragment>
     );
     const deletePageDialogFooter = (

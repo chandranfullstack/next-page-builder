@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useContext,useState } from 'react';
 import Layout from '../../layout/layout';
 import { LayoutContext } from '../../layout/context/layoutcontext';
@@ -9,12 +9,22 @@ import EmptyError from '../../builder-components/Error/EmptyError';
 import { ProgressBar } from 'primereact/progressbar';
 
 const Profile = () => {
-    const {UserDetails,setUserDetails}=useContext(LayoutContext)
+    const {UserDetails,setUserDetails,auth}=useContext(LayoutContext)
     const {user}=UserDetails
     const router=useRouter()
     const [message,setMessage]=useState(null)
     const [progress,setProgress]=useState(false)
     console.log(UserDetails,"userDetails",user)
+
+    useEffect(()=>{
+      const checkStatus=()=>{
+          if(!auth){
+             router.push("/auth/login")
+          }
+      }
+      checkStatus()
+  })
+
     const handleLogout=async()=>{
       setProgress(true)
       const data={action:"logout"}

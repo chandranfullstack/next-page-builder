@@ -6,8 +6,17 @@ import { UserContext } from "../../layout/context/usercontext";
 import { LayoutContext } from "../../layout/context/layoutcontext";
 
 const PageList=()=>{
-      const {UserDetails,setUserDetails}=useContext(LayoutContext)
+      const {UserDetails,setUserDetails,auth}=useContext(LayoutContext)
       console.log(UserDetails)
+
+      useEffect(()=>{
+        const checkStatus=()=>{
+            if(!auth){
+               router.push("/auth/login")
+            }
+        }
+        checkStatus()
+        })
       
        useEffect(()=>{
          const checkSession=async()=>{

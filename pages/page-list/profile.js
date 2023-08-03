@@ -7,6 +7,7 @@ import { Button } from 'primereact/button';
 import { useRouter } from 'next/router';
 import EmptyError from '../../builder-components/Error/EmptyError';
 import { ProgressBar } from 'primereact/progressbar';
+import { ProgressSpinner } from 'primereact/progressspinner';
 
 const Profile = () => {
     const {UserDetails,setUserDetails,auth}=useContext(LayoutContext)
@@ -24,16 +25,18 @@ const Profile = () => {
       }
       checkStatus()
   })
-
-    const handleLogout=async()=>{
-      setProgress(true)
-      const data={action:"logout"}
-      await  fetch("/api/auth/middleware",
-      {headers:{"Content-type":"application/json"},
-      method:"POST",
-      body:JSON.stringify({data})
-    }).then((res)=>res.json()).then(res=>{if(res.message){setMessage(res.message);router.push("/")}})
-    }
+  if(!auth){
+    return <div className=" flex justify-center items-center w-full h-screen"><ProgressSpinner /></div>
+  }
+  const handleLogout=async()=>{
+    setProgress(true)
+    const data={action:"logout"}
+    await  fetch("/api/auth/middleware",
+    {headers:{"Content-type":"application/json"},
+    method:"POST",
+    body:JSON.stringify({data})
+  }).then((res)=>res.json()).then(res=>{if(res.message){setMessage(res.message);router.push("/")}})
+  }
     
   return (
     <Layout>

@@ -5,6 +5,7 @@ import AppTopbar from "../../layout/AppTopbar"
 import { LayoutContext } from "../../layout/context/layoutcontext"
 import { useContext, useEffect } from "react"
 import { useRouter } from "next/router"
+import { ProgressSpinner } from "primereact/progressspinner"
 
 
 //  export { getStaticProps } from "./api/server/index"
@@ -13,6 +14,7 @@ import { useRouter } from "next/router"
 const Builder=()=>{
     const {onMenuToggle,layoutState,setLayoutState,auth}=useContext(LayoutContext)
     const router=useRouter()
+    
 
     useEffect(()=>{
         const checkStatus=()=>{
@@ -21,7 +23,7 @@ const Builder=()=>{
             }
         }
         checkStatus()
-    })
+    },[])
 
     useEffect(()=>{
         setLayoutState({configSidebarVisible:false,
@@ -30,7 +32,15 @@ const Builder=()=>{
             profileSidebarVisible:false,
             staticMenuDesktopInactive:true,
             staticMenuMobileActive:false})
-    })
+    },[])
+     
+    if(!auth){
+        return <div className=" flex justify-center items-center w-full h-screen"><ProgressSpinner /></div>
+    }
+
+    
+
+    
     const data=[]
     return(
         <Layout>

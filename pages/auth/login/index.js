@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import React, { useContext, useState,useEffect } from 'react';
+import React, { useContext, useState,useEffect,useRef } from 'react';
 import AppConfig from '../../../layout/AppConfig';
 import { Checkbox } from 'primereact/checkbox';
 import { Button } from 'primereact/button';
@@ -13,6 +13,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import axios from 'axios';
 import { UserContext } from '../../../layout/context/usercontext';
+import { Toast } from 'primereact/toast';
+import { ProgressBar } from 'primereact/progressbar';
 
 const LoginPage = () => {
     const [user,setUser]=useState("")
@@ -21,17 +23,27 @@ const LoginPage = () => {
     const [error, setError] = useState(null);
     const { layoutConfig ,setAuth,auth} = useContext(LayoutContext);
     const {setUserDetails,UserDetails}=useContext(UserContext)
+    const toast = useRef(null);
+    const [progress,setProgress]=useState(false)
 
     const router = useRouter();
 
     const handleSignIn=async()=>{
         setError(null)
-       if(password==="admin"&&user==="admin"){
-         localStorage.setItem("auth",true)
-         setAuth(true)
-         router.push("/")
-       }else{
+        if (user.trim() === '' || password.trim() === '') {
+            toast.current.show({ severity: 'error', summary: 'Error', detail: 'Please enter both email and password', life: 3000 });
+            return;
+        }
+
+        
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(user)) {
+            toast.current.show({ severity: 'error', summary: 'Error', detail: 'Please enter a valid email address', life: 3000 });
+            return;
+        }
+
         try{
+        setProgress(true)
         const data={email:user,password:password,action:"signin"}
         const response=await fetch("/api/auth/middleware",
         {method:"POST",
@@ -48,7 +60,6 @@ const LoginPage = () => {
            console.log(error,error.response,"error response")
            setError(error)
         }
-       }
     }
     const handleChange=(value)=>{
           setUser(value)
@@ -75,6 +86,7 @@ const LoginPage = () => {
                             <span className="text-600 font-medium">Sign in to continue</span>
                         </div>
                         <div>
+                        <Toast ref={toast} />
                         <div className="flex justify-content-center mb-10">
                         <span className="p-float-label">
                             <InputText inputid="email1" type="text" placeholder="Email address" className="border-slate-300 w-full md:w-30rem" style={{ padding: '1rem' }} onInput={(e)=>handleChange(e.target.value)} required />
@@ -93,12 +105,12 @@ const LoginPage = () => {
                         </div>
                             <div className="flex align-items-center justify-content-between mb-5 gap-5">
                                 <div className="flex align-items-center">
-                                    <Checkbox inputid="rememberme1" checked={checked} onChange={(e) => setChecked(e.checked)} className="mr-2"></Checkbox>
-                                    <label htmlFor="rememberme1">Remember me</label>
+                                    {/* <Checkbox inputid="rememberme1" checked={checked} onChange={(e) => setChecked(e.checked)} className="mr-2"></Checkbox>
+                                    <label htmlFor="rememberme1">Remember me</label> */}
                                 </div>
-                                <a className="font-medium no-underline ml-2 text-right cursor-pointer" style={{ color: 'var(--primary-color)' }}>
+                                {/* <a className="font-medium no-underline ml-2 text-right cursor-pointer" style={{ color: 'var(--primary-color)' }}>
                                     Forgot password?
-                                </a>
+                                </a> */}
                             </div>
                             <Button label="Sign In" className="w-full p-3 text-xl" onClick={handleSignIn}></Button>
                             {error && <div className="text-center text-red-600 mt-2">{error}</div>}

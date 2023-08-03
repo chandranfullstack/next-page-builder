@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import React, { useContext, useState,useEffect } from 'react';
+import React, { useContext, useState,useEffect ,useRef} from 'react';
 import AppConfig from '../../../layout/AppConfig';
 import { Checkbox } from 'primereact/checkbox';
 import { Button } from 'primereact/button';
@@ -11,7 +11,8 @@ import { LayoutProvider } from '../../../layout/context/layoutcontext';
 import Layout from '../../../layout/layout';
 import Image from 'next/image';
 import Link from 'next/link';
-import axios from "axios"
+import { Toast } from 'primereact/toast';
+import { ProgressBar } from 'primereact/progressbar';
 
 const Register = () => {
     const [user,setUser]=useState("")
@@ -21,15 +22,33 @@ const Register = () => {
     const { layoutConfig ,setAuth,auth} = useContext(LayoutContext);
     const [error, setError] = useState(null);
     const router = useRouter();
+    const toast = useRef(null);
+    const [progress,setProgress]=useState(false)
 
     const handleSignIn=async()=>{
         setError(null)
-       if(password==="admin"&&user==="admin"){
-         localStorage.setItem("auth",true)
-         setAuth(true)
-         router.push("/")
-       }else{
-        // router.push("/login")
+        if (username.trim() === '') {
+            toast.current.show({ severity: 'error', summary: 'Error', detail: 'Please enter a username', life: 3000 });
+            return;
+        }
+
+        if (user.trim() === '') {
+            toast.current.show({ severity: 'error', summary: 'Error', detail: 'Please enter an email address', life: 3000 });
+            return;
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(user)) {
+            toast.current.show({ severity: 'error', summary: 'Error', detail: 'Please enter a valid email address', life: 3000 });
+            return;
+        }
+
+        if (password.trim() === '') {
+            toast.current.show({ severity: 'error', summary: 'Error', detail: 'Please enter a password', life: 3000 });
+            return;
+        }
+
+        setProgress(true)
         const data={username:username,email:user,password:password,action:"register"}
         console.log(data)
         const response=await fetch("/api/auth/middleware",
@@ -38,11 +57,17 @@ const Register = () => {
         body:JSON.stringify({data})}).then((res)=>res.json())
         console.log(response)
         if(response.error){
+            if(response.error==="Username or email already exists"){
+               toast.current.show({severity:"warn",summary:"Alert",detail:"You aleready registered kindly Log In and continue",life:3000})
+            }else{
+                toast.current.show({severity:"error",summary:'Error',detail:response.error,life:3000})
+            }
+            setProgress(false)
             setError(response.error)
         }else{
          router.push("/")
         }
-    }}
+    }
     const handleChange=(value)=>{
           setUser(value)
           console.log(value,"value",user)
@@ -58,6 +83,7 @@ const Register = () => {
 
     return (
         <div className={containerClassName}>
+            <Toast ref={toast} />
             <div className="flex flex-column align-items-center justify-content-center mt-2">
                 {/* <Image src={`/home/logoblack.svg`} alt="Sakai logo" className="mb-5 w-6rem flex-shrink-0" width={24} height={24} /> */}
                 <Image src="/builder/site-logo.png" alt="Image" height={20} className="mb-3" width={350} />
@@ -92,12 +118,16 @@ const Register = () => {
                         </label>
                         </span>
                         </div>
+                        <div>                        
+                            {progress?<ProgressBar mode="indeterminate" style={{ height: '6px' }}></ProgressBar> :
+                            <div>
                             <Button label="Sign Up" className="w-full p-3 text-xl" onClick={handleSignIn}></Button>
-                            {error && <div className="text-center text-red-600 mt-2">{error}</div>}
                             <div className='w-full text-center'>
                                 <p>Or</p>
-                                <Link href={"/auth/login"} >Log In</Link>
+                                <Link href={"/auth/login"} >Sign In</Link>
                             </div>
+                            </div>
+    }                       </div>
                         </div>
                     </div>
                 </div>

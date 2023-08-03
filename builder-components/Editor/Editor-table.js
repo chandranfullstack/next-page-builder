@@ -51,8 +51,8 @@ const EditorTable = () => {
     const [deletePageDialog, setDeletePageDialog] = useState(false);
     const [Error,setError]=useState(null)
     const [EditNewFileName, setEditNewFileName] = useState(editPageList.page);
-  const [EditPageSlug, setEditPageSlug] = useState(editPageList.slug);
-  const [EditMetaDetail, setEditMetaDetail] = useState(editPageList.meta);
+    const [EditPageSlug, setEditPageSlug] = useState(editPageList.slug);
+    const [EditMetaDetail, setEditMetaDetail] = useState(editPageList.meta);
     
 
     const representatives = [
@@ -205,12 +205,12 @@ const EditorTable = () => {
 
   const EditRowButton = (rowData) => {
     // Handle delete logic here, using rowData.page to access the page value
-    console.log('Delete:',rowData);
+    console.log('Delete:',rowData,EditNewFileName);
     setEditPageList( {...rowData});
-    setEditNewFileName(editPageList.page)
-    setEditPageSlug(editPageList.slug)
-    setEditMetaDetail(editPageList.meta)
-    console.log(EditNewFileName,EditMetaDetail,EditPageSlug)
+    setEditNewFileName(rowData.page)
+    setEditPageSlug(rowData.slug)
+    setEditMetaDetail(rowData.meta)
+    console.log(EditNewFileName,EditMetaDetail,EditPageSlug,"data")
     console.log(editPageList,"editPageList")
     setEditDialog(true);
   };
@@ -276,6 +276,9 @@ const EditorTable = () => {
     }
 
     const hideDialog = () => {
+        setEditNewFileName("")
+        setEditMetaDetail("")
+        setEditPageSlug("")
         setSubmitted(false);
         setEditDialog(false);
     };
@@ -345,7 +348,7 @@ const EditorTable = () => {
                     </div>
                     <div className="field">
                         <label htmlFor="email1">Slug</label>
-                        <InputText id="email1" type="text"      value={"/"+EditNewFileName} readOnly/>
+                        <InputText id="email1" type="text"      value={EditPageSlug} readOnly/>
                     </div>
                     <div className="field">
                         <label htmlFor="age1">Description</label>

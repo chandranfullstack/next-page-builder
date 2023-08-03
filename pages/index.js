@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import { ProgressSpinner } from "primereact/progressspinner";
 
 const HomePage=()=>{
-    const {auth,setAuth}=useContext(LayoutContext)
+    const {auth,setAuth,UserDetails,setUserDetails}=useContext(LayoutContext)
     const router=useRouter()
     
     useEffect(()=>{
@@ -27,10 +27,41 @@ const HomePage=()=>{
         console.log(auth)
         if(auth===false){
             router.push("/auth/login")
+        }else if(response.auth===false){
+            setAuth(false)
+            router.push("/auth/login")
         }
     }
     AuthCheck()
     },[auth])
+
+    useEffect(()=>{
+        const checkSession=async()=>{
+           
+            const data={action:"session"}
+            const response=await fetch("/api/auth/middleware",
+            {method:"POST",
+            headers:{"Content-type":"application/json"},
+            body:JSON.stringify({data})
+            }).then((res)=>res.json())
+            setUserDetails(response)
+            console.log(response,"response",UserDetails,UserDetails.length)
+        }
+        if(UserDetails.length===0){
+        checkSession()}
+    },[UserDetails,setUserDetails])
+
+    const checkSession=async()=>{
+           
+        const data={action:"session"}
+        const response=await fetch("/api/auth/middleware",
+        {method:"POST",
+        headers:{"Content-type":"application/json"},
+        body:JSON.stringify({data})
+        }).then((res)=>res.json())
+        setUserDetails(response)
+        console.log(response,"response",UserDetails,UserDetails.length)
+    }
    
     return(
         <>
@@ -39,6 +70,7 @@ const HomePage=()=>{
         <Layout>   
             <div className=" flex flex-row justify-center pt-[100px]">
                 <h1 className=" font-bold text-black">Welcome to Dashboard</h1>
+                {/* {UserDetails.length===0&&checkSession()} */}
             </div>
         </Layout>
         :

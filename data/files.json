@@ -1,12 +1,20 @@
 {
   "pageList": [
     {
+      "page": "Hackathons",
+      "slug": "/Hackathons",
+      "meta": "The Hackathons Page",
+      "date": "8/3/2023",
+      "status": "new",
+      "id": 1
+    },
+    {
       "page": "home",
       "slug": "/home",
       "meta": "The Home Page",
-      "date": "8/2/2023",
+      "date": "8/3/2023",
       "status": "new",
-      "id": 1
+      "id": 2
     }
   ]
 }

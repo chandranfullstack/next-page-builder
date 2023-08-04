@@ -15,6 +15,7 @@ import axios from 'axios';
 import { UserContext } from '../../../layout/context/usercontext';
 import { Toast } from 'primereact/toast';
 import { ProgressBar } from 'primereact/progressbar';
+import { ProgressSpinner } from 'primereact/progressspinner';
 
 const LoginPage = () => {
     const [user,setUser]=useState("")
@@ -75,6 +76,12 @@ const LoginPage = () => {
     const containerClassName = classNames('surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden', { 'p-input-filled': layoutConfig.inputStyle === 'filled' });
 
     return (
+        <>
+        {
+         progress || auth
+         ?
+         <div className=" flex justify-center items-center w-full h-screen bg-white"><ProgressSpinner /></div>
+         :
         <div className={containerClassName}>
             <div className="flex flex-column align-items-center justify-content-center mt-2">
                 {/* <Image src={`/home/logoblack.svg`} alt="Sakai logo" className="mb-5 w-6rem flex-shrink-0" width={24} height={24} /> */}
@@ -123,6 +130,8 @@ const LoginPage = () => {
                 </div>
             </div>
         </div>
+        }
+        </>
     );
 };
 

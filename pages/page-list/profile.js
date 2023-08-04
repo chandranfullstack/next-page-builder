@@ -17,17 +17,17 @@ const Profile = () => {
     const [progress,setProgress]=useState(false)
     console.log(UserDetails,"userDetails",user)
 
-    useEffect(()=>{
-      const checkStatus=()=>{
-          if(!auth){
-             router.push("/auth/login")
-          }
-      }
-      checkStatus()
-  })
-  if(!auth){
-    return <div className=" flex justify-center items-center w-full h-screen"><ProgressSpinner /></div>
-  }
+  //   useEffect(()=>{
+  //     const checkStatus=()=>{
+  //         if(!auth){
+  //            router.push("/auth/login")
+  //         }
+  //     }
+  //     checkStatus()
+  // })
+  // if(!auth){
+  //   return <div className=" flex justify-center items-center w-full h-screen"><ProgressSpinner /></div>
+  // }
   const handleLogout=async()=>{
     setProgress(true)
     const data={action:"logout"}

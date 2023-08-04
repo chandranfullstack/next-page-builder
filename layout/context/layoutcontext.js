@@ -15,6 +15,7 @@ export const LayoutProvider = (props) => {
     const [auth,setAuth]=useState(false)
     const [currentPage,setCurrentPage]=useState("home")
     const [UserDetails,setUserDetails]=useState([])
+    const [progress,setProgress]=useState(true)
     const router=useRouter()
     const [layoutState, setLayoutState] = useState({
         staticMenuDesktopInactive: false,
@@ -68,7 +69,9 @@ export const LayoutProvider = (props) => {
         currentPage,
         setCurrentPage,
         UserDetails,
-        setUserDetails
+        setUserDetails,
+        progress,
+        setProgress
     };
 
     return <LayoutContext.Provider value={value}>{props.children}</LayoutContext.Provider>;

@@ -9,10 +9,16 @@ import AppTopbar from './AppTopbar';
 import AppConfig from './AppConfig';
 import { LayoutContext } from './context/layoutcontext';
 import PrimeReact from 'primereact/api';
+import { ProgressSpinner } from 'primereact/progressspinner';
 
 
 const Layout = (props) => {
-    const { layoutConfig, layoutState, setLayoutState ,onMenuToggle} = useContext(LayoutContext);
+    const { layoutConfig, 
+        layoutState, 
+        setLayoutState ,
+        onMenuToggle,auth,
+        setAuth,UserDetails,
+        setUserDetails,progress,setProgress} = useContext(LayoutContext);
     const topbarRef = useRef(null);
     const sidebarRef = useRef(null);
 
@@ -69,6 +75,48 @@ const Layout = (props) => {
         PrimeReact.ripple = true;
     })
 
+    useEffect(()=>{
+        const AuthCheck=async()=>{
+        const data={action:"auth"}
+        const response=await fetch("/api/auth/middleware",
+        {method:"POST",
+        headers:{"Content-type":"application/json"},
+        body:JSON.stringify({data})})
+        .then((res)=>(res.json()))
+        console.log(response,response.auth)
+        if(response.auth){
+           setAuth(response.auth)
+        }
+        console.log(auth)
+        setProgress(false)
+        if(auth===false){
+            router.push("/auth/login")
+        }else if(response.auth===false){
+            setAuth(false)
+            router.push("/auth/login")
+        }
+    }
+    if(auth===false){
+    AuthCheck()
+    }
+    })
+
+    useEffect(()=>{
+        const checkSession=async()=>{
+           
+            const data={action:"session"}
+            const response=await fetch("/api/auth/middleware",
+            {method:"POST",
+            headers:{"Content-type":"application/json"},
+            body:JSON.stringify({data})
+            }).then((res)=>res.json())
+            setUserDetails(response)
+            console.log(response,"response",UserDetails,UserDetails.length)
+        }
+        if(UserDetails.length===0){
+        checkSession()}
+    },[UserDetails,setUserDetails])
+
     useEffect(() => {
         if (layoutState.overlayMenuActive || layoutState.staticMenuMobileActive) {
             bindMenuOutsideClickListener();
@@ -98,7 +146,7 @@ const Layout = (props) => {
         unbindMenuOutsideClickListener();
         unbindProfileMenuOutsideClickListener();
     });
-
+    console.log(props,"props")
     const containerClass = classNames('layout-wrapper', {
         'layout-overlay': layoutConfig.menuMode === 'overlay',
         'layout-static': layoutConfig.menuMode === 'static',
@@ -111,18 +159,24 @@ const Layout = (props) => {
 
     return (
         <React.Fragment>
+            {
+            progress?
+            <div className=" flex justify-center items-center w-full h-screen"><ProgressSpinner /></div>  
+            :
             <div className={containerClass}>
-                <AppTopbar ref={topbarRef} />
-                <div ref={sidebarRef} className="layout-sidebar">
-                    <AppSidebar />
-                </div>
-                <div className="layout-main-container">
-                    <div className="layout-main">{props.children}</div>
-                    <AppFooter />
-                </div>
-                 {/* <AppConfig />  */}
-                <div className="layout-mask"></div>
+            <>
+            <AppTopbar ref={topbarRef} />
+            <div ref={sidebarRef} className="layout-sidebar">
+                <AppSidebar />
             </div>
+            <div className="layout-main-container">
+                <div className="layout-main">{props.children}</div>
+                <AppFooter />
+            </div>
+            </>
+            <div className="layout-mask"></div>
+        </div>
+            }
         </React.Fragment>
     );
 };

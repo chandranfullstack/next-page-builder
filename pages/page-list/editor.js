@@ -12,18 +12,22 @@ import { ProgressSpinner } from "primereact/progressspinner"
 //  export { ContentProvider as default } from "./api/builder"
 
 const Builder=()=>{
-    const {onMenuToggle,layoutState,setLayoutState,auth}=useContext(LayoutContext)
+    const {onMenuToggle,layoutState,
+    setLayoutState,auth,
+    progress,
+    setProgress
+}=useContext(LayoutContext)
     const router=useRouter()
     
 
-    useEffect(()=>{
-        const checkStatus=()=>{
-            if(!auth){
-               router.push("/auth/login")
-            }
-        }
-        checkStatus()
-    },[])
+    // useEffect(()=>{
+    //     const checkStatus=()=>{
+    //         if(!auth){
+    //            router.push("/auth/login")
+    //         }
+    //     }
+    //     checkStatus()
+    // },[])
 
     useEffect(()=>{
         setLayoutState({configSidebarVisible:false,
@@ -34,9 +38,9 @@ const Builder=()=>{
             staticMenuMobileActive:false})
     },[])
      
-    if(!auth){
-        return <div className=" flex justify-center items-center w-full h-screen"><ProgressSpinner /></div>
-    }
+    // if(!auth){
+    //     return <div className=" flex justify-center items-center w-full h-screen"><ProgressSpinner /></div>
+    // }
 
     
 

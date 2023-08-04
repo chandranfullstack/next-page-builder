@@ -5,6 +5,8 @@ import dbConnect from '../../../server/utils/dbConnect';
 const Router =express.Router()
 import UserModel from '../../../server/models/UserModel';
 import { ComparePassword,HashPassWord } from '../../../server/utils/hashPassword';
+import jwt from 'jsonwebtoken';
+
 
 
 const app = express();
@@ -54,8 +56,8 @@ app.use(async(req,res,next)=>{
               
               return res.status(401).json({ error: 'Invalid email or password' });
             }
-        
-            return res.status(200).json({ message: 'Login successful', user: { username: user.username, email: user.email ,session:req.session.user} });
+            const token = jwt.sign({ userId: user._id }, 'your-secret-key', { expiresIn: '1h' })
+            return res.status(200).json({ message: 'Login successful',token:token, user: { username: user.username, email: user.email ,session:req.session.user} });
           } catch (error) {
             console.error('Error occurred during login:', error);
             return res.status(500).json({ error: 'An error occurred during login' });
@@ -77,6 +79,7 @@ app.use(async(req,res,next)=>{
               id: newUser._id,
               email: email,
             };
+            const token = jwt.sign({ userId: newUser._id }, 'your-secret-key', { expiresIn: '1h' })
             await newUser.save();
             res.status(200).json({ username, email, password: hashPassword });
          

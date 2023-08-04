@@ -28,17 +28,17 @@ const PageList=()=>{
             checkSession();
         }
 
-        const checkStatus = () => {
-            if (!auth) {
-                router.push("/auth/login");
-            }
-        };
-        checkStatus();
+        // const checkStatus = () => {
+        //     if (!auth) {
+        //         router.push("/auth/login");
+        //     }
+        // };
+        // checkStatus();
         }, [UserDetails, setUserDetails, auth, router]);
     
-        if (!auth || UserDetails.length === 0) {
-            return <div className=" flex justify-center items-center w-full h-screen"><ProgressSpinner /></div>;
-        }
+        // if (!auth || UserDetails.length === 0) {
+        //     return <div className=" flex justify-center items-center w-full h-screen"><ProgressSpinner /></div>;
+        // }
 
       
 

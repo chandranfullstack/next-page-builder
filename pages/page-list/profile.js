@@ -7,7 +7,6 @@ import { Button } from 'primereact/button';
 import { useRouter } from 'next/router';
 import EmptyError from '../../builder-components/Error/EmptyError';
 import { ProgressBar } from 'primereact/progressbar';
-import { ProgressSpinner } from 'primereact/progressspinner';
 
 const Profile = () => {
     const {UserDetails,setUserDetails,auth}=useContext(LayoutContext)

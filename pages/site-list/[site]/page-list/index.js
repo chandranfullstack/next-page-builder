@@ -1,11 +1,8 @@
-import TableDemo from "../uikit/table/index"
-import Layout from "../../layout/layout";
-import EditorTable from "../../builder-components/Editor/Editor-table";
+import Layout from "../../../../layout/layout";
+import EditorTable from "../../../../builder-components/Editor/Editor-table";
 import { useContext,useEffect } from "react";
-import { UserContext } from "../../layout/context/usercontext";
-import { LayoutContext } from "../../layout/context/layoutcontext";
+import { LayoutContext } from "../../../../layout/context/layoutcontext";
 import {useRouter} from "next/router"
-import { ProgressSpinner } from "primereact/progressspinner";
 
 const PageList=()=>{
       const {UserDetails,setUserDetails,auth}=useContext(LayoutContext)

@@ -36,7 +36,7 @@ const Builder=()=>{
             profileSidebarVisible:false,
             staticMenuDesktopInactive:true,
             staticMenuMobileActive:false})
-    },[])
+    })
      
     // if(!auth){
     //     return <div className=" flex justify-center items-center w-full h-screen"><ProgressSpinner /></div>

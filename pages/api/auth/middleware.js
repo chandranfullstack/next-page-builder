@@ -4,6 +4,7 @@ import MongoStore from 'connect-mongo';
 import dbConnect from '../../../server/utils/dbConnect';
 const Router =express.Router()
 import UserModel from '../../../server/models/UserModel';
+import Website from '../../../server/models/website';
 import { ComparePassword,HashPassWord } from '../../../server/utils/hashPassword';
 import jwt from 'jsonwebtoken';
 
@@ -96,20 +97,30 @@ app.use(async(req,res,next)=>{
    }else if(action==="session"){
     res.status(200).json({user:req.session.user})
    }else if (action === "logout") {
-  if (req.session) {
-    req.session.destroy((err) => {
-      if (err) {
-        console.error("Error occurred during session destruction:", err);
-        res.status(500).json({ error: "An error occurred during logout" });
-      } else {
-        req.session = null;
-        res.status(200).json({ message: "Logout successful" });
-      }
+   if (req.session) {
+     req.session.destroy((err) => {
+       if (err) {
+         console.error("Error occurred during session destruction:", err);
+         res.status(500).json({ error: "An error occurred during logout" });
+       } else {
+         req.session = null;
+         res.status(200).json({ message: "Logout successful" });
+       }
     });
   } else {
     res.status(400).json({ error: "No active session to logout" });
   }
-}
+  }else if(action==="newweb"){
+    const {type}=req.query
+    console.log(req.query,type,req.session.User)
+    const{name,slug,id,owner}=req.body.data
+    if(type==="new"){
+      console.log(name)
+     const newWebsite=new Website({name:name,domain:slug,owner:owner})
+      await newWebsite.save()
+      res.status(200).json({message:"Successfully received"})
+    } 
+  }
 
 })
 

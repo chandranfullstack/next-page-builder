@@ -54,9 +54,9 @@ const AppMenu = () => {
             to: '/pages',
             items: [
                 {
-                    label: 'pages',
+                    label: 'sites',
                     icon: 'pi pi-fw pi-globe',
-                    to: '/page-list'
+                    to: '/site-list',
                 },
                 // {
                 //     label: 'Auth',

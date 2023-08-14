@@ -13,35 +13,29 @@ const HomePage=()=>{
     const router=useRouter()
     
 
-    
+    useEffect(() => {
+        if (auth === false) {
+            setProgress(false); // Set progress to false before redirecting
+            router.push("/auth/login");
+        }
+    }, [auth]);
+
+    if (auth === false) {
+        return null; // Early return to prevent rendering further content
+    }
+    console.log(auth,progress)
+    if(progress){
+        return  <Layout> <div className=" flex justify-center items-center w-full h-screen" isEmpty={true} ><ProgressSpinner /></div>  </Layout>
+    }
 
 
     return(
-        <>
-        {/* {
-        auth? */}
-        <>
-        {
-        // progress?
-        <Layout>   
-        <div className=" flex flex-row justify-center pt-[100px]" >
+         <Layout >
+            <div className=" flex flex-row justify-center pt-[100px]" >
             <h1 className=" font-bold text-black">Welcome to Dashboard</h1>
             {/* {UserDetails.length===0&&checkSession()} */}
         </div>
-        </Layout>
-        // :
-        // <Layout >
-        // <div className=" flex justify-center items-center w-full h-screen" isEmpty={true} ><ProgressSpinner /></div>
-        // {/* </Layout> */}
-        
-        }
-        </>
-        {/* :
-        <div className="w-full flex justify-center items-center h-screen">
-            <ProgressSpinner />
-        </div> 
-        }*/}
-        </>
+         </Layout>
     )
 }
 export default HomePage

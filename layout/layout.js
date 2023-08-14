@@ -88,12 +88,14 @@ const Layout = (props) => {
            setAuth(response.auth)
         }
         console.log(auth)
-        setProgress(false)
+        //setProgress(false)
         if(auth===false){
             router.push("/auth/login")
         }else if(response.auth===false){
             setAuth(false)
             router.push("/auth/login")
+        }else if(response.auth===true){
+            setProgress(false)
         }
     }
     if(auth===false){
@@ -157,12 +159,16 @@ const Layout = (props) => {
         'p-ripple-disabled': !layoutConfig.ripple
     });
 
+    
+
     return (
         <React.Fragment>
-            {
-            progress?
-            <div className=" flex justify-center items-center w-full h-screen"><ProgressSpinner /></div>  
-            :
+            {progress ? (
+                <div className="flex justify-center items-center w-full h-screen">
+                    <ProgressSpinner />
+                </div>
+            )  
+            :(
             <div className={containerClass}>
             <>
             <AppTopbar ref={topbarRef} />
@@ -176,7 +182,7 @@ const Layout = (props) => {
             </>
             <div className="layout-mask"></div>
         </div>
-            }
+            )}
         </React.Fragment>
     );
 };

@@ -22,37 +22,29 @@ import { getPageNames } from '../../demo/service/fileNames';
 import { useRouter } from 'next/router';
 import { LayoutContext } from '../../layout/context/layoutcontext';
 import EmptyError from '../Error/EmptyError';
-
+import { fetchWeb } from '../../demo/service/siteManager';
 import { InputText } from 'primereact/inputtext';
 import Image from "next/image"
 
 const SiteTable = () => {
-    const [customers1, setCustomers1] = useState(null);
-    const [customers2, setCustomers2] = useState([]);
-    const [customers3, setCustomers3] = useState([]);
     const [pageList, setPageList] = useState([]);
     const [filters1, setFilters1] = useState(null);
     const [loading1, setLoading1] = useState(true);
-    const [loading2, setLoading2] = useState(true);
-    const [idFrozen, setIdFrozen] = useState(false);
-    const [products, setProducts] = useState([]);
     const [globalFilterValue1, setGlobalFilterValue1] = useState('');
-    const [expandedRows, setExpandedRows] = useState(null);
-    const [allExpanded, setAllExpanded] = useState(false);
     const [displayBasic, setDisplayBasic] = useState(false);
     const [newFileName,setNewFileName]=useState("")
     const [pageSlug,setPageSlug]=useState("")
     const [metaDetails,setMetaDetail]=useState("")
     const router=useRouter()
-    const {currentPage,setCurrentPage,UserDetails}=useContext(LayoutContext)
+    const {currentPage,setCurrentPage,UserDetails,currentDetails,setCurrentDetails}=useContext(LayoutContext)
     const [editPageList, setEditPageList] = useState([]);
     const [editDialog, setEditDialog] = useState(false);
     const [submitted, setSubmitted] = useState(false);
     const [deletePageDialog, setDeletePageDialog] = useState(false);
     const [Error,setError]=useState(null)
-    const [EditNewFileName, setEditNewFileName] = useState(editPageList.page);
-    const [EditPageSlug, setEditPageSlug] = useState(editPageList.slug);
-    const [EditMetaDetail, setEditMetaDetail] = useState(editPageList.meta);
+    const [EditNewFileName, setEditNewFileName] = useState(editPageList!==undefined?editPageList.name:"");
+    const [EditPageSlug, setEditPageSlug] = useState(editPageList!==undefined?editPageList.slug:"");
+    const [EditMetaDetail, setEditMetaDetail] = useState(editPageList);
     
 
     const representatives = [
@@ -70,9 +62,6 @@ const SiteTable = () => {
 
     const statuses = ['unqualified', 'qualified', 'new', 'negotiation', 'renewal', 'proposal'];
 
-    const clearFilter1 = () => {
-        initFilters1();
-    };
 
     const onGlobalFilterChange1 = (e) => {
         const value = e.target.value;
@@ -86,7 +75,7 @@ const SiteTable = () => {
     const renderHeader1 = () => {
         return (
             <div className="flex justify-content-between">
-                <Button type="button" icon="pi pi-filter-slash" label="Clear" outlined onClick={clearFilter1} />
+                <Button type="button" icon="pi pi-filter-slash" label="Clear" outlined  />
                 <span className="p-input-icon-left">
                     <i className="pi pi-search" />
                     <InputText value={globalFilterValue1} onChange={onGlobalFilterChange1} placeholder="Keyword Search" />
@@ -96,52 +85,17 @@ const SiteTable = () => {
     };
 
     useEffect(() => {
-        setLoading2(true);
+        const getDetails=()=>{
+        fetchWeb(UserDetails.user.id).then((data)=>{
+            setPageList(data.websites)
+            setEditPageList(data.websites[0])
+            console.log(pageList,"pageList",data,editPageList,typeof(data))
+            setLoading1(false)
+        })
+        }
+        getDetails()
+    }, []); 
 
-        CustomerService.getCustomersLarge().then((data) => {
-            setCustomers1(getCustomers(data));
-            setLoading1(false);
-        });
-        getPageNames().then((data) => {
-            setPageList(data)
-            console.log(pageList,"pageList",data)
-            setEditPageList({...data[0]})
-            setLoading1(false);
-        });
-        CustomerService.getCustomersLarge().then((data) => {
-            setCustomers2(getCustomers(data));
-            setLoading2(false);
-        });
-        CustomerService.getCustomersMedium().then((data) => setCustomers3(data));
-        ProductService.getProductsWithOrdersSmall().then((data) => setProducts(data));
-
-        initFilters1();
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-  
-
-    const getCustomers = (data) => {
-        return [...(data || [])].map((d) => {
-            d.date = new Date(d.date);
-            return d;
-        });
-    };
-
-    
-    const initFilters1 = () => {
-        setFilters1({
-            global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-            name: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
-            'country.name': { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
-            representative: { value: null, matchMode: FilterMatchMode.IN },
-            date: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }] },
-            balance: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
-            status: { operator: FilterOperator.OR, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
-            activity: { value: null, matchMode: FilterMatchMode.BETWEEN },
-            verified: { value: null, matchMode: FilterMatchMode.EQUALS }
-        });
-        setGlobalFilterValue1('');
-    };
 
     const filterClearTemplate = (options) => {
         return <Button type="button" icon="pi pi-times" onClick={options.filterClearCallback} severity="secondary"></Button>;
@@ -170,13 +124,18 @@ const SiteTable = () => {
 
     const DeletePage=async()=>{
         const baseUrl=getBaseUrl(false)
-        console.log(editPageList.page,editPageList.slug,editPageList.meta,editPageList.id)
-        const data={"name":editPageList.page,"slug":editPageList.slug,"meta":editPageList.meta,id:editPageList.id}
+        console.log(editPageList.page,editPageList.slug,editPageList.meta,editPageList._id)
+        const data={"name":editPageList.name,"slug":editPageList.domain,id:editPageList._id,action:"deleteweb"}
         console.log("request data in slug")
         setDeletePageDialog(false);
-        const data1 = await fetchJSON({
+        const data1 = await fetch(`/api/auth/middleware`,{
             method: "post",
-            url: `${baseUrl}/api/builder/handle?type=delete&id=${editPageList.id}`,
+            headers:{"Content-type":"application/json"},
+            body:JSON.stringify({data})
+        });
+        await fetchJSON({
+            method: "DELETE",
+            url: `${baseUrl}/api/builder/handle?type=folder&name=${editPageList.name}`,
             data:data
           });
         window.location.reload(true)
@@ -184,34 +143,39 @@ const SiteTable = () => {
 
     const UpdatePage=async()=>{
         const baseUrl=getBaseUrl(false)
-        console.log(newFileName,pageSlug,metaDetails,editPageList.id)
-        const data={"name":EditNewFileName,"slug":EditPageSlug,"meta":EditMetaDetail,id:editPageList.id,date:editPageList.date}
+        console.log(newFileName,pageSlug,editPageList.id,editPageList)
+        const data={"name":EditNewFileName,"slug":EditPageSlug,id:editPageList._id,action:"editweb",oldName:editPageList.name}
         console.log("request data in slug")
         setEditDialog(false);
-        const data1 = await fetchJSON({
+        const data1 = await fetch(`/api/auth/middleware`,{
             method: "post",
-            url: `${baseUrl}/api/builder/handle?type=update&id=${editPageList.id}`,
-            data:data
+            headers:{"Content-type":"application/json"},
+            body:JSON.stringify({data})
         });
+        await fetchJSON({
+            method: "PUT",
+            url: `${baseUrl}/api/builder/handle?type=folder&oldName=${editPageList.name}&name=${EditNewFileName}`,
+            data:data
+          });
         window.location.reload(true)
     }
   
   const editButton = (rowData) => {
-    // Handle edit logic here, using rowData.page to access the page value
-    console.log('Edit:', rowData.page);
+    console.log('Edit:', rowData);
     localStorage.setItem("currentPage",rowData.page)
-    router.push("/page-list/editor")
+    setCurrentDetails(rowData)
+    console.log(currentDetails,currentDetails.name,"site table edior button")
+    router.push(`site-list/${rowData.name}`)
   };
 
   const EditRowButton = (rowData) => {
     // Handle delete logic here, using rowData.page to access the page value
     console.log('Delete:',rowData,EditNewFileName);
-    setEditPageList( {...rowData});
-    setEditNewFileName(rowData.page)
-    setEditPageSlug(rowData.slug)
-    setEditMetaDetail(rowData.meta)
-    console.log(EditNewFileName,EditMetaDetail,EditPageSlug,"data")
-    console.log(editPageList,"editPageList")
+    setEditPageList(rowData);
+    setEditNewFileName(rowData.name)
+    setEditPageSlug(rowData.domain)
+    console.log(EditNewFileName,EditMetaDetail,EditPageSlug,"data",rowData.name)
+    console.log(editPageList,"editPageList",EditNewFileName)
     setEditDialog(true);
   };
    
@@ -261,6 +225,11 @@ const SiteTable = () => {
         const baseUrl=getBaseUrl(false)
         const data={"name":newFileName,"slug":pageSlug,id:pageList.length+1,action:"newweb",owner:UserDetails.user.email}
         await fetch("/api/auth/middleware?type=new",{method:"POST",headers:{"Content-type":"application/json"},body:JSON.stringify({data})})
+        await fetchJSON({
+            method: "POST",
+            url: `${baseUrl}/api/builder/handle?type=folder&name=${newFileName}`,
+            data:{name:newFileName}
+          });
         window.location.reload(true)
     }
     }
@@ -280,13 +249,13 @@ const SiteTable = () => {
     const basicDialogFooter = <Button type="button" label="Create" onClick={HandleCreate} icon="pi pi-check" severity="secondary" />;
     const productDialogFooter = (
         <React.Fragment>
-            {editPageList.page===EditNewFileName&&editPageList.meta===EditMetaDetail?
+            {editPageList!==undefined&&editPageList.name===EditNewFileName?
             <Button label="Cancel" icon="pi pi-times" outlined onClick={hideDialog} />
             :
             <Button label="Cancel" icon="pi pi-times" outlined onClick={hideDialog} disabled className=' cursor-not-allowed'/>
             }
             {
-            editPageList.page!==EditNewFileName||editPageList.meta!==EditMetaDetail?
+            editPageList!==undefined&&editPageList.name!==EditNewFileName?
             <Button label="Save" icon="pi pi-check" onClick={UpdatePage} />
             :
             <Button label="Save" icon="pi pi-check" onClick={UpdatePage} className=' cursor-not-allowed' disabled />
@@ -308,42 +277,30 @@ const SiteTable = () => {
         <div className="grid">
             <div className="col-12">
                 <div className="card">
-                    <h5>Pages</h5>
+                    <h5>Sites</h5>
                     <Button label="create site" icon="pi pi-plus" className='mt-2 mb-2' onClick={() => setDisplayBasic(true)} />
-                    {/* <div className="card"> */}
-                        {/* <h5 >Create New Page</h5> */}
                         <Dialog header="Create New Site" visible={displayBasic} style={{ width: '30vw' }} modal footer={basicDialogFooter} onHide={() => setDisplayBasic(false)}>
                         <div className="card p-fluid">
-                    {/* <h5>Vertical</h5> */}
                     <div className="field">
                         <label htmlFor="name1">Name</label>
-                        <InputText id="name1" type="text" onInput={(e)=>{setNewFileName(e.target.value);setPageSlug("/"+e.target.value)}} required />
+                        <InputText id="name1" type="text" value={newFileName} onInput={(e)=>{setNewFileName(e.target.value);setPageSlug("/"+e.target.value)}}  />
                     </div>
                     <div className="field">
                         <label htmlFor="email1">Slug</label>
                         <InputText id="email1" type="text" value={"/"+newFileName} required readOnly onChange={(e)=>setPageSlug(e.target.value)} />
                     </div>
-                    {/* <div className="field">
-                        <label htmlFor="age1">Description</label>
-                        <InputText id="age1" type="text" onInput={(e)=>setMetaDetail(e.target.value)} required />
-                    </div> */}
-                    {/* {Error&&<span className="error-message text-red-600 text-lg">{Error}</span>} */}
                     {Error&&<EmptyError color="error" text={Error} />}
                 </div>
                 </Dialog>
                < Dialog visible={editDialog} style={{ width: '32rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} header="Product Details" modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>
                <div className="field">
                         <label htmlFor="name1">Name</label>
-                        <InputText id="name1" type="text" defaultValue={editPageList.page}   onChange={(e) => {setEditNewFileName(e.target.value);setEditPageSlug("/"+e.target.value)}} />
+                        <InputText id="name1" type="text" value={EditNewFileName}  onChange={(e) => {setEditNewFileName(e.target.value);setEditPageSlug("/"+e.target.value)}} />
                     </div>
                     <div className="field">
                         <label htmlFor="email1">Slug</label>
                         <InputText id="email1" type="text"      value={EditPageSlug} readOnly/>
                     </div>
-                    {/* <div className="field">
-                        <label htmlFor="age1">Description</label>
-                        <InputText id="age1" type="text" defaultValue={editPageList.meta}  onInput={(e) => setEditMetaDetail(e.target.value)} />
-                    </div> */}
                </Dialog>
                <Dialog visible={deletePageDialog} style={{ width: '32rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} header="Confirm" modal footer={deletePageDialogFooter} onHide={hideDeletePageDialog}>
                 <div className="confirmation-content">
@@ -355,12 +312,6 @@ const SiteTable = () => {
                     )}
                 </div>
             </Dialog>
-                        {/* <div className="grid">
-                            <div className="col-12">
-                                <Button type="button" label="Show" icon="pi pi-external-link" onClick={() => setDisplayBasic(true)} />
-                            </div>
-                        </div> */}
-                    {/* </div> */}
                     <DataTable
                         value={pageList}
                         paginator
@@ -374,12 +325,11 @@ const SiteTable = () => {
                         responsiveLayout="scroll"
                         emptyMessage="No Page List found"
                         header={header1}
-                        // onClick={(e)=>handleEditClic(e)}
                     >
-                        <Column field="page" header="Title" filter filterPlaceholder="Search by name" style={{ minWidth: '12rem' }} />
-                        <Column header="Slug" field='slug' filterField="country.name" style={{ minWidth: '12rem' }}  filter filterPlaceholder="Search by country" filterClear={filterClearTemplate} filterApply={filterApplyTemplate} />
-                        <Column header="Date" filterField="date" field='date' dataType="date" style={{ minWidth: '10rem' }}  filter filterElement={dateFilterTemplate} />
-                        <Column field="status" header="Status" filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '12rem' }} body={statusBodyTemplate} filter filterElement={statusFilterTemplate} />
+                        <Column field="name" header="Title" filter filterPlaceholder="Search by name" style={{ minWidth: '12rem' }} />
+                        <Column header="Slug" field='domain' filterField="country.name" style={{ minWidth: '12rem' }}  filter filterPlaceholder="Search by country" filterClear={filterClearTemplate} filterApply={filterApplyTemplate} />
+                        <Column header="Date" filterField="date" field='createdAt' dataType="date" style={{ minWidth: '10rem' }}  filter filterElement={dateFilterTemplate} />
+                        <Column field="status" header="Status"  filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '12rem' }} body={statusBodyTemplate} filter filterElement={statusFilterTemplate} />
                         <Column field="activity" header="Actions" showFilterMatchModes={false} style={{ minWidth: '12rem' }} body={actionTemplate} filter filterElement={activityFilterTemplate} />
                     </DataTable>
                 </div>

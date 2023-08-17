@@ -14,10 +14,36 @@ const HomePage=()=>{
     
 
     useEffect(() => {
-        if (auth === false) {
-            setProgress(false); // Set progress to false before redirecting
-            router.push("/auth/login");
+        const AuthCheck=async()=>{
+            const data={action:"auth"}
+            const response=await fetch("/api/auth/middleware",
+            {method:"POST",
+            headers:{"Content-type":"application/json"},
+            body:JSON.stringify({data})})
+            .then((res)=>(res.json()))
+            console.log(response,response.auth)
+            if(response.auth){
+               setAuth(response.auth)
+            }
+            console.log(auth)
+            //setProgress(false)
+            if(auth===false){
+                setProgress(false); // Set progress to false before redirecting
+                router.push("/auth/login");
+            }else if(response.auth===false){
+                setAuth(false)
+                router.push("/auth/login")
+            }else if(response.auth===true){
+                setProgress(false)
+            }
         }
+        AuthCheck()
+       // if (auth === false) {
+       //     setProgress(false); // Set progress to false before redirecting
+       //     router.push("/auth/login");
+       // }else if(auth===true){
+       //     setProgress(false)
+       // }
     });
 
     if (auth === false) {

@@ -2,7 +2,7 @@
 import mongoose from 'mongoose';
 
 const pageSchema = new mongoose.Schema({
-  title: {
+  name: {
     type: String,
     required: true,
   },
@@ -11,7 +11,11 @@ const pageSchema = new mongoose.Schema({
     ref: 'Website', // Reference to the Website model
     required: true,
   },
-  content: {
+  slug: {
+    type: String,
+    required: true,
+  },
+  meta: {
     type: String,
     required: true,
   },

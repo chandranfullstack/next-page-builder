@@ -32,7 +32,7 @@ export const getStaticProps=async(context)=>{
    //const pageList=await getPageNames()
    //console.log(pageList,"pageList")
    const alldata=await loadDynamicData(params)
-   const data1=alldata.find(i=>i.name==="/"+params.dynamic[params.dynamic.length-1])
+   const data1=alldata.find(i=>i.name==="\\"+params.dynamic[params.dynamic.length-1])
   console.log(params.dynamic.length,alldata)
    console.log("/"+params.dynamic,"paramic dynamic")
    params.dynamic.map((l)=>console.log(l,"l"))

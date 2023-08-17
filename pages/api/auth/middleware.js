@@ -5,6 +5,7 @@ import dbConnect from '../../../server/utils/dbConnect';
 const Router =express.Router()
 import UserModel from '../../../server/models/UserModel';
 import Website from '../../../server/models/website';
+import Page from "../../../server/models/page"
 import { ComparePassword,HashPassWord } from '../../../server/utils/hashPassword';
 import jwt from 'jsonwebtoken';
 
@@ -34,6 +35,7 @@ app.use(sessionMiddleware);
 
 
 app.use(async(req,res,next)=>{
+  console.log(req.body)
     const {action}=req.body.data
     if(action==="signin"){
         try {
@@ -112,15 +114,120 @@ app.use(async(req,res,next)=>{
   }
   }else if(action==="newweb"){
     const {type}=req.query
-    console.log(req.query,type,req.session.User)
+    console.log(req.query,type,req.session.user)
     const{name,slug,id,owner}=req.body.data
     if(type==="new"){
       console.log(name)
-     const newWebsite=new Website({name:name,domain:slug,owner:owner})
+     const newWebsite=new Website({name:name,domain:slug,owner:req.session.user.id})
       await newWebsite.save()
       res.status(200).json({message:"Successfully received"})
-    } 
+   } 
+  }else if(action==="getweb"){
+    const {ownerId}=req.body.data
+    try {
+      const websites = await Website.find({ owner: ownerId })
+      console.log(websites,"websites")
+      res.send({websites})
+    } catch (error) {
+      console.error('Error while finding website names by owner:', error);
+      throw error;
+    }
+  } else if (action === "editweb") {
+    const { id, name, slug } = req.body.data;
+    try {
+      const website = await Website.findOneAndUpdate(
+        { _id: id, owner: req.session.user.id },
+        { name, domain: slug },
+        { new: true }
+      );
+      if (!website) {
+        return res.status(404).json({ error: "Website not found or unauthorized" });
+      }
+      res.status(200).json({ message: "Website updated successfully" });
+    } catch (error) {
+      console.error("Error occurred during website update:", error);
+      res.status(500).json({ error: "An error occurred during website update" });
+    }
+  } else if (action === "deleteweb"){
+    const { id } = req.body.data;
+    try {
+      const deletedWebsite = await Website.findOneAndDelete({
+        _id: id,
+        owner: req.session.user.id,
+      });
+      if (!deletedWebsite) {
+        return res.status(404).json({ error: "Website not found or unauthorized" });
+      }
+      res.status(200).json({ message: "Website deleted successfully" });
+    } catch (error) {
+      console.error("Error occurred during website deletion:", error);
+      res.status(500).json({ error: "An error occurred during website deletion" });
+    }
+  }else if(action==="createpage"){
+    try {
+      const { name, slug,meta, websiteId } = req.body.data;
+      
+      // Create a new page using the Page model
+      const newPage = new Page({ name, slug, website: websiteId ,meta});
+      await newPage.save();
+      
+      res.status(200).json({ message: 'Page created successfully', page: newPage });
+    } catch (error) {
+      console.error('Error occurred during page creation:', error);
+      res.status(500).json({ error: 'An error occurred during page creation' });
+    }
+  }else if(action==="getpages"){
+      try {
+        const { websiteId } = req.body.data;
+    
+        // Find all pages that belong to the specified website
+        const pages = await Page.find({ website: websiteId });
+    
+        res.status(200).json({ pages });
+      } catch (error) {
+        console.error('Error occurred while fetching pages:', error);
+        res.status(500).json({ error: 'An error occurred while fetching pages' });
+      }
+  }else if(action==="updatepage"){
+    try {
+      const { id } = req.body.data;
+      const { name, meta,slug } = req.body.data;
+      
+      // Find and update the page by ID
+      const updatedPage = await Page.findByIdAndUpdate(
+        id,
+        { name, meta ,slug},
+        { new: true }
+      );
+      
+      if (!updatedPage) {
+        return res.status(404).json({ error: 'Page not found' });
+      }
+      
+      res.status(200).json({ message: 'Page updated successfully', page: updatedPage });
+    } catch (error) {
+      console.error('Error occurred during page update:', error);
+      res.status(500).json({ error: 'An error occurred during page update' });
+    }
+  }else if(action==="deletepage"){
+      try {
+        const { id } = req.body.data;
+        
+        // Find and delete the page by ID
+        const deletedPage = await Page.findByIdAndDelete(id);
+        
+        if (!deletedPage) {
+          return res.status(404).json({ error: 'Page not found' });
+        }
+        
+        res.status(200).json({ message: 'Page deleted successfully' });
+      } catch (error) {
+        console.error('Error occurred during page deletion:', error);
+        res.status(500).json({ error: 'An error occurred during page deletion' });
+      }
   }
+  
+  
 
 })
 

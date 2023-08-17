@@ -1,14 +1,14 @@
-import Layout from "../../../../layout/layout";
-import EditorTable from "../../../../builder-components/Editor/Editor-table";
+import Layout from "../../../layout/layout";
+import EditorTable from "../../../builder-components/Editor/Editor-table"
 import { useContext,useEffect } from "react";
-import { LayoutContext } from "../../../../layout/context/layoutcontext";
+import { LayoutContext } from "../../../layout/context/layoutcontext";
 import {useRouter} from "next/router"
 
 const PageList=()=>{
-      const {UserDetails,setUserDetails,auth}=useContext(LayoutContext)
+      const {UserDetails,setUserDetails,auth,currentDetails}=useContext(LayoutContext)
       console.log(UserDetails)
       const router=useRouter()
-
+      console.log(currentDetails,"currentDetails")
       
       useEffect(() => {
         const checkSession = async () => {

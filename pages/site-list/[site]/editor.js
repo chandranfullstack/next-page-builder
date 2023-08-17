@@ -1,9 +1,9 @@
 // import {ContentProvider} from "../api/builder"
-import ContentProvider from "../../../../builder"
-import Layout from "../../../../layout/layout"
+import ContentProvider from "../../../builder"
+import Layout from "../../../layout/layout"
 import { useContext, useEffect } from "react"
 import { useRouter } from "next/router"
-import { LayoutContext } from "../../../../layout/context/layoutcontext"
+import { LayoutContext } from "../../../layout/context/layoutcontext"
 
 
 //  export { getStaticProps } from "./api/server/index"

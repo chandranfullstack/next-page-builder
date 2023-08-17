@@ -2091,7 +2091,8 @@ const handleData = async (req, res) => {
   
 const handleFile=async(req,res)=>{
 	const fileName=req.query.path
-	const basePath = pathModule.join(rootPath, dataFolder);
+	const basePath = pathModule.join(rootPath, dataFolder,req.query.folder);
+	console.log(basePath,"new file in website")
 	var NewFileName=fileName+".json"
 	const pathName=`${basePath}/${NewFileName}`
 	const jsonString =JSON.stringify(DEFAULT_TEMPLATE);
@@ -2132,61 +2133,66 @@ const handleFileNames=async(req,res)=>{
 }
 }
 
-const deletePage=(req,res)=>{
+
+const FileHandler=(req, res)=>{
+	const basePath = pathModule.join(rootPath, dataFolder);
+	console.log(req.query.name,basePath,"req.body and base path")
+	if (req.method === 'POST') {
+	  const  name  = req.query.name;
+      
+	  try {
+		fs.mkdirSync(`${basePath}/${name}`);
+		res.status(200).json({ message: 'Folder created successfully' });
+	  } catch (error) {
+		res.status(500).json({ error: 'An error occurred while creating the folder' });
+	  }
+	} else if (req.method === 'DELETE') {
+		const  name  = req.query.name;
+	
+		try {
+		  fs.rmdirSync(`${basePath}/${name}`, { recursive: true });
+		  res.status(200).json({ message: 'Folder deleted successfully' });
+		} catch (error) {
+		  res.status(500).json({ error: 'An error occurred while deleting the folder' });
+		}
+	  }else if (req.method === 'PUT') {
+		const  name  = req.query.name;
+		const oldName=req.query.oldName
+		try {
+		  fs.renameSync(`${basePath}/${oldName}`, `${basePath}/${name}`);
+		  res.status(200).json({ message: 'Folder name changed successfully' });
+		} catch (error) {
+		  res.status(500).json({ error: 'An error occurred while changing the folder name' });
+		}
+	  }else {
+	  res.status(405).json({ error: 'Method not allowed' });
+	}
+  }
+
+
+const deletePage=async(req,res)=>{
 	const id=parseInt(req.query.id)
-	const path=pathModule.join(rootPath,"data","files.json")
-    const fileData = fsModule.readFileSync(path, 'utf-8');
-      const jsonData = JSON.parse(fileData);
-      const index = jsonData.pageList.findIndex(item => item.id === id);
-	  const pagename=jsonData.pageList.find((p)=>(p.id===id))
-	  console.log(pagename,"pageName",id,)
-	  const filePath=pathModule.join(rootPath,"/public/data",pagename.page+".json")
-	  console.log(filePath,"filePath")
-	  const match=jsonData.pageList.find((i)=>(i.id===id))
-	  console.log(match,"match")
-	  const del=fsModule.unlinkSync(filePath)
-	  console.log(index)
-      if (index !== -1) {
-        jsonData.pageList.splice(index, 1);
-      }
-     fsModule.writeFileSync(path, JSON.stringify(jsonData, null, 2));
-	 res.status(200).json(true)
+	const path=pathModule.join(rootPath,dataFolder,req.query.folder,req.query.name+".json")
+	console.log(path,"delete path")
+    await fsModule.unlinkSync(path)
+	res.status(200).json({message:"File deleted successfully!"})
 }
 
 const updatePageData=async(req,res)=>{
 	const id=parseInt(req.query.id)
-	const path=pathModule.join(rootPath,"/data/files.json")
-	const data=fsModule.readFileSync(path,"utf8")
-	const jsonData=JSON.parse(data)
-	const index = jsonData.pageList.findIndex(item => item.id === id);
-	const pagename=jsonData.pageList.find((p)=>(p.id===id))
-	const bodyData=	await getJson(req)
-	console.log(bodyData,"bodyData")
-    const newPage = {
-      page: bodyData.name,
-      slug: bodyData.slug,
-      meta: bodyData.meta,
-	  date:bodyData.date,
-	  status:"new",
-	  id:bodyData.id
-    };
-	if (index !== -1) {
-        jsonData.pageList.splice(index, 1);
-		jsonData.pageList.push(newPage)
-      }
-	console.log(pagename,"pageName",id,newPage)
-	const filePath=pathModule.join(rootPath,"/public/data",bodyData.name+".json")
-	const filePath1=pathModule.join(rootPath,"/public/data",pagename.page+".json")
-	console.log(pagename,"pageName",id,filePath,filePath1)
-    fsModule.renameSync(filePath1,filePath)
-	fsModule.writeFileSync(path, JSON.stringify(jsonData, null, 2));
-	console.log(req.query,)
-	res.status(200).json(true)
-
+	const basePath=pathModule.join(rootPath,dataFolder)
+	try {
+		fs.renameSync(`${basePath}/${req.query.folder}/${req.query.old+".json"}`, `${basePath}/${req.query.folder}/${req.query.new+".json"}`)
+		res.status(200).json({message:"file name changed success fully"})
+	  } catch (error) {
+		console.error('Error renaming file:', error);
+		res.status(400).json({error:"something went wrong pleace try again"})
+	  }
+	
 }
 console.log(development$1,"development$1")
 const handleEditor = async (req, res) => {
-  if (development$1)
+  if (!development$1)
     return res.status(401).json({ error: "Not allowed" });
   if (req.query.type === "data") {
     return handleData(req, res);
@@ -2200,6 +2206,9 @@ const handleEditor = async (req, res) => {
 	return updatePageData(req,res)
   }else if(req.query.type==="delete"){
     return deletePage(req,res)
+  }else if(req.query.type==="folder"){
+	console.log(req.query.type)
+    return FileHandler(req,res)
   }else {
     return res.status(400).json({ error: "Invalid type" });
   }
@@ -2208,7 +2217,7 @@ const config = { api: { bodyParser: false } };
 
 const development = process.env.NODE_ENV !== "production";
 const getStaticProps = async () => {
-  if (!development) {
+  if (development) {
 	const pages=await getPages()
     return { props: {pages:pages===undefined?null:pages} };
   } else {

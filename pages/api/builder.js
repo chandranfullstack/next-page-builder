@@ -68,7 +68,6 @@ import { useEffect ,useCallback,useState,useRef,useContext} from 'react';
 import { textStyle } from '../../themes/textStyle';
 
 
-
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
 function _interopNamespace(e) {
@@ -2244,7 +2243,7 @@ const Header = () => {
   const { updateIndex, themeNames, themeIndex, currentPage } = useContext(ThemeContext);
   const [selectOpen, setSelectOpen] = useState(false);
   const enabled = state.options.enabled;
-
+  const current=localStorage.getItem("currentPage")
   const onChange = (name) => {
     updateIndex(themeNames.indexOf(name));
   };
@@ -2291,7 +2290,7 @@ const Header = () => {
           </div>
         )}
       <div className="bg-gray-600 py-2 px-6  text-white">
-        <AppLink href="/page-list">Back</AppLink>
+        <AppLink href={`/site-list/${current}/`}>Back</AppLink>
       </div>
       <div className="flex">
         {enabled ? (

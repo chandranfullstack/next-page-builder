@@ -8,20 +8,28 @@ import CheckIcon from "@heroicons/react/24/outline/CheckIcon";
 import PencilSquareIcon from "@heroicons/react/24/outline/PencilSquareIcon";
 import Select  from "../components/helpers/Select"
 import SimpleTooltip from "../components/toolTip";
+import { useRouter } from "next/router";
 
 const Header = () => {
     const { state, query, actions } = useEditor((state2, query2) => ({ state: state2, query: query2 }));
     const { updateIndex, themeNames, themeIndex, currentPage } = useContext(ThemeContext);
     const [selectOpen, setSelectOpen] = useState(false);
     const enabled = state.options.enabled;
+    const router=useRouter()
   
     const onChange = (name) => {
       updateIndex(themeNames.indexOf(name));
     };
-  
+    const current=localStorage.getItem("currentPage")
+    const url=current.split("/")[0]
+    console.log(current,"current",url)
     const togglePreview = () => {
       actions.setOptions((o) => o.enabled = !enabled);
     };
+
+    const handleBack=()=>{
+          router.back()
+    }
   
     return (
       <div className="transition w-full bg-gray-300">
@@ -60,8 +68,8 @@ const Header = () => {
               </div>
             </div>
           )}
-        <div className="bg-gray-600 py-2 px-6  text-white">
-          <a href="/page-list">Back</a>
+        <div onClick={handleBack} className="bg-gray-600 py-2 px-6  text-white cursor-pointer">
+          <p >Back</p>
         </div>
         <div className="flex">
           {enabled ? (

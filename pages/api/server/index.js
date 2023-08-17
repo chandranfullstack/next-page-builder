@@ -2054,6 +2054,19 @@ const loadAllData = async (req) => {
   return data
 };
 
+const loadPageData = async (websiteName, pageFileName) => {
+	const filePath = pathModule.join(rootPath, dataFolder, websiteName, `${pageFileName}.json`)
+	console.log(filePath,"filePath")
+	try {
+	  const content = await fsModule.promises.readFile(filePath, "utf8")
+	  .then((c) => ({ name: getRouteFromFilename(filePath.replace(filePath, "")), content: c }))
+	  return content 
+	} catch (error) {
+	  console.error(`Error reading JSON file: ${error}`);
+	  return null;
+	}
+  };
+
 const loadDynamicData = async (params) => {
 	const basePath = pathModule.join(rootPath, dataFolder);
 	const files = readdirRecursive(basePath);
@@ -2240,3 +2253,4 @@ exports.loadAllData=loadAllData
 exports.getPages=getPages
 exports.loadDynamicData=loadDynamicData
 exports.handler=handler
+exports.loadPageData=loadPageData

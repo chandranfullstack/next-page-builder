@@ -27,9 +27,6 @@ import { InputText } from 'primereact/inputtext';
 import Image from "next/image"
 
 const EditorTable = () => {
-    const [customers1, setCustomers1] = useState(null);
-    const [customers2, setCustomers2] = useState([]);
-    const [customers3, setCustomers3] = useState([]);
     const [pageList, setPageList] = useState([]);
     const [filters1, setFilters1] = useState(null);
     const [loading1, setLoading1] = useState(true);
@@ -96,12 +93,9 @@ const EditorTable = () => {
     };
 
     useEffect(() => {
-        setLoading2(true);
+        setLoading1(true);
 
-        CustomerService.getCustomersLarge().then((data) => {
-            setCustomers1(getCustomers(data));
-            setLoading1(false);
-        });
+       
         const fetchPages=async()=>{
             const data={action:"getpages",websiteId:currentDetails._id}
             await fetch("/api/auth/middleware",{method:"POST",headers:{"Content-type":"application/json"},body:JSON.stringify({data})})
@@ -126,13 +120,7 @@ const EditorTable = () => {
         //     setEditPageList({...data[0]})
         //     setLoading1(false);
         // });
-        CustomerService.getCustomersLarge().then((data) => {
-            setCustomers2(getCustomers(data));
-            setLoading2(false);
-        });
-        CustomerService.getCustomersMedium().then((data) => setCustomers3(data));
-        ProductService.getProductsWithOrdersSmall().then((data) => setProducts(data));
-
+       
         initFilters1();
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -192,13 +180,29 @@ const EditorTable = () => {
         const data={"name":editPageList.name,"slug":editPageList.slug,"meta":editPageList.meta,id:editPageList._id,action:"deletepage"}
         console.log("request data in slug")
         setDeletePageDialog(false);
+        setLoading1(true)
         await fetchJSON({
             method: "post",
             url: `${baseUrl}/api/builder/handle?type=delete&name=${editPageList.name}&folder=${currentDetails.name}`,
             data:data
         });
         await fetch("/api/auth/middleware",{method:"post",headers:{"Content-type":"application/json"},body:JSON.stringify({data})})
-        window.location.reload(true)
+        const fetchPages=async()=>{
+            const data={action:"getpages",websiteId:currentDetails._id}
+            await fetch("/api/auth/middleware",{method:"POST",headers:{"Content-type":"application/json"},body:JSON.stringify({data})})
+            .then((res)=>res.json())
+            .then((res)=>{
+                console.log(res)
+                setPageList(prevPageList => prevPageList.filter(page => page._id !== editPageList._id));
+
+                setEditPageList(res.pages[0])
+                console.log(pageList,"pageList")
+                setLoading1(false); 
+
+            })
+        }
+        fetchPages()
+        // window.location.reload(true)
     }
 
     const UpdatePage=async()=>{
@@ -207,6 +211,7 @@ const EditorTable = () => {
         const data={"name":EditNewFileName,"slug":EditPageSlug,"meta":EditMetaDetail,id:editPageList._id,action:"updatepage"}
         console.log("request data in slug")
         setEditDialog(false);
+        setLoading1(true)
         await fetch("/api/auth/middleware",{
             method: "POST",
             headers:{"Content-type":"application/json"},
@@ -216,13 +221,36 @@ const EditorTable = () => {
             method:"post",
             url:`${baseUrl}/api/builder/handle?type=update&new=${EditNewFileName}&old=${editPageList.name}&folder=${currentDetails.name}`
         })
-        window.location.reload(true)
+        const fetchPages=async()=>{
+            const data={action:"getpages",websiteId:currentDetails._id}
+            await fetch("/api/auth/middleware",{method:"POST",headers:{"Content-type":"application/json"},body:JSON.stringify({data})})
+            .then((res)=>res.json())
+            .then((res)=>{
+                console.log(res)
+                setPageList(prevPageList => {
+                    const updatedPageIndex = prevPageList.findIndex(page => page._id === editPageList._id);
+                    if (updatedPageIndex !== -1) {
+                        const updatedPage = { ...prevPageList[updatedPageIndex], name: EditNewFileName, slug: EditPageSlug, meta: EditMetaDetail };
+                        const newPageList = [...prevPageList];
+                        newPageList[updatedPageIndex] = updatedPage;
+                        return newPageList;
+                    }
+                    return prevPageList;
+                });
+                setEditPageList(res.pages[0])
+                console.log(pageList,"pageList")
+                setLoading1(false); 
+
+            })
+        }
+        fetchPages()
+        // window.location.reload(true)
     }
   
   const editButton = (rowData) => {
     // Handle edit logic here, using rowData.page to access the page value
     console.log('Edit:', rowData.page);
-    localStorage.setItem("currentPage",rowData.name)
+    localStorage.setItem("currentPage",currentDetails.name+"/"+rowData.name)
     router.push(`/site-list/${currentDetails.name}/editor`)
   };
 
@@ -283,6 +311,7 @@ const EditorTable = () => {
         console.log(isValid,newFileName.trim(),pageSlug)
         if(isValid){
         setDisplayBasic(false)
+        setLoading1(true)
         const baseUrl=getBaseUrl(false)
         const data={"name":newFileName,"slug":pageSlug,"meta":metaDetails,action:"createpage",websiteId:currentDetails._id}
         await fetch("/api/auth/middleware",{
@@ -293,8 +322,24 @@ const EditorTable = () => {
         await fetchJSON({
             method: "get",
             url: `${baseUrl}/api/builder/handle?type=new&path=${newFileName}&folder=${currentDetails.name}`,
-          });
-        window.location.reload(true)
+        });
+        const fetchPages=async()=>{
+            const data={action:"getpages",websiteId:currentDetails._id}
+            await fetch("/api/auth/middleware",{method:"POST",headers:{"Content-type":"application/json"},body:JSON.stringify({data})})
+            .then((res)=>res.json())
+            .then((res)=>{
+                console.log(res)
+                const newPages = res.pages.filter(newPage =>
+                    !pageList.some(existingPage => existingPage._id === newPage._id)
+                );
+        
+                setPageList(prevPageList => [...prevPageList, ...newPages]);
+                console.log(pageList,"pageList")
+                setLoading1(false); 
+            })
+        }
+        fetchPages()
+        // window.location.reload(true)
     }
     }
 
@@ -367,7 +412,7 @@ const EditorTable = () => {
                < Dialog visible={editDialog} style={{ width: '32rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} header="Product Details" modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>
                <div className="field">
                         <label htmlFor="name1">Title</label>
-                        <InputText id="name1" type="text" defaultValue={editPageList!==null?editPageList.name:""}   onChange={(e) => {setEditNewFileName(e.target.value);setEditPageSlug("/"+e.target.value)}} />
+                        <InputText id="name1" type="text" defaultValue={editPageList?.name??""}   onChange={(e) => {setEditNewFileName(e.target.value);setEditPageSlug("/"+e.target.value)}} />
                     </div>
                     <div className="field">
                         <label htmlFor="email1">Slug</label>
@@ -375,7 +420,7 @@ const EditorTable = () => {
                     </div>
                     <div className="field">
                         <label htmlFor="age1">Description</label>
-                        <InputText id="age1" type="text" defaultValue={editPageList!==null?editPageList.meta:""}  onInput={(e) => setEditMetaDetail(e.target.value)} />
+                        <InputText id="age1" type="text" defaultValue={editPageList?.meta??""}  onInput={(e) => setEditMetaDetail(e.target.value)} />
                     </div>
                </Dialog>
                <Dialog visible={deletePageDialog} style={{ width: '32rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} header="Confirm" modal footer={deletePageDialogFooter} onHide={hideDeletePageDialog}>

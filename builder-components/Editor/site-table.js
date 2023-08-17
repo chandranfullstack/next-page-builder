@@ -137,8 +137,18 @@ const SiteTable = () => {
             method: "DELETE",
             url: `${baseUrl}/api/builder/handle?type=folder&name=${editPageList.name}`,
             data:data
-          });
-        window.location.reload(true)
+        });
+        setLoading1(true)
+        const getDetails=()=>{
+            fetchWeb(UserDetails.user.id).then((data)=>{
+                setPageList(data.websites)
+                setEditPageList(data.websites[0])
+                console.log(pageList,"pageList",data,editPageList,typeof(data))
+                setLoading1(false)
+            })
+        }
+        getDetails()
+        // window.location.reload(true)
     }
 
     const UpdatePage=async()=>{
@@ -157,7 +167,17 @@ const SiteTable = () => {
             url: `${baseUrl}/api/builder/handle?type=folder&oldName=${editPageList.name}&name=${EditNewFileName}`,
             data:data
           });
-        window.location.reload(true)
+        setLoading1(true)
+        const getDetails=()=>{
+            fetchWeb(UserDetails.user.id).then((data)=>{
+                setPageList(data.websites)
+                setEditPageList(data.websites[0])
+                console.log(pageList,"pageList",data,editPageList,typeof(data))
+                setLoading1(false)
+            })
+        }
+        getDetails()
+        // window.location.reload(true)
     }
   
   const editButton = (rowData) => {
@@ -229,8 +249,19 @@ const SiteTable = () => {
             method: "POST",
             url: `${baseUrl}/api/builder/handle?type=folder&name=${newFileName}`,
             data:{name:newFileName}
-          });
-        window.location.reload(true)
+          })
+          setLoading1(true)
+          const getDetails=()=>{
+            fetchWeb(UserDetails.user.id).then((data)=>{
+                setPageList(data.websites)
+                setEditPageList(data.websites[0])
+                console.log(pageList,"pageList",data,editPageList,typeof(data))
+                setLoading1(false)
+            })
+            }
+            getDetails()
+        // window.location.reload(true)
+        
     }
     }
 

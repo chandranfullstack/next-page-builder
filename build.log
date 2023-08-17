@@ -1,0 +1,13 @@
+
+> next-page-builder@0.1.0 build
+> next build
+
+- info Loaded env from /var/www/next-page-builder/.env
+- info Linting and checking validity of types...
+
+./pages/site-list/[site]/page-list/editor.js
+37:7  Warning: React Hook useEffect has a missing dependency: 'setLayoutState'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/basic-features/eslint#disabling-rules
+- info Creating an optimized production build...
+Killed

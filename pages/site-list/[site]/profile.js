@@ -1,12 +1,12 @@
 
 import React, { useEffect } from 'react';
 import { useContext,useState } from 'react';
-import Layout from '../../../../layout/layout';
-import { LayoutContext } from '../../../../layout/context/layoutcontext';
+import Layout from "../../../layout/layout"
+import { LayoutContext } from '../../../layout/context/layoutcontext';
 import { Button } from 'primereact/button';
 import { useRouter } from 'next/router';
 import { ProgressBar } from 'primereact/progressbar';
-import EmptyError from '../../../../builder-components/Error/EmptyError';
+import EmptyError from '../../../builder-components/Error/EmptyError';
 
 const Profile = () => {
     const {UserDetails,setUserDetails,auth}=useContext(LayoutContext)

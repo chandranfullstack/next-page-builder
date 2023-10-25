@@ -50,7 +50,7 @@
     "moment": "^2.29.4",
     "mongodb": "^5.7.0",
     "mongoose": "^7.4.2",
-    "next": "13.4.6",
+    "next": "13.5.0",
     "nextjs-toploader": "^1.4.2",
     "node-html-parser": "^6.1.5",
     "nprogress": "^0.2.0",
